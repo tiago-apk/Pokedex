@@ -1,0 +1,129 @@
+{
+    "Natures": [
+        {
+            "Nature": "Hardy",
+            "Increase": "Attack",
+            "Decrease": "Attack"
+        },
+        {
+            "Nature": "Lonely",
+            "Increase": "Attack",
+            "Decrease": "Defense"
+        },
+        {
+            "Nature": "Brave",
+            "Increase": "Attack",
+            "Decrease": "Speed"
+        },
+        {
+            "Nature": "Adamant",
+            "Increase": "Attack",
+            "Decrease": "Sp. Attack"
+        },
+        {
+            "Nature": "Naughty",
+            "Increase": "Attack",
+            "Decrease": "Sp. Defense"
+        },
+        {
+            "Nature": "Bold",
+            "Increase": "Defense",
+            "Decrease": "Attack"
+        },
+        {
+            "Nature": "Docile",
+            "Increase": "Defense",
+            "Decrease": "Defense"
+        },
+        {
+            "Nature": "Relaxed",
+            "Increase": "Defense",
+            "Decrease": "Speed"
+        },
+        {
+            "Nature": "Impish",
+            "Increase": "Defense",
+            "Decrease": "Sp. Attack"
+        },
+        {
+            "Nature": "Lax",
+            "Increase": "Defense",
+            "Decrease": "Sp. Defense"
+        },
+        {
+            "Nature": "Timid",
+            "Increase": "Speed",
+            "Decrease": "Attack"
+        },
+        {
+            "Nature": "Hasty",
+            "Increase": "Speed",
+            "Decrease": "Defense"
+        },
+        {
+            "Nature": "Serious",
+            "Increase": "Speed",
+            "Decrease": "Speed"
+        },
+        {
+            "Nature": "Jolly",
+            "Increase": "Speed",
+            "Decrease": "Sp. Attack"
+        },
+        {
+            "Nature": "Naive",
+            "Increase": "Speed",
+            "Decrease": "Sp. Defense"
+        },
+        {
+            "Nature": "Modest",
+            "Increase": "Sp. Attack",
+            "Decrease": "Attack"
+        },
+        {
+            "Nature": "Mild",
+            "Increase": "Sp. Attack",
+            "Decrease": "Defense"
+        },
+        {
+            "Nature": "Quiet",
+            "Increase": "Sp. Attack",
+            "Decrease": "Speed"
+        },
+        {
+            "Nature": "Bashful",
+            "Increase": "Sp. Attack",
+            "Decrease": "Sp. Attack"
+        },
+        {
+            "Nature": "Rash",
+            "Increase": "Sp. Attack",
+            "Decrease": "Sp. Defense"
+        },
+        {
+            "Nature": "Calm",
+            "Increase": "Sp. Defense",
+            "Decrease": "Attack"
+        },
+        {
+            "Nature": "Gentle",
+            "Increase": "Sp. Defense",
+            "Decrease": "Defense"
+        },
+        {
+            "Nature": "Sassy",
+            "Increase": "Sp. Defense",
+            "Decrease": "Speed"
+        },
+        {
+            "Nature": "Careful",
+            "Increase": "Sp. Defense",
+            "Decrease": "Sp. Attack"
+        },
+        {
+            "Nature": "Quirky",
+            "Increase": "Sp. Defense",
+            "Decrease": "Sp. Defense"
+        }
+    ]
+}
