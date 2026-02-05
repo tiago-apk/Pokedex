@@ -4,67 +4,28 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Pokedex"
+        xmlns:viewmodels="clr-namespace:Pokedex.viewmodels" 
+        xmlns:views="clr-namespace:Pokedex.views"
         mc:Ignorable="d"
         Title="Pokémon Manager" Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
         Background="#FAFAFA">
     <Window.Resources>
-        <Style x:Key="PokedexButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#CC0000"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="PokemonButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#3F51B5"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="TrainerButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FFC107"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="TeamButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#4CAF50"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </Style.Resources>
-        </Style>
+        <DataTemplate DataType="{x:Type viewmodels:PokedexViewModel}">
+            <views:PokedexView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:RegisterPokemonViewModel}">
+            <views:PokemonRegisterView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:TrainerRegisterViewModel}">
+            <views:TrainerRegisterView />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewmodels:TrainerListViewModel}">
+            <views:TrainerListView />
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>

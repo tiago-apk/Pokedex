@@ -3,66 +3,71 @@ using System.Text.Json.Serialization;
 
 namespace Pokedex.models
 {
-    // Usamos o conversor de string globalmente para todos os enums deste arquivo
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    // Removido o [JsonConverter] global daqui, pois vamos registrar 
+    // o UniversalEnumConverter diretamente no JsonSerializerOptions do Seeder.
+
     public enum PokemonForm
     {
-        [EnumMember(Value = "Altered")] Altered,
-        [EnumMember(Value = "Alternative")] Alternative,
-        [EnumMember(Value = "")] Empty,
-        [EnumMember(Value = "Eternamax")] Eternamax,
-        [EnumMember(Value = "Gender")] Gender,
-        [EnumMember(Value = "Gigantamax")] Gigantamax,
-        [EnumMember(Value = "Megaevolution")] Megaevolution,
-        [EnumMember(Value = "Origin")] Origin,
-        [EnumMember(Value = "Primal")] Primal,
-        [EnumMember(Value = "Regional")] Regional,
-        [EnumMember(Value = "Stellar")] Stellar,
-        [EnumMember(Value = "Terastal")] Terastal
+        // Importante: O valor que representa "" ou nulo deve ser o primeiro (0)
+        [EnumMember(Value = "")] Empty = 0,
+        Altered,
+        Alternative,
+        Eternamax,
+        Gender,
+        Gigantamax,
+        Megaevolution,
+        Origin,
+        Primal,
+        Regional,
+        Stellar,
+        Terastal
     }
 
     public enum PokemonType
     {
+        None = 0,
         Normal, Fire, Water, Grass, Electric, Ice, Fighting, Poison,
         Ground, Flying, Psychic, Bug, Rock, Ghost, Dragon, Steel,
-        Fairy, Dark, Stellar, None
+        Fairy, Dark, Stellar
     }
 
     public enum Generation
     {
-        [JsonPropertyName("I")] I,
-        [JsonPropertyName("II")] II,
-        [JsonPropertyName("III")] III,
-        [JsonPropertyName("IV")] IV,
-        [JsonPropertyName("V")] V,
-        [JsonPropertyName("VI")] VI,
-        [JsonPropertyName("VII")] VII,
-        [JsonPropertyName("VIII")] VIII,
-        [JsonPropertyName("IX")] IX
+        [EnumMember(Value = "")] None = 0,
+        [EnumMember(Value = "I")] Gen1,
+        [EnumMember(Value = "II")] Gen2,
+        [EnumMember(Value = "III")] Gen3,
+        [EnumMember(Value = "IV")] Gen4,
+        [EnumMember(Value = "V")] Gen5,
+        [EnumMember(Value = "VI")] Gen6,
+        [EnumMember(Value = "VII")] Gen7,
+        [EnumMember(Value = "VIII")] Gen8,
+        [EnumMember(Value = "IX")] Gen9
     }
 
     public enum AccuracyType
     {
-        [JsonPropertyName("100%")] Acc100,
-        [JsonPropertyName("95%")] Acc95,
-        [JsonPropertyName("90%")] Acc90,
-        [JsonPropertyName("85%")] Acc85,
-        [JsonPropertyName("80%")] Acc80,
-        [JsonPropertyName("75%")] Acc75,
-        [JsonPropertyName("70%")] Acc70,
-        [JsonPropertyName("50%")] Acc50,
-        [JsonPropertyName("30%")] Acc30,
-        [JsonPropertyName("—")] None
+        None = 0,
+        [EnumMember(Value = "100%")] Acc100,
+        [EnumMember(Value = "95%")] Acc95,
+        [EnumMember(Value = "90%")] Acc90,
+        [EnumMember(Value = "85%")] Acc85,
+        [EnumMember(Value = "80%")] Acc80,
+        [EnumMember(Value = "75%")] Acc75,
+        [EnumMember(Value = "70%")] Acc70,
+        [EnumMember(Value = "50%")] Acc50,
+        [EnumMember(Value = "30%")] Acc30,
+        [EnumMember(Value = "—")] SymbolNone
     }
 
     public enum StatType
     {
-        [JsonPropertyName("HP")] Hp,
-        [JsonPropertyName("Attack")] Attack,
-        [JsonPropertyName("Defense")] Defense,
-        [JsonPropertyName("Sp. Atk")] SpecialAttack,
-        [JsonPropertyName("Sp. Def")] SpecialDefense,
-        [JsonPropertyName("Speed")] Speed,
-        [JsonPropertyName("None")] None
+        None = 0,
+        Hp,
+        Attack,
+        Defense,
+        SpecialAttack,
+        SpecialDefense,
+        Speed
     }
 }

@@ -1,127 +1,127 @@
 {
     "Natures": [
         {
-            "Nature": "Hardy",
+            "Name": "Hardy",
             "Increase": "Attack",
             "Decrease": "Attack"
         },
         {
-            "Nature": "Lonely",
+            "Name": "Lonely",
             "Increase": "Attack",
             "Decrease": "Defense"
         },
         {
-            "Nature": "Brave",
+            "Name": "Brave",
             "Increase": "Attack",
             "Decrease": "Speed"
         },
         {
-            "Nature": "Adamant",
+            "Name": "Adamant",
             "Increase": "Attack",
             "Decrease": "Sp. Attack"
         },
         {
-            "Nature": "Naughty",
+            "Name": "Naughty",
             "Increase": "Attack",
             "Decrease": "Sp. Defense"
         },
         {
-            "Nature": "Bold",
+            "Name": "Bold",
             "Increase": "Defense",
             "Decrease": "Attack"
         },
         {
-            "Nature": "Docile",
+            "Name": "Docile",
             "Increase": "Defense",
             "Decrease": "Defense"
         },
         {
-            "Nature": "Relaxed",
+            "Name": "Relaxed",
             "Increase": "Defense",
             "Decrease": "Speed"
         },
         {
-            "Nature": "Impish",
+            "Name": "Impish",
             "Increase": "Defense",
             "Decrease": "Sp. Attack"
         },
         {
-            "Nature": "Lax",
+            "Name": "Lax",
             "Increase": "Defense",
             "Decrease": "Sp. Defense"
         },
         {
-            "Nature": "Timid",
+            "Name": "Timid",
             "Increase": "Speed",
             "Decrease": "Attack"
         },
         {
-            "Nature": "Hasty",
+            "Name": "Hasty",
             "Increase": "Speed",
             "Decrease": "Defense"
         },
         {
-            "Nature": "Serious",
+            "Name": "Serious",
             "Increase": "Speed",
             "Decrease": "Speed"
         },
         {
-            "Nature": "Jolly",
+            "Name": "Jolly",
             "Increase": "Speed",
             "Decrease": "Sp. Attack"
         },
         {
-            "Nature": "Naive",
+            "Name": "Naive",
             "Increase": "Speed",
             "Decrease": "Sp. Defense"
         },
         {
-            "Nature": "Modest",
+            "Name": "Modest",
             "Increase": "Sp. Attack",
             "Decrease": "Attack"
         },
         {
-            "Nature": "Mild",
+            "Name": "Mild",
             "Increase": "Sp. Attack",
             "Decrease": "Defense"
         },
         {
-            "Nature": "Quiet",
+            "Name": "Quiet",
             "Increase": "Sp. Attack",
             "Decrease": "Speed"
         },
         {
-            "Nature": "Bashful",
+            "Name": "Bashful",
             "Increase": "Sp. Attack",
             "Decrease": "Sp. Attack"
         },
         {
-            "Nature": "Rash",
+            "Name": "Rash",
             "Increase": "Sp. Attack",
             "Decrease": "Sp. Defense"
         },
         {
-            "Nature": "Calm",
+            "Name": "Calm",
             "Increase": "Sp. Defense",
             "Decrease": "Attack"
         },
         {
-            "Nature": "Gentle",
+            "Name": "Gentle",
             "Increase": "Sp. Defense",
             "Decrease": "Defense"
         },
         {
-            "Nature": "Sassy",
+            "Name": "Sassy",
             "Increase": "Sp. Defense",
             "Decrease": "Speed"
         },
         {
-            "Nature": "Careful",
+            "Name": "Careful",
             "Increase": "Sp. Defense",
             "Decrease": "Sp. Attack"
         },
         {
-            "Nature": "Quirky",
+            "Name": "Quirky",
             "Increase": "Sp. Defense",
             "Decrease": "Sp. Defense"
         }

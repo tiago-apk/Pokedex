@@ -1,7 +1,6 @@
 ﻿<Window x:Class="Pokedex.views.LoadingView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:models="clr-namespace:Pokedex.models"
         Title="Carregando" Height="350" Width="500"
         WindowStartupLocation="CenterScreen" WindowStyle="None" 
         AllowsTransparency="True" Background="Transparent">
@@ -9,21 +8,40 @@
     <Window.Resources>
         <Storyboard x:Key="RotatePokeball">
             <DoubleAnimation Storyboard.TargetName="noRotation"
-                         Storyboard.TargetProperty="Angle"
-                         From="0" To="360" Duration="0:0:2" 
-                         RepeatBehavior="Forever" />
+                             Storyboard.TargetProperty="Angle"
+                             From="0" To="360" Duration="0:0:2" 
+                             RepeatBehavior="Forever" />
         </Storyboard>
     </Window.Resources>
 
-    <TextBlock x:Name="PokeballIcon" 
-           FontFamily="{StaticResource PokemonIcons}" 
-           Text="&#xe80f;" 
-           FontSize="80" 
-           Foreground="#EE1515" 
-           HorizontalAlignment="Center"
-           RenderTransformOrigin="0.5,0.5">
-        <TextBlock.RenderTransform>
-            <RotateTransform x:Name="noRotation" Angle="0" />
-        </TextBlock.RenderTransform>
-    </TextBlock>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Window.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource RotatePokeball}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Border Background="White" CornerRadius="20" BorderBrush="#EE1515" BorderThickness="2">
+        <Grid>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Pokedéx" FontSize="24" FontWeight="Bold" 
+                           Foreground="#EE1515" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock x:Name="PokeballIcon" 
+                           FontFamily="{StaticResource PokemonIcons}" 
+                           Text="&#xe80f;" 
+                           FontSize="80" 
+                           Foreground="#EE1515" 
+                           HorizontalAlignment="Center"
+                           RenderTransformOrigin="0.5,0.5">
+                    <TextBlock.RenderTransform>
+                        <RotateTransform x:Name="noRotation" Angle="0" />
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <TextBlock x:Name="txtStatus" Text="Sincronizando dados..." 
+                           FontSize="14" Foreground="#666"
+                           HorizontalAlignment="Center" Margin="0,20,0,0"/>
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

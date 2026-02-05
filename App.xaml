@@ -1,7 +1,8 @@
 ﻿<Application x:Class="Pokedex.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="views/loading_view.xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:services="clr-namespace:Pokedex.services"
+             StartupUri="views/LoadingView.xaml">
     <Application.Resources>
         <Style x:Key="PokedexButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#CC0000"/>
@@ -59,6 +60,14 @@
                 </Style>
             </Style.Resources>
         </Style>
-        <FontFamily x:Key="PokemonIcons">pack://application:,,,/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
+        <FontFamily x:Key="PokemonIcons">/Pokedex;component/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
+
+            <services:TypeToBrushConverter x:Key="TypeToBrushConverter" />
+            <services:TypeIconConverter x:Key="TypeIconConverter" />
+            <services:TypeImageConverter x:Key="TypeImageConverter" />
+            <services:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+
+
     </Application.Resources>
 </Application>

@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Pokedex.viewmodels;
 
 namespace Pokedex
 {
@@ -19,6 +20,8 @@ namespace Pokedex
         public MainWindow()
         {
             InitializeComponent();
+            // VINCULA O VIEWMODEL À JANELA
+            this.DataContext = new MainViewModel();
         }
     }
 }

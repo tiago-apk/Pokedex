@@ -18,20 +18,17 @@ namespace Pokedex.views
         {
             try
             {
-                // Task.Run garante que o seeder não "congele" a animação da Pokébola
+                // Task.Run para processar o banco sem travar a interface
                 await Task.Run(() =>
                 {
                     using (var db = new AppDbContext())
                     {
-                        // Garante que o banco existe e importa os JSONs
                         DatabaseSeeder.Initialize(db);
                     }
                 });
 
-                // Pequena pausa para o utilizador ver a animação terminando
-                await Task.Delay(500);
+                await Task.Delay(800); // Pausa breve para feedback visual
 
-                // Abre a janela principal e fecha esta
                 MainWindow main = new MainWindow();
                 main.Show();
                 this.Close();
