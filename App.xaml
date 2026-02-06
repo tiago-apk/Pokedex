@@ -63,7 +63,7 @@
         <FontFamily x:Key="PokemonIcons">/Pokedex;component/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
 
             <services:TypeToBrushConverter x:Key="TypeToBrushConverter" />
-            <services:TypeIconConverter x:Key="TypeIconConverter" />
+            <services:TypeToIconConverter x:Key="TypeToIconConverter" />
             <services:TypeImageConverter x:Key="TypeImageConverter" />
             <services:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVis" />

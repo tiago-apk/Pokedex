@@ -8,12 +8,12 @@ C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\
 Pokedex
 none
 false
-TRACE;DEBUG;NET;NET8_0;NETCOREAPP
+TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\lokic\source\repos\Pokedex\Pokedex\App.xaml
 7-794464874
-
-321103533177
-218-700417285
+30811036833573
+31-2036670569
+219-562066529
 MainWindow.xaml;views\LoadingView.xaml;views\PokedexView.xaml;views\PokemonDetailView.xaml;views\PokemonRegisterView.xaml;views\TrainerListView.xaml;views\TrainerRegisterView.xaml;
 
 False

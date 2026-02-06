@@ -27,7 +27,7 @@ namespace Pokedex.data
                 .Property(p => p.Types)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<PokemonType>>(v, (JsonSerializerOptions)null)
+                    v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
                 );
 
             // Converte a List<string> de Abilities para String (JSON)
@@ -55,8 +55,8 @@ namespace Pokedex.data
             // --- Configurações para Nature ---
 
             // Salva os Enums de StatType como String
-            modelBuilder.Entity<Nature>().Property(n => n.Increased).HasConversion<string>();
-            modelBuilder.Entity<Nature>().Property(n => n.Decreased).HasConversion<string>();
+            modelBuilder.Entity<Nature>().Property(n => n.Increase).HasConversion<string>();
+            modelBuilder.Entity<Nature>().Property(n => n.Decrease).HasConversion<string>();
 
             base.OnModelCreating(modelBuilder);
         }

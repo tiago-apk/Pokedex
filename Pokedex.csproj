@@ -1,141 +1,44 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <UseWPF>true</UseWPF>
-    <Platforms>AnyCPU;x64</Platforms>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net8.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UseWPF>true</UseWPF>
+		<Platforms>AnyCPU;x64</Platforms>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="assets\fonts\**" />
-    <EmbeddedResource Remove="assets\fonts\**" />
-    <None Remove="assets\fonts\**" />
-    <Page Remove="assets\fonts\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.12" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Remove="assets\type_images\icon\BUG.png" />
-    <None Remove="assets\type_images\icon\DARK.png" />
-    <None Remove="assets\type_images\icon\DRAGON.png" />
-    <None Remove="assets\type_images\icon\ELECTRIC.png" />
-    <None Remove="assets\type_images\icon\FAIRY.png" />
-    <None Remove="assets\type_images\icon\FIGHTING.png" />
-    <None Remove="assets\type_images\icon\FIRE.png" />
-    <None Remove="assets\type_images\icon\FLYING.png" />
-    <None Remove="assets\type_images\icon\GHOST.png" />
-    <None Remove="assets\type_images\icon\GRASS.png" />
-    <None Remove="assets\type_images\icon\GROUND.png" />
-    <None Remove="assets\type_images\icon\ICE.png" />
-    <None Remove="assets\type_images\icon\NORMAL.png" />
-    <None Remove="assets\type_images\icon\POISON.png" />
-    <None Remove="assets\type_images\icon\PSYCHIC.png" />
-    <None Remove="assets\type_images\icon\ROCK.png" />
-    <None Remove="assets\type_images\icon\STEEL.png" />
-    <None Remove="assets\type_images\icon\STELLAR.png" />
-    <None Remove="assets\type_images\icon\WATER.png" />
-    <None Remove="assets\type_images\names\BUG.png" />
-    <None Remove="assets\type_images\names\DARK.png" />
-    <None Remove="assets\type_images\names\DRAGON.png" />
-    <None Remove="assets\type_images\names\ELECTRIC.png" />
-    <None Remove="assets\type_images\names\FAIRY.png" />
-    <None Remove="assets\type_images\names\FIGHTING.png" />
-    <None Remove="assets\type_images\names\FIRE.png" />
-    <None Remove="assets\type_images\names\FLYING.png" />
-    <None Remove="assets\type_images\names\GHOST.png" />
-    <None Remove="assets\type_images\names\GRASS.png" />
-    <None Remove="assets\type_images\names\GROUND.png" />
-    <None Remove="assets\type_images\names\ICE.png" />
-    <None Remove="assets\type_images\names\NORMAL.png" />
-    <None Remove="assets\type_images\names\POISON.png" />
-    <None Remove="assets\type_images\names\PSYCHIC.png" />
-    <None Remove="assets\type_images\names\ROCK.png" />
-    <None Remove="assets\type_images\names\STEEL.png" />
-    <None Remove="assets\type_images\names\STELLAR.png" />
-    <None Remove="assets\type_images\names\WATER.png" />
-    <None Remove="assets\type_images\stats\Attack_icon.png" />
-    <None Remove="assets\type_images\stats\Defense_icon.png" />
-    <None Remove="assets\type_images\stats\Dynamax_icon.png" />
-    <None Remove="assets\type_images\stats\HP_icon.png" />
-    <None Remove="assets\type_images\stats\Special_Attack_icon.png" />
-    <None Remove="assets\type_images\stats\Special_Defense_icon.png" />
-    <None Remove="assets\type_images\stats\Speed_icon.png" />
-    <None Remove="assets\type_images\stats\Tretta_Mega_Evolution_icon.png" />
-  </ItemGroup>
+	<ItemGroup>
+		<Content Include="assets\**\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.12" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.12" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Content Remove="assets\PokemonIcons.ttf" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="assets\PokemonIcons.ttf">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="assets\type_images\icon\BUG.png" />
-    <Resource Include="assets\type_images\icon\DARK.png" />
-    <Resource Include="assets\type_images\icon\DRAGON.png" />
-    <Resource Include="assets\type_images\icon\ELECTRIC.png" />
-    <Resource Include="assets\type_images\icon\FAIRY.png" />
-    <Resource Include="assets\type_images\icon\FIGHTING.png" />
-    <Resource Include="assets\type_images\icon\FIRE.png" />
-    <Resource Include="assets\type_images\icon\FLYING.png" />
-    <Resource Include="assets\type_images\icon\GHOST.png" />
-    <Resource Include="assets\type_images\icon\GRASS.png" />
-    <Resource Include="assets\type_images\icon\GROUND.png" />
-    <Resource Include="assets\type_images\icon\ICE.png" />
-    <Resource Include="assets\type_images\icon\NORMAL.png" />
-    <Resource Include="assets\type_images\icon\POISON.png" />
-    <Resource Include="assets\type_images\icon\PSYCHIC.png" />
-    <Resource Include="assets\type_images\icon\ROCK.png" />
-    <Resource Include="assets\type_images\icon\STEEL.png" />
-    <Resource Include="assets\type_images\icon\STELLAR.png" />
-    <Resource Include="assets\type_images\icon\WATER.png" />
-    <Resource Include="assets\type_images\names\BUG.png" />
-    <Resource Include="assets\type_images\names\DARK.png" />
-    <Resource Include="assets\type_images\names\DRAGON.png" />
-    <Resource Include="assets\type_images\names\ELECTRIC.png" />
-    <Resource Include="assets\type_images\names\FAIRY.png" />
-    <Resource Include="assets\type_images\names\FIGHTING.png" />
-    <Resource Include="assets\type_images\names\FIRE.png" />
-    <Resource Include="assets\type_images\names\FLYING.png" />
-    <Resource Include="assets\type_images\names\GHOST.png" />
-    <Resource Include="assets\type_images\names\GRASS.png" />
-    <Resource Include="assets\type_images\names\GROUND.png" />
-    <Resource Include="assets\type_images\names\ICE.png" />
-    <Resource Include="assets\type_images\names\NORMAL.png" />
-    <Resource Include="assets\type_images\names\POISON.png" />
-    <Resource Include="assets\type_images\names\PSYCHIC.png" />
-    <Resource Include="assets\type_images\names\ROCK.png" />
-    <Resource Include="assets\type_images\names\STEEL.png" />
-    <Resource Include="assets\type_images\names\STELLAR.png" />
-    <Resource Include="assets\type_images\names\WATER.png" />
-    <Resource Include="assets\type_images\stats\Attack_icon.png" />
-    <Resource Include="assets\type_images\stats\Defense_icon.png" />
-    <Resource Include="assets\type_images\stats\Dynamax_icon.png" />
-    <Resource Include="assets\type_images\stats\HP_icon.png" />
-    <Resource Include="assets\type_images\stats\Special_Attack_icon.png" />
-    <Resource Include="assets\type_images\stats\Special_Defense_icon.png" />
-    <Resource Include="assets\type_images\stats\Speed_icon.png" />
-    <Resource Include="assets\type_images\stats\Tretta_Mega_Evolution_icon.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="data_raw\moves.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="data_raw\natures.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="data_raw\pokedex.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="data_raw\**\*.*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="README.md" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="assets\PokemonIcons.ttf">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	  </Resource>
 	</ItemGroup>
 
 </Project>

@@ -17,6 +17,14 @@
           }
         }
       },
+      "CommunityToolkit.Mvvm/8.4.0": {
+        "runtime": {
+          "lib/net8.0/CommunityToolkit.Mvvm.dll": {
+            "assemblyVersion": "8.4.0.0",
+            "fileVersion": "8.4.0.1"
+          }
+        }
+      },
       "Microsoft.Data.Sqlite.Core/8.0.12": {
         "dependencies": {
           "SQLitePCLRaw.core": "2.1.6"
@@ -31,7 +39,6 @@
       "Microsoft.EntityFrameworkCore/8.0.12": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Abstractions": "8.0.12",
-          "Microsoft.EntityFrameworkCore.Analyzers": "8.0.12",
           "Microsoft.Extensions.Caching.Memory": "8.0.1",
           "Microsoft.Extensions.Logging": "8.0.1"
         },
@@ -50,7 +57,6 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Analyzers/8.0.12": {},
       "Microsoft.EntityFrameworkCore.Proxies/8.0.12": {
         "dependencies": {
           "Castle.Core": "5.1.1",
@@ -215,9 +221,6 @@
         }
       },
       "SQLitePCLRaw.core/2.1.6": {
-        "dependencies": {
-          "System.Memory": "4.5.3"
-        },
         "runtime": {
           "lib/netstandard2.0/SQLitePCLRaw.core.dll": {
             "assemblyVersion": "2.1.6.2060",
@@ -361,8 +364,7 @@
             "fileVersion": "6.0.21.52210"
           }
         }
-      },
-      "System.Memory/4.5.3": {}
+      }
     }
   },
   "libraries": {
@@ -372,6 +374,13 @@
       "sha512": "sha512-rpYtIczkzGpf+EkZgDr9CClTdemhsrwA/W5hMoPjLkRFnXzH44zDLoovXeKtmxb1ykXK9aJVODSpiJml8CTw2g==",
       "path": "castle.core/5.1.1",
       "hashPath": "castle.core.5.1.1.nupkg.sha512"
+    },
+    "CommunityToolkit.Mvvm/8.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-tqVU8yc/ADO9oiTRyTnwhFN68hCwvkliMierptWOudIAvWY1mWCh5VFh+guwHJmpMwfg0J0rY+yyd5Oy7ty9Uw==",
+      "path": "communitytoolkit.mvvm/8.4.0",
+      "hashPath": "communitytoolkit.mvvm.8.4.0.nupkg.sha512"
     },
     "Microsoft.Data.Sqlite.Core/8.0.12": {
       "type": "package",
@@ -393,13 +402,6 @@
       "sha512": "sha512-A19COkZVUI3bNUdtWAgLvxzOXyW/gwJ1enmkHi0rgslPIAv9tFU0yEq4KNfmLoHf8kikYvC2DKYZo8vJvWzklA==",
       "path": "microsoft.entityframeworkcore.abstractions/8.0.12",
       "hashPath": "microsoft.entityframeworkcore.abstractions.8.0.12.nupkg.sha512"
-    },
-    "Microsoft.EntityFrameworkCore.Analyzers/8.0.12": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-irXnlkKHepepje6+ICaKpe/G4QnWi1G9Em9CmfqAEKb7OUTYaDQ2ieGps2Tl7/rblj5CKB0tDNI421f64x/Tqw==",
-      "path": "microsoft.entityframeworkcore.analyzers/8.0.12",
-      "hashPath": "microsoft.entityframeworkcore.analyzers.8.0.12.nupkg.sha512"
     },
     "Microsoft.EntityFrameworkCore.Proxies/8.0.12": {
       "type": "package",
@@ -533,13 +535,6 @@
       "sha512": "sha512-lcyUiXTsETK2ALsZrX+nWuHSIQeazhqPphLfaRxzdGaG93+0kELqpgEHtwWOlQe7+jSFnKwaCAgL4kjeZCQJnw==",
       "path": "system.diagnostics.eventlog/6.0.0",
       "hashPath": "system.diagnostics.eventlog.6.0.0.nupkg.sha512"
-    },
-    "System.Memory/4.5.3": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-3oDzvc/zzetpTKWMShs1AADwZjQ/36HnsufHRPcOjyRAAMLDlu2iD33MBI2opxnezcVUtXyqDXXjoFMOU9c7SA==",
-      "path": "system.memory/4.5.3",
-      "hashPath": "system.memory.4.5.3.nupkg.sha512"
     }
   }
 }

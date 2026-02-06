@@ -15,7 +15,7 @@ namespace Pokedex.models
         public string Name { get; set; }
 
         [JsonPropertyName("Type")]
-        public PokemonType Type { get; set; } // Usando o Enum Global
+        public string Type { get; set; }
 
         [JsonPropertyName("Category")]
         public string Category { get; set; }
@@ -30,9 +30,9 @@ namespace Pokedex.models
         public string Power { get; set; }
 
         [JsonPropertyName("Accuracy")]
-        public AccuracyType Accuracy { get; set; } // Usando Enum
+        public string Accuracy { get; set; }
 
         [JsonPropertyName("Gen")]
-        public Generation Gen { get; set; } // Usando Enum
+        public string Gen { get; set; }
     }
 }

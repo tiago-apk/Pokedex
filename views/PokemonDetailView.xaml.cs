@@ -1,37 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
 using Pokedex.models;
+using Pokedex.viewmodels;
 
 namespace Pokedex.views
 {
-    /// <summary>
-    /// Interaction logic for PokemonDetailView.xaml
-    /// </summary>
     public partial class PokemonDetailView : Window
     {
-        public PokemonDetailView()
+        public PokemonDetailViewModel ViewModel => DataContext as PokemonDetailViewModel;
+
+        public PokemonDetailView(PokedexEntry entry)
         {
             InitializeComponent();
-        }
-
-        private void chkFemale_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-        public PokemonDetailView(PokedexEntry entry) : this()
-        {
-            this.DataContext = entry;
+            this.DataContext = new PokemonDetailViewModel(entry);
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -39,15 +19,15 @@ namespace Pokedex.views
             this.Close();
         }
 
-        private void ProximaForma_Click(object sender, RoutedEventArgs e)
+        // Nomes traduzidos para seguir o Clean Code
+        private void NextForm_Click(object sender, RoutedEventArgs e)
         {
-            // Puxa o ViewModel do DataContext e chama o método
-            if (DataContext is PokemonDetailViewModel vm) vm.NextForm();
+            ViewModel?.NextForm();
         }
 
-        private void FormaAnterior_Click(object sender, RoutedEventArgs e)
+        private void PreviousForm_Click(object sender, RoutedEventArgs e)
         {
-            if (DataContext is PokemonDetailViewModel vm) vm.PreviousForm();
+            ViewModel?.PreviousForm();
         }
     }
 }

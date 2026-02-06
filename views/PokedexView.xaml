@@ -3,82 +3,149 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:Pokedex.services"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="600" d:DesignWidth="900">
+
+    <UserControl.Resources>
+        <services:TypeToBrushConverter x:Key="TypeToBrushConverter" />
+        <services:TypeToIconConverter x:Key="TypeToIconConverter" />
+        <services:AbsoluteFilePathConverter x:Key="AbsoluteFilePathConverter" />
+
+        <FontFamily x:Key="PokeFont">pack://application:,,,/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
+    </UserControl.Resources>
 
     <Grid Background="#F5F5F7">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <ListBox ItemsSource="{Binding Pokemons}" 
-                     SelectedItem="{Binding SelectedPokemon}"
-                     Background="Transparent" 
-                     BorderThickness="0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel HorizontalAlignment="Center" />
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
+        <StackPanel Grid.Row="0" Margin="0,10,0,5">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,10">
+                <ItemsControl ItemsSource="{Binding Regions}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
 
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListBox.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding DataContext.FilterByRegionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        CommandParameter="{Binding}"
+                        Margin="8,0" Padding="10"
+                        Background="Transparent" 
+                        BorderThickness="0" 
+                        Cursor="Hand"
+                        Foreground="#555" 
+                        ToolTip="{Binding Name}">
 
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Button Background="Transparent" BorderThickness="0" Cursor="Hand"
-                                Command="{Binding DataContext.OpenDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                CommandParameter="{Binding}">
-                            <Button.Template>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Background="White" 
-                                            BorderBrush="{Binding Types, Converter={StaticResource TypeToBrushConverter}}" 
-                                            BorderThickness="2" 
-                                            CornerRadius="15" Margin="10" Width="170" Height="210">
-                                        <Border.Effect>
-                                            <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.1"/>
-                                        </Border.Effect>
+                                <Button.Content>
+                                    <TextBlock Text="{Binding Icon}" 
+                                   FontFamily="{StaticResource PokeFont}"
+                                   FontSize="24"/>
+                                </Button.Content>
 
-                                        <StackPanel VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Dex, StringFormat='#{0:D3}'}" 
-                                                       FontSize="11" FontWeight="Bold" Foreground="Gray" 
-                                                       Margin="12,8,0,0" HorizontalAlignment="Left"/>
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" 
+                                    CornerRadius="10" 
+                                    Padding="{TemplateBinding Padding}">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
 
-                                            <Image Source="{Binding Image}" Height="90" Margin="0,5"/>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#E0E0E0"/>
+                                                <Setter Property="Foreground" Value="#FF5555"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            <Border Background="White" CornerRadius="0,0,0,0" BorderBrush="#EEE" BorderThickness="0,1,0,0" Padding="20,5">
+                <TextBlock Text="{Binding CurrentRegionName}" 
+                           FontSize="24" FontWeight="Bold" Foreground="#333" 
+                           HorizontalAlignment="Left" Margin="10,0"/>
+            </Border>
+        </StackPanel>
 
-                                            <TextBlock Text="{Binding Name}" FontSize="16" 
-                                                       FontWeight="Bold" HorizontalAlignment="Center" 
-                                                       Foreground="#212121" Margin="0,5"/>
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Pokemons}" 
+                 SelectedItem="{Binding SelectedPokemon}"
+                 Background="Transparent" 
+                 BorderThickness="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto">
 
-                                            <ItemsControl ItemsSource="{Binding Types}" HorizontalAlignment="Center" Margin="0,5">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel Orientation="Horizontal"/>
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Image Source="{Binding Converter={StaticResource TypeIconConverter}}" 
-                                                               Height="20" Width="20" Margin="3,0"/>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                    </Border>
-                                </ControlTemplate>
-                            </Button.Template>
-                        </Button>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </ScrollViewer>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel HorizontalAlignment="Center" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Margin" Value="4"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Background="Transparent" BorderThickness="0" Cursor="Hand"
+                            Command="{Binding DataContext.OpenDetailCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            CommandParameter="{Binding}">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="White" 
+                                        BorderBrush="{Binding Types, Converter={StaticResource TypeToBrushConverter}}" 
+                                        BorderThickness="3" 
+                                        CornerRadius="15" 
+                                        Width="140" Height="190">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.1"/>
+                                    </Border.Effect>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Dex, StringFormat='#{0:D3}'}" 
+                                                   FontSize="10" FontWeight="Bold" Foreground="Gray" 
+                                                   Margin="10,5,0,0" HorizontalAlignment="Left"/>
+                                        <Image Source="{Binding Image, Converter={StaticResource AbsoluteFilePathConverter}}" 
+                                               Height="80" Margin="0,5"/>
+                                        <TextBlock Text="{Binding Name}" FontSize="14" 
+                                                   FontWeight="Bold" HorizontalAlignment="Center" 
+                                                   Foreground="#212121" Margin="0,2"/>
+                                        <ItemsControl ItemsSource="{Binding Types}" HorizontalAlignment="Center" Margin="0,5">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Image Source="{Binding Converter={StaticResource TypeToIconConverter}}" 
+                                                           Height="18" Width="18" Margin="2,0"/>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </UserControl>

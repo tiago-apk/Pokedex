@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "8JOm9JrL2e8=",
+  "dgSpecHash": "loTXHy8xbAg=",
   "success": true,
   "projectFilePath": "C:\\Users\\lokic\\source\\repos\\Pokedex\\Pokedex\\Pokedex.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lokic\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
+    "C:\\Users\\lokic\\.nuget\\packages\\communitytoolkit.mvvm\\8.4.0\\communitytoolkit.mvvm.8.4.0.nupkg.sha512",
     "C:\\Users\\lokic\\.nuget\\packages\\microsoft.data.sqlite.core\\8.0.12\\microsoft.data.sqlite.core.8.0.12.nupkg.sha512",
     "C:\\Users\\lokic\\.nuget\\packages\\microsoft.entityframeworkcore\\8.0.12\\microsoft.entityframeworkcore.8.0.12.nupkg.sha512",
     "C:\\Users\\lokic\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\8.0.12\\microsoft.entityframeworkcore.abstractions.8.0.12.nupkg.sha512",

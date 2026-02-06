@@ -38,3 +38,48 @@ Atualmente, o banco de dados é populado com integridade total, e a navegação 
 
 ---
 *Atualizado em: 04 de Fevereiro de 2026*
+
+
+
+# 📜 Diário de Desenvolvimento - Pokedéx (Sessão 05/02)
+
+
+Este arquivo serve como um log diário de progresso, registrando as implementações técnicas, decisões de design e desafios superados.
+
+---
+## 🚀 Implementações Realizadas
+
+### ✅ Novas Funcionalidades (UI/UX)
+* **Navegação por Regiões:** * Substituição da barra de busca textual por uma **Barra de Filtros Horizontal**.
+    * Implementação de lógica de filtragem por intervalo de Dex (ex: Kanto = #001-#151).
+    * Botão "All" para visualizar a Pokédex completa (0-9999).
+* **Identidade Visual Dinâmica:**
+    * Adição de título dinâmico que muda conforme a região selecionada (ex: "Pokedex" ou "Johto").
+    * Feedback visual (Hover) e Tooltips nos botões de filtro.
+
+### 🛠️ Soluções Técnicas & Refatoração
+* **Custom Font Icons (.ttf):**
+    * Integração do arquivo `PokemonIcons.ttf` como **Resource** embarcado.
+    * Mapeamento de ícones vetoriais via classe estática `CustomIcons` para evitar *magic strings*.
+    * Uso de **Pack URIs** no XAML (`pack://application:,,,/Pokedex;component/...`) para garantir o carregamento da fonte em tempo de execução.
+* **Solução Definitiva de Imagens:**
+    * Correção do carregamento de assets locais usando `AbsoluteFilePathConverter` com `BitmapCacheOption.OnLoad`.
+    * Configuração do `.csproj` para copiar a pasta `assets` automaticamente para o diretório de saída.
+* **Layout Responsivo:**
+    * Migração para **Scroll Vertical** com grid de cards auto-ajustável (`WrapPanel`).
+    * Ajuste nas dimensões dos cards (140x190) para melhor densidade de informação.
+
+### 🐛 Bugs Corrigidos
+* **"Tofu" (Quadrados Vazios):** Resolvido alterando a *Build Action* da fonte para `Resource` e corrigindo o caminho no `FontFamily` do XAML.
+* **XAML Parse Exception:** Correção na declaração dos *Resources* estáticos (`TypeToBrushConverter`) dentro da `PokedexView`.
+
+---
+
+## 📌 Resumo Técnico Acumulado
+* **Arquitetura:** WPF (.NET 8) + MVVM.
+* **Banco de Dados:** SQLite com Entity Framework Core.
+* **Recursos:** Fonte de Ícones Vetoriais + Imagens Locais.
+* **Pacotes:** `CommunityToolkit.Mvvm`, `System.Text.Json`.
+
+---
+*Próxima Etapa: Refinamento da Tela de Detalhes (DetailView).*

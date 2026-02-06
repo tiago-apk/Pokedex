@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations; 
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using System;
+using System.Collections.Generic;
 
 namespace Pokedex.models
 {
@@ -10,59 +10,61 @@ namespace Pokedex.models
     public class PokedexEntry
     {
         [Key]
-        [JsonPropertyName("dex")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+
+        [JsonPropertyName("Dex")]
         public string Dex { get; set; }
 
-        [JsonPropertyName("name")]
+        [JsonPropertyName("Name")]
         public string? Name { get; set; }
 
-        // Alterado para aceitar nulo, resolvendo erros de conversão de tipos mistos
-        [JsonPropertyName("height")]
+        [JsonPropertyName("Height")]
         public string? Height { get; set; }
 
-        [JsonPropertyName("weight")]
+        [JsonPropertyName("Weight")]
         public string? Weight { get; set; }
 
-        [JsonPropertyName("female")]
+        [JsonPropertyName("Female")]
         public string? Female { get; set; }
 
-        [JsonPropertyName("types")]
-        public List<PokemonType> Types { get; set; } = new List<PokemonType>();
+        [JsonPropertyName("Types")]
+        public List<string> Types { get; set; } = new List<string>();
 
-        [JsonPropertyName("abilities")]
+        [JsonPropertyName("Abilities")]
         public List<string> Abilities { get; set; } = new List<string>();
 
-        [JsonPropertyName("hp")]
+        [JsonPropertyName("HP")]
         public int Hp { get; set; }
 
-        [JsonPropertyName("atk")]
+        [JsonPropertyName("ATK")]
         public int Atk { get; set; }
 
-        [JsonPropertyName("def")]
+        [JsonPropertyName("DEF")]
         public int Def { get; set; }
 
-        [JsonPropertyName("spa")]
+        [JsonPropertyName("SPA")]
         public int Spa { get; set; }
 
-        [JsonPropertyName("spd")]
+        [JsonPropertyName("SPD")]
         public int Spd { get; set; }
 
-        [JsonPropertyName("spe")]
+        [JsonPropertyName("SPE")]
         public int Spe { get; set; }
 
-        [JsonPropertyName("bst")]
+        [JsonPropertyName("BST")]
         public int Bst { get; set; }
 
-        [JsonPropertyName("G-Max Move")] 
+        [JsonPropertyName("G-Max Move")]
         public string? GMaxMove { get; set; }
 
-        [JsonPropertyName("forms")]
-        public PokemonForm Forms { get; set; }
+        [JsonPropertyName("Forms")]
+        public string? Forms { get; set; }
 
-        [JsonPropertyName("image")]
+        [JsonPropertyName("Image")]
         public string? Image { get; set; }
 
-        [JsonPropertyName("shiny")]
+        [JsonPropertyName("Shiny")]
         public string? Shiny { get; set; }
 
         [JsonPropertyName("Female_Shiny")]

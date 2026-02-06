@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-
 namespace Pokedex.models
 {
     [Table("natures")]
@@ -14,14 +13,10 @@ namespace Pokedex.models
         [JsonPropertyName("Name")]
         public string Name { get; set; }
 
-        [JsonPropertyName("Increased")]
-        public StatType Increased { get; set; }
+        [JsonPropertyName("Increase")] // Conforme o JSON
+        public string Increase { get; set; }
 
-        [JsonPropertyName("Decreased")]
-        public StatType Decreased { get; set; }
-
-        // Propriedade utilitária: retorna se a natureza é neutra
-        [NotMapped]
-        public bool IsNeutral => Increased == Decreased || Increased == StatType.None;
+        [JsonPropertyName("Decrease")] // Conforme o JSON
+        public string Decrease { get; set; }
     }
 }
