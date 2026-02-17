@@ -7,10 +7,15 @@
         xmlns:viewmodels="clr-namespace:Pokedex.viewmodels" 
         xmlns:views="clr-namespace:Pokedex.views"
         mc:Ignorable="d"
-        Title="Pokémon Manager" Height="600" Width="1000"
+        Title="Pokémon Manager" Height="768" Width="1336"
         WindowStartupLocation="CenterScreen"
         Background="#FAFAFA">
     <Window.Resources>
+
+        <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+            <views:HomeView />
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type viewmodels:PokedexViewModel}">
             <views:PokedexView />
         </DataTemplate>
@@ -36,21 +41,22 @@
 
         <Border Background="#FAFAFA" CornerRadius="0 20 20 0">
             <Grid>
-                <StackPanel Margin="20">
-                    <TextBlock Text="POKÉDEX" FontSize="28" FontWeight="Bold" 
-                               Foreground="#212121" Margin="0,0,0,40" HorizontalAlignment="Center"/>
+                <StackPanel Margin="20" VerticalAlignment="Center">
 
-                    <Button Content="Ver Pokedéx" Style="{StaticResource PokedexButtonStyle}" 
-                            Command="{Binding ShowPokedexCommand}"/>
+                    <Button Content="Home" Style="{StaticResource HomeButtonStyle}" 
+                            Command="{Binding ShowHomeCommand}"/>
 
-                    <Button Content="Registrar Pokémon" Style="{StaticResource PokemonButtonStyle}" 
-                            Command="{Binding ShowRegisterPokemonCommand}" Margin="0,10,0,0"/>
+                    <Button Content="Pokedex" Style="{StaticResource PokedexButtonStyle}" 
+                            Command="{Binding ShowPokedexCommand}" Margin="0,50,0,0"/>
 
-                    <Button Content="Registrar Treinador" Style="{StaticResource TrainerButtonStyle}" 
-                            Command="{Binding ShowRegisterTrainerCommand}" Margin="0,10,0,0"/>
+                    <Button Content="Register Pokemon" Style="{StaticResource PokemonButtonStyle}" 
+                            Command="{Binding ShowRegisterPokemonCommand}" Margin="0,50,0,0"/>
 
-                    <Button Content="Treinadores &amp; Times" Style="{StaticResource TeamButtonStyle}" 
-                            Command="{Binding ShowTrainerListCommand}" Margin="0,10,0,0"/>
+                    <Button Content="Register Trainer" Style="{StaticResource TrainerButtonStyle}" 
+                            Command="{Binding ShowRegisterTrainerCommand}" Margin="0,50,0,0"/>
+
+                    <Button Content="Trainers &amp; Teams" Style="{StaticResource TeamButtonStyle}" 
+                            Command="{Binding ShowTrainerListCommand}" Margin="0,50,0,0"/>
                 </StackPanel>
 
                 <TextBlock Text="v2.0 - SQLite Edition" Foreground="#FFCCCC" 

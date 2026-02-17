@@ -11,6 +11,8 @@ namespace Pokedex.data
         public DbSet<PokedexEntry> PokedexEntries { get; set; }
         public DbSet<Move> Moves { get; set; }
         public DbSet<Nature> Natures { get; set; }
+        public DbSet<Trainer> Trainers { get; set; }
+        public DbSet<RegisteredPokemon> RegisteredPokemons { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

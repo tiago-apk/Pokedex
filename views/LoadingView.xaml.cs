@@ -27,7 +27,7 @@ namespace Pokedex.views
                     }
                 });
 
-                await Task.Delay(800); // Pausa breve para feedback visual
+                await Task.Delay(5000); // Pausa breve para feedback visual
 
                 MainWindow main = new MainWindow();
                 main.Show();

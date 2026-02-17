@@ -4,6 +4,6 @@ namespace Pokedex.viewmodels
 {
     public class TrainerRegisterViewModel : BaseViewModel
     {
-        public string Title => "Cadastro de Treinador";
+        public string Title => "Trainer Register";
     }
 }

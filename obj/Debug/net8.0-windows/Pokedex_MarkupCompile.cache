@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\lokic\source\repos\Pokedex\Pokedex\App.xaml
-7-794464874
-30811036833573
-29-544291087
+8-1624992970
+3081-427465371
+351466945290
 219-562066529
-MainWindow.xaml;views\LoadingView.xaml;views\PokedexView.xaml;views\PokemonDetailView.xaml;views\PokemonRegisterView.xaml;views\TrainerListView.xaml;views\TrainerRegisterView.xaml;
+MainWindow.xaml;views\HomeView.xaml;views\LoadingView.xaml;views\PokedexView.xaml;views\PokemonDetailView.xaml;views\PokemonRegisterView.xaml;views\TrainerListView.xaml;views\TrainerRegisterView.xaml;
 
 False
 

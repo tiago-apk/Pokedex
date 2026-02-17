@@ -7589,34 +7589,6 @@
             "Female_Shiny": "assets/pokemon_images/shiny/#0195_female.png"
         },
         {
-            "Dex": "0195.1",
-            "Name": "",
-            "Height": "",
-            "Weight": "",
-            "Female": "assets/pokemon_images/normal/#0195_back.png",
-            "Types": [
-                "",
-                ""
-            ],
-            "HP": "",
-            "ATK": "",
-            "DEF": "",
-            "SPA": "",
-            "SPD": "",
-            "SPE": "",
-            "BST": "",
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Gender",
-            "Image": "assets/pokemon_images/normal/#0195_back.png",
-            "Shiny": "assets/pokemon_images/shiny/#0195_back.png",
-            "Female_Shiny": "assets/pokemon_images/shiny/#0195_back.png"
-        },
-        {
             "Dex": "0196",
             "Name": "Espeon",
             "Height": "0.9 m",
@@ -10361,34 +10333,6 @@
             "Female_Shiny": "assets/pokemon_images/shiny/#0255_female.png"
         },
         {
-            "Dex": "0255.1",
-            "Name": "",
-            "Height": "",
-            "Weight": "",
-            "Female": "assets/pokemon_images/normal/#0255_back.png",
-            "Types": [
-                "",
-                ""
-            ],
-            "HP": "",
-            "ATK": "",
-            "DEF": "",
-            "SPA": "",
-            "SPD": "",
-            "SPE": "",
-            "BST": "",
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Gender",
-            "Image": "assets/pokemon_images/normal/#0255_back.png",
-            "Shiny": "assets/pokemon_images/shiny/#0255_back.png",
-            "Female_Shiny": "assets/pokemon_images/shiny/#0255_back.png"
-        },
-        {
             "Dex": "0256",
             "Name": "Combusken",
             "Height": "0.9 m",
@@ -12020,7 +11964,7 @@
             "Female": "",
             "Types": [
                 "Steel",
-                "Rock"
+                ""
             ],
             "HP": 70,
             "ATK": 140,
@@ -15261,34 +15205,6 @@
             "Female_Shiny": "assets/pokemon_images/shiny/#0399_female.png"
         },
         {
-            "Dex": "0399.1",
-            "Name": "",
-            "Height": "",
-            "Weight": "",
-            "Female": "assets/pokemon_images/normal/#0399_back.png",
-            "Types": [
-                "",
-                ""
-            ],
-            "HP": "",
-            "ATK": "",
-            "DEF": "",
-            "SPA": "",
-            "SPD": "",
-            "SPE": "",
-            "BST": "",
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Gender",
-            "Image": "assets/pokemon_images/normal/#0399_back.png",
-            "Shiny": "assets/pokemon_images/shiny/#0399_back.png",
-            "Female_Shiny": "assets/pokemon_images/shiny/#0399_back.png"
-        },
-        {
             "Dex": "0400",
             "Name": "Bibarel",
             "Height": "1.0 m",
@@ -15989,34 +15905,6 @@
             "Female_Shiny": "assets/pokemon_images/shiny/#0418_female.png"
         },
         {
-            "Dex": "0418.1",
-            "Name": "",
-            "Height": "",
-            "Weight": "",
-            "Female": "assets/pokemon_images/normal/#0418_back.png",
-            "Types": [
-                "",
-                ""
-            ],
-            "HP": "",
-            "ATK": "",
-            "DEF": "",
-            "SPA": "",
-            "SPD": "",
-            "SPE": "",
-            "BST": "",
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Gender",
-            "Image": "assets/pokemon_images/normal/#0418_back.png",
-            "Shiny": "assets/pokemon_images/shiny/#0418_back.png",
-            "Female_Shiny": "assets/pokemon_images/shiny/#0418_back.png"
-        },
-        {
             "Dex": "0419",
             "Name": "Floatzel",
             "Height": "1.1 m",
@@ -16043,34 +15931,6 @@
             "Image": "assets/pokemon_images/normal/#0419.png",
             "Shiny": "assets/pokemon_images/shiny/#0419.png",
             "Female_Shiny": "assets/pokemon_images/shiny/#0419_female.png"
-        },
-        {
-            "Dex": "0419.1",
-            "Name": "",
-            "Height": "",
-            "Weight": "",
-            "Female": "assets/pokemon_images/normal/#0419_back.png",
-            "Types": [
-                "",
-                ""
-            ],
-            "HP": "",
-            "ATK": "",
-            "DEF": "",
-            "SPA": "",
-            "SPD": "",
-            "SPE": "",
-            "BST": "",
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Gender",
-            "Image": "assets/pokemon_images/normal/#0419_back.png",
-            "Shiny": "assets/pokemon_images/shiny/#0419_back.png",
-            "Female_Shiny": "assets/pokemon_images/shiny/#0419_back.png"
         },
         {
             "Dex": "0420",
@@ -26953,11 +26813,11 @@
             "SPD": "",
             "SPE": "",
             "BST": "",
-            "Abilities": [
-                "",
-                "",
-                "Prankster"
-            ],
+          "Abilities": [
+            "Keen Eye",
+            "Infiltrator",
+            "Prankster"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0678.png",
@@ -26981,11 +26841,11 @@
             "SPD": "",
             "SPE": "",
             "BST": "",
-            "Abilities": [
-                "",
-                "",
-                "Competitive"
-            ],
+          "Abilities": [
+            "Keen Eye",
+            "Infiltrator",
+            "Competitive"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0678_female.png",
@@ -31077,7 +30937,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -31105,7 +30965,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -31133,7 +30993,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -31161,7 +31021,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -31189,7 +31049,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -31217,7 +31077,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -31245,7 +31105,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0774_7.png",
-            "Shiny": "assets/pokemon_images/shiny/#0774_7.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34773,7 +34633,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34801,7 +34661,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34829,7 +34689,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34857,7 +34717,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34885,7 +34745,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34913,7 +34773,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34941,7 +34801,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -34969,7 +34829,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_0.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_0.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35025,7 +34885,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35053,7 +34913,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35081,7 +34941,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35109,7 +34969,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35137,7 +34997,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35165,7 +35025,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35193,7 +35053,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35221,7 +35081,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_1.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_1.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35277,7 +35137,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35305,7 +35165,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35333,7 +35193,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35361,7 +35221,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35389,7 +35249,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35417,7 +35277,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35445,7 +35305,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35473,7 +35333,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_2.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_2.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35529,7 +35389,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35557,7 +35417,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35585,7 +35445,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35613,7 +35473,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35641,7 +35501,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35669,7 +35529,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35697,7 +35557,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35725,7 +35585,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_3.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_3.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35781,7 +35641,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35809,7 +35669,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35837,7 +35697,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35865,7 +35725,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35893,7 +35753,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35921,7 +35781,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35949,7 +35809,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -35977,7 +35837,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_4.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_4.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36033,7 +35893,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36061,7 +35921,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36089,7 +35949,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36117,7 +35977,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36145,7 +36005,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36173,7 +36033,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36201,7 +36061,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36229,7 +36089,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_5.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_5.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36285,7 +36145,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_2_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_2_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36313,7 +36173,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_3_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_3_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36341,7 +36201,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_4_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_4_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36369,7 +36229,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_5_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_5_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36397,7 +36257,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_6_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_6_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36425,7 +36285,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_7_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_7_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36453,7 +36313,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_8_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_8_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36481,7 +36341,7 @@
             "G-Max Move": "",
             "Forms": "Alternative",
             "Image": "assets/pokemon_images/normal/#0869_9_6.png",
-            "Shiny": "assets/pokemon_images/shiny/#0869_9_6.png",
+            "Shiny": "",
             "Female_Shiny": ""
         },
         {
@@ -36781,11 +36641,11 @@
             "SPD": 95,
             "SPE": 95,
             "BST": 475,
-            "Abilities": [
-                "Inner Focus",
-                "",
-                ""
-            ],
+          "Abilities": [
+            "Inner Focus",
+            "Synchronize",
+            "Psychic Surge"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0876.png",
@@ -36809,11 +36669,11 @@
             "SPD": 105,
             "SPE": 85,
             "BST": 475,
-            "Abilities": [
-                "Own Tempo",
-                "",
-                ""
-            ],
+          "Abilities": [
+            "Own Tempo",
+            "Synchronize",
+            "Psychic Surge"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0876_female.png",
@@ -38041,11 +37901,11 @@
             "SPD": 75,
             "SPE": 78,
             "BST": 530,
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
+          "Abilities": [
+            "Swift Swim",
+            "Adaptability",
+            "Mold Breaker"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0902.png",
@@ -38069,11 +37929,11 @@
             "SPD": 75,
             "SPE": 78,
             "BST": 530,
-            "Abilities": [
-                "",
-                "",
-                ""
-            ],
+          "Abilities": [
+            "Swift Swim",
+            "Adaptability",
+            "Mold Breaker"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0902_female.png",
@@ -38545,11 +38405,11 @@
             "SPD": 80,
             "SPE": 65,
             "BST": 489,
-            "Abilities": [
-                "Lingering Aroma",
-                "",
-                ""
-            ],
+          "Abilities": [
+            "Lingering Aroma",
+            "Gluttony",
+            "Thick Fat"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0916.png",
@@ -38573,11 +38433,11 @@
             "SPD": 90,
             "SPE": 65,
             "BST": 489,
-            "Abilities": [
-                "Aroma Veil",
-                "",
-                ""
-            ],
+          "Abilities": [
+            "Aroma Veil",
+            "Gluttony",
+            "Thick Fat"
+          ],
             "G-Max Move": "",
             "Forms": "Gender",
             "Image": "assets/pokemon_images/normal/#0916.png",
@@ -42308,62 +42168,62 @@
             "Shiny": "assets/pokemon_images/shiny/#1024.png",
             "Female_Shiny": ""
         },
-        {
-            "Dex": "1024.2",
-            "Name": "Terapagos Terastal Form",
-            "Height": "0.3 m",
-            "Weight": "16.0  kg",
-            "Female": "",
-            "Types": [
-                "Normal",
-                ""
-            ],
-            "HP": 95,
-            "ATK": 95,
-            "DEF": 110,
-            "SPA": 105,
-            "SPD": 110,
-            "SPE": 85,
-            "BST": 600,
-            "Abilities": [
-                "Tera Shell",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Terastal",
-            "Image": "assets/pokemon_images/normal/#1024_terastal.png",
-            "Shiny": "",
-            "Female_Shiny": ""
-        },
-        {
-            "Dex": "1024.3",
-            "Name": "Terapagos Stellar Form",
-            "Height": "1.7 m",
-            "Weight": "77.0  kg",
-            "Female": "",
-            "Types": [
-                "Stellar",
-                ""
-            ],
-            "HP": 160,
-            "ATK": 105,
-            "DEF": 110,
-            "SPA": 130,
-            "SPD": 110,
-            "SPE": 85,
-            "BST": 700,
-            "Abilities": [
-                "Teraform Zero",
-                "",
-                ""
-            ],
-            "G-Max Move": "",
-            "Forms": "Stellar",
-            "Image": "assets/pokemon_images/normal/#1024_stellar.png",
-            "Shiny": "",
-            "Female_Shiny": ""
-        },
+      {
+        "Dex": "1024.2",
+        "Name": "Terapagos Terastal Form",
+        "Height": "0.3 m",
+        "Weight": "16.0  kg",
+        "Female": "",
+        "Types": [
+          "Normal",
+          ""
+        ],
+        "HP": 95,
+        "ATK": 95,
+        "DEF": 110,
+        "SPA": 105,
+        "SPD": 110,
+        "SPE": 85,
+        "BST": 600,
+        "Abilities": [
+          "Tera Shell",
+          "",
+          ""
+        ],
+        "G-Max Move": "",
+        "Forms": "Terastal",
+        "Image": "assets/pokemon_images/normal/#1024_terastal.png",
+        "Shiny": "assets/pokemon_images/shiny/#1024_terastal.png",
+        "Female_Shiny": ""
+      },
+      {
+        "Dex": "1024.3",
+        "Name": "Terapagos Stellar Form",
+        "Height": "1.7 m",
+        "Weight": "77.0  kg",
+        "Female": "",
+        "Types": [
+          "Stellar",
+          ""
+        ],
+        "HP": 160,
+        "ATK": 105,
+        "DEF": 110,
+        "SPA": 130,
+        "SPD": 110,
+        "SPE": 85,
+        "BST": 700,
+        "Abilities": [
+          "Teraform Zero",
+          "",
+          ""
+        ],
+        "G-Max Move": "",
+        "Forms": "Stellar",
+        "Image": "assets/pokemon_images/normal/#1024_stellar.png",
+        "Shiny": "",
+        "Female_Shiny": ""
+      },
         {
             "Dex": "1025",
             "Name": "Pecharunt",

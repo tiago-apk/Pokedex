@@ -3041,7 +3041,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/pokemon_images/shiny/%231022.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/pokemon_images/shiny/%231023.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/pokemon_images/shiny/%231024.png")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/pokemon_images/shiny/%231024_1.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/pokemon_images/shiny/%231024_terastal.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/pokemon_images/shiny/%231025.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/type_images/icon/bug.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("assets/type_images/icon/dark.png")]

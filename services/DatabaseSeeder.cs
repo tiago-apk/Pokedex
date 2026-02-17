@@ -7,7 +7,6 @@ using System.Text.Json.Serialization;
 using Pokedex.data;
 using Pokedex.models;
 
-
 namespace Pokedex.services
 {
     public class DatabaseSeeder
@@ -46,19 +45,44 @@ namespace Pokedex.services
             {
                 foreach (var entry in wrapper.Pokedex)
                 {
-                    // Lógica para preencher caminhos de imagens baseada no arquivo fornecido no JSON
-                    if (!string.IsNullOrEmpty(entry.Image))
-                    {
-                        string fileName = Path.GetFileName(entry.Image);
-                        entry.Shiny = $"assets/pokemon_images/shiny/{fileName}";
+                    // AQUI ESTAVA O ERRO!
+                    // Removido o gerador automático de caminhos. 
+                    // Agora o código respeita rigorosamente os dados reais fornecidos pelo JSON.
 
-                        if (!string.IsNullOrEmpty(entry.Female))
-                        {
-                            entry.Female = $"assets/pokemon_images/female/{fileName}";
-                            entry.FemaleShiny = $"assets/pokemon_images/female_shiny/{fileName}";
-                        }
+                    // Sanitização do Shiny
+                    if (!string.IsNullOrWhiteSpace(entry.Shiny))
+                    {
+                        string s = entry.Shiny.Trim().ToLower();
+                        if (s == "null" || s == "none") entry.Shiny = "";
+                    }
+                    else
+                    {
+                        entry.Shiny = ""; // Garante que nulos se tornem vazios limpos
+                    }
+
+                    // Sanitização do Female
+                    if (!string.IsNullOrWhiteSpace(entry.Female))
+                    {
+                        string f = entry.Female.Trim().ToLower();
+                        if (f == "null" || f == "none" || f == "0" || f == "false") entry.Female = "";
+                    }
+                    else
+                    {
+                        entry.Female = "";
+                    }
+
+                    // Sanitização do FemaleShiny
+                    if (!string.IsNullOrWhiteSpace(entry.FemaleShiny))
+                    {
+                        string fs = entry.FemaleShiny.Trim().ToLower();
+                        if (fs == "null" || fs == "none") entry.FemaleShiny = "";
+                    }
+                    else
+                    {
+                        entry.FemaleShiny = "";
                     }
                 }
+
                 context.PokedexEntries.AddRange(wrapper.Pokedex);
                 context.SaveChanges();
             }

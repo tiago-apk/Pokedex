@@ -1,67 +1,255 @@
 ﻿<UserControl x:Class="Pokedex.views.PokemonRegisterView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#F5F5F7">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="1600"
+             Background="Transparent">
 
-    <Grid Margin="40">
-        <Border Background="White" CornerRadius="20" MaxWidth="600" VerticalAlignment="Top">
+    <Grid>
+        <Border Background="White" CornerRadius="20" Width="980" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40,40">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.1"/>
+                <DropShadowEffect BlurRadius="25" ShadowDepth="8" Opacity="0.1"/>
             </Border.Effect>
 
             <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
-                    <Ellipse Width="15" Height="15" Fill="#3F51B5" Margin="0,0,10,0"/>
-                    <TextBlock Text="Registrar Captura" FontSize="22" FontWeight="Bold" Foreground="#212121"/>
-                </StackPanel>
+                <TextBlock Text="P O K É M O N   B U I L D E R" FontSize="26" FontWeight="Black" Foreground="#2C2C2E" HorizontalAlignment="Center" Margin="0,0,0,30"/>
 
-                <TextBlock Text="Selecione o Pokémon (Pokédex)" FontSize="12" FontWeight="Bold" Foreground="#3F51B5" Margin="5,0,0,5"/>
-                <Border Background="#F0F2F5" CornerRadius="10" Padding="10,2">
-                    <ComboBox BorderThickness="0" Background="Transparent" Height="38"
-                              ItemsSource="{Binding PokedexList}" 
-                              DisplayMemberPath="Name"
-                              SelectedItem="{Binding SelectedPokedexEntry}"/>
-                </Border>
-
-                <Grid Margin="0,20,0,0">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.1*"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="1.2*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                        <TextBlock Text="Nature (Personalidade)" FontSize="12" FontWeight="Bold" Foreground="#3F51B5" Margin="5,0,0,5"/>
-                        <Border Background="#F0F2F5" CornerRadius="10" Padding="10,2">
-                            <ComboBox BorderThickness="0" Background="Transparent" Height="38"
-                                      ItemsSource="{Binding NaturesList}"
-                                      DisplayMemberPath="Name"
-                                      SelectedItem="{Binding SelectedNature}"/>
-                        </Border>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="TRAINER" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="cmbTrainer" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+
+                        <TextBlock Text="POKÉMON (BASE)" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="cmbPokemon" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+
+                        <TextBlock Text="FORM / VARIANT" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="cmbForm" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="40"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="NICKNAME" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                                <Border Background="#F8F8FA" CornerRadius="6">
+                                    <TextBox x:Name="txtNickname" FontSize="14" FontWeight="SemiBold" Foreground="#333" Padding="10" Background="Transparent" BorderThickness="0"/>
+                                </Border>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                <ToggleButton x:Name="tglShiny" Width="40" Height="40" Cursor="Hand" Background="Transparent" BorderThickness="0" ToolTip="Make Shiny!">
+                                    <ToggleButton.Style>
+                                        <Style TargetType="ToggleButton">
+                                            <Setter Property="Content" Value="⭐"/>
+                                            <Setter Property="FontSize" Value="22"/>
+                                            <Setter Property="Foreground" Value="#E0E0E0"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ToggleButton">
+                                                        <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Foreground" Value="#FFD700"/>
+                                                    <Setter Property="Content" Value="🌟"/>
+                                                    <Setter Property="FontSize" Value="28"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ToggleButton.Style>
+                                </ToggleButton>
+                            </StackPanel>
+                        </Grid>
+
+                        <TextBlock Text="ABILITY" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                        <ComboBox x:Name="cmbAbility" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="160"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="NATURE" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                                <ComboBox x:Name="cmbNature" FontSize="14" Padding="8" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="LEVEL" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="45"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Slider x:Name="sldLevel" Grid.Column="0" Minimum="1" Maximum="100" Value="50" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,10,0"/>
+                                    <Border Grid.Column="1" Background="#F8F8FA" CornerRadius="6">
+                                        <TextBox x:Name="txtLevel" Text="{Binding Value, ElementName=sldLevel, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" MaxLength="3" FontSize="14" FontWeight="Bold" Foreground="#333" Padding="8" Background="Transparent" BorderThickness="0"/>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                        <TextBlock Text="Nível Atual" FontSize="12" FontWeight="Bold" Foreground="#3F51B5" Margin="5,0,0,5"/>
-                        <Border Background="#F0F2F5" CornerRadius="10" Padding="15,5">
-                            <TextBox BorderThickness="0" Background="Transparent" FontSize="16" 
-                                     Text="{Binding NewPokemon.Level}"/>
+
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="GENETICS &amp; TRAINING" FontSize="13" FontWeight="ExtraBold" Foreground="#555" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+
+                        <Border Background="#F2F2F7" CornerRadius="12" Padding="15">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="30"/>
+                                    <ColumnDefinition Width="15"/>
+                                    <ColumnDefinition Width="1.3*"/>
+                                    <ColumnDefinition Width="35"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="STAT" FontSize="11" FontWeight="Bold" Foreground="#888" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="IV (0-31)" FontSize="10" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,10"/>
+                                <TextBlock Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Text="EV (0-255)" FontSize="10" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,10"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="HP" FontSize="13" FontWeight="Black" Foreground="#FF5959" VerticalAlignment="Center" Margin="0,4"/>
+                                <Slider x:Name="sldIvHp" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="1" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtIvHp" Text="{Binding Value, ElementName=sldIvHp, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                </Border>
+                                <Slider x:Name="sldEvHp" ValueChanged="EvSlider_ValueChanged" Grid.Row="1" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="1" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtEvHp" Text="{Binding Value, ElementName=sldEvHp, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                </Border>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Attack" FontSize="13" FontWeight="Black" Foreground="#F5AC78" VerticalAlignment="Center" Margin="0,4"/>
+                                <Slider x:Name="sldIvAtk" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="2" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtIvAtk" Text="{Binding Value, ElementName=sldIvAtk, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                </Border>
+                                <Slider x:Name="sldEvAtk" ValueChanged="EvSlider_ValueChanged" Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="2" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtEvAtk" Text="{Binding Value, ElementName=sldEvAtk, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                </Border>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Defense" FontSize="13" FontWeight="Black" Foreground="#FAE078" VerticalAlignment="Center" Margin="0,4"/>
+                                <Slider x:Name="sldIvDef" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="3" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtIvDef" Text="{Binding Value, ElementName=sldIvDef, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                </Border>
+                                <Slider x:Name="sldEvDef" ValueChanged="EvSlider_ValueChanged" Grid.Row="3" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="3" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtEvDef" Text="{Binding Value, ElementName=sldEvDef, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                </Border>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Sp. Atk" FontSize="13" FontWeight="Black" Foreground="#9DB7F5" VerticalAlignment="Center" Margin="0,4"/>
+                                <Slider x:Name="sldIvSpa" Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="4" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtIvSpa" Text="{Binding Value, ElementName=sldIvSpa, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                </Border>
+                                <Slider x:Name="sldEvSpa" ValueChanged="EvSlider_ValueChanged" Grid.Row="4" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="4" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtEvSpa" Text="{Binding Value, ElementName=sldEvSpa, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                </Border>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Sp. Def" FontSize="13" FontWeight="Black" Foreground="#A7DB8D" VerticalAlignment="Center" Margin="0,4"/>
+                                <Slider x:Name="sldIvSpd" Grid.Row="5" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="5" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtIvSpd" Text="{Binding Value, ElementName=sldIvSpd, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                </Border>
+                                <Slider x:Name="sldEvSpd" ValueChanged="EvSlider_ValueChanged" Grid.Row="5" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="5" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtEvSpd" Text="{Binding Value, ElementName=sldEvSpd, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                </Border>
+
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="Speed" FontSize="13" FontWeight="Black" Foreground="#FA92B2" VerticalAlignment="Center" Margin="0,4"/>
+                                <Slider x:Name="sldIvSpe" Grid.Row="6" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="6" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtIvSpe" Text="{Binding Value, ElementName=sldIvSpe, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                </Border>
+                                <Slider x:Name="sldEvSpe" ValueChanged="EvSlider_ValueChanged" Grid.Row="6" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Border Grid.Row="6" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
+                                    <TextBox x:Name="txtEvSpe" Text="{Binding Value, ElementName=sldEvSpe, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                </Border>
+                            </Grid>
                         </Border>
+
+                        <TextBlock Text="MOVESET" FontSize="13" FontWeight="ExtraBold" Foreground="#555" Margin="0,20,0,10" HorizontalAlignment="Center"/>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="15"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
+                                <TextBlock Text="MOVE 1" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox x:Name="cmbMove1" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10">
+                                <TextBlock Text="MOVE 2" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox x:Name="cmbMove2" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0">
+                                <TextBlock Text="MOVE 3" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox x:Name="cmbMove3" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="2">
+                                <TextBlock Text="MOVE 4" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox x:Name="cmbMove4" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Grid>
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Text="Treinador Responsável" FontSize="12" FontWeight="Bold" Foreground="#3F51B5" Margin="5,20,0,5"/>
-                <Border Background="#F0F2F5" CornerRadius="10" Padding="10,2">
-                    <ComboBox BorderThickness="0" Background="Transparent" Height="38"
-                              ItemsSource="{Binding TrainersList}"
-                              DisplayMemberPath="Name"
-                              SelectedItem="{Binding SelectedTrainer}"/>
-                </Border>
+                <Grid Margin="0,30,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="FINALIZAR REGISTRO" 
-                        Style="{StaticResource PokemonButtonStyle}" 
-                        Margin="0,40,0,0" Height="55"
-                        Command="{Binding SavePokemonCommand}"/>
+                    <Button x:Name="btnCancel" Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
 
-                <TextBlock Text="{Binding StatusMessage}" Foreground="#4CAF50" Margin="0,15,0,0" HorizontalAlignment="Center"/>
+                    <Button x:Name="btnSave" Grid.Column="2" Content="SAVE POKÉMON" Click="btnSave_Click" Background="#5090D6" Foreground="White" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Grid>
             </StackPanel>
         </Border>
     </Grid>
