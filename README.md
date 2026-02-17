@@ -161,4 +161,56 @@ Hoje foi um dia de grande avanço na arquitetura e nas funcionalidades principai
     * Implementar efeitos de *Hover* (quando o rato passa por cima) nos botões principais, utilizando transições suaves para cores próximas às originais de cada botão (ex: Azul claro para o botão *Save*, Cinza escuro para o *Cancel*).
 3.  **Clean Code Contínuo:**
     * Manter a vigilância na separação de responsabilidades (UI vs Lógica) e refatorar qualquer código remanescente que não esteja de acordo com os padrões rigorosos do MVVM.
+
+
+## 🎨 Evolução do Design System
+
+Hoje, a aplicação deixou de usar cores estáticas para adotar um sistema de **Recursos Dinâmicos**. Isso permite a troca de tema em tempo real.
+
+### 🌑 Dark Mode & Cores Dinâmicas
+Substituímos todos os valores fixos (como `White` ou `#F5F5F7`) por chaves de `DynamicResource`.
+* **Fundos:** `AppBackground`, `ColorSurface` e `ColorSurfaceVariant`.
+* **Tipografia:** `TextColorPrimary` (para títulos) e `TextColorSecondary` (para descrições).
+* **Bordas:** `ColorBorder` para separadores e contornos sutis.
+
+### 🧱 Componentes Padronizados
+Criamos estilos globais no `App.xaml` para garantir consistência em todas as janelas:
+* **MaterialButton:** Botões com cantos arredondados (10px a 15px) e feedback visual de *hover*.
+* **MaterialComboBox:** Estilo limpo que abandona o visual nativo do Windows em favor de uma estética Material Design.
+* **Campos de Input:** Agora brilham com a cor de acento do contexto (Amarelo para Treinadores, Vermelho para Pokedex).
+
+---
+
+## 🧠 Refatoração Estrutural (MVVM)
+
+A janela `RegisteredPokemonDetailView` foi o nosso maior desafio e sucesso do dia.
+
+* **Arquitetura:** Migrada de Code-behind puro para **MVVM**.
+* **ViewModel:** Criada a `RegisteredPokemonDetailViewModel` para processar:
+    * Cálculos matemáticos dos Status (HP, Atk, Def, etc.).
+    * Lógica de navegação entre a equipa do treinador.
+    * Formatação de strings (ex: colocar "-" em movimentos vazios).
+* **Gráfico de Radar:** Implementação de três modos de visualização dinâmicos:
+    1.  **Calculated Stats:** Deep Purple 200/A400.
+    2.  **EVs (Effort Values):** Cyan 200/A400.
+    3.  **IVs (Individual Values):** Orange 200/A400.
+
+---
+
+## 🛠️ UX & Ajustes Técnicos
+
+* **Trainer ID:** Implementada validação no evento `PreviewTextInput` para aceitar apenas números e limite de 6 caracteres.
+* **LoadingView:** Adicionado efeito de transparência (`Opacity="0.90"`) para um visual de *splash screen* moderno.
+* **Fix MultiBinding:** Resolvida a limitação do `PointCollection` no XAML através do uso de `Styles` para injetar os pontos do polígono.
+* **AbsoluteFilePathConverter:** Padronizado o carregamento de imagens em todas as Views para evitar erros de caminho de ficheiro.
+
+---
+
+## 📅 Próximos Passos
+- [ ] Implementar a persistência do tema (guardar a preferência do utilizador num ficheiro config).
+- [ ] Criar animações de transição suave entre os cartões da Pokedex.
+- [ ] Padronizar a janela de diálogo de erros com o novo design.
+
+> **Status Atual:** 🟢 Funcional e Modernizado.
+
 *Development by: [Tiago Guerino de Oliveira Bassani] - Projeto C# WPF & SQLite*

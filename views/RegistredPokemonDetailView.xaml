@@ -5,8 +5,7 @@
         Title="Pokémon Status" Height="720" Width="1100"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        Background="#F5F5F7"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        Background="{DynamicResource AppBackground}">
 
     <Window.Resources>
         <services:AbsoluteFilePathConverter x:Key="AbsoluteFilePathConverter" />
@@ -14,7 +13,7 @@
     </Window.Resources>
 
     <Grid Margin="20">
-        <Border Background="White" CornerRadius="20" Padding="25">
+        <Border Background="{DynamicResource ColorSurface}" CornerRadius="20" Padding="25">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.1"/>
             </Border.Effect>
@@ -33,7 +32,7 @@
                         <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnPrev" Grid.Column="0" Content="◀" FontSize="26" FontWeight="Bold" Foreground="#888" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="btnPrev_Click" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Button x:Name="btnPrev" Grid.Column="0" Content="◀" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="btnPrev_Click" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -43,16 +42,16 @@
                             <Style TargetType="Button">
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Foreground" Value="#E3350D"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource ColorPokedex}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                     </Button>
 
-                    <TextBlock Grid.Column="1" x:Name="txtHeaderTitle" Text="P O K É M O N   S T A T U S" FontSize="20" FontWeight="Black" Foreground="#2C2C2E" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding HeaderTitle}" FontSize="20" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-                    <Button x:Name="btnNext" Grid.Column="2" Content="▶" FontSize="26" FontWeight="Bold" Foreground="#888" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="btnNext_Click" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Button x:Name="btnNext" Grid.Column="2" Content="▶" FontSize="26" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Background="Transparent" BorderThickness="0" Cursor="Hand" Click="btnNext_Click" HorizontalAlignment="Right" VerticalAlignment="Center">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -62,7 +61,7 @@
                             <Style TargetType="Button">
                                 <Style.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Foreground" Value="#E3350D"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource ColorPokedex}"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -77,18 +76,21 @@
                         <ColumnDefinition Width="1.6*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" Background="#F8F8FA" CornerRadius="15" Padding="20">
+                    <Border Grid.Column="0" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="15" Padding="20">
                         <StackPanel VerticalAlignment="Center">
                             <Grid Margin="0,0,0,10">
-                                <TextBlock x:Name="txtDex" FontSize="16" FontWeight="Bold" Foreground="#999" HorizontalAlignment="Left"/>
-                                <TextBlock x:Name="txtShiny" Text="🌟 SHINY" Foreground="#FFD700" FontSize="14" FontWeight="Black" HorizontalAlignment="Center" Visibility="Collapsed"/>
-                                <TextBlock x:Name="txtLevel" FontSize="16" FontWeight="Black" Foreground="#E3350D" HorizontalAlignment="Right"/>
+                                <TextBlock Text="{Binding BaseDex.Dex, StringFormat='#{0}'}" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Left"/>
+
+                                <TextBlock Text="🌟 SHINY" Foreground="#FFD700" FontSize="14" FontWeight="Black" HorizontalAlignment="Center" 
+                                           Visibility="{Binding Pokemon.IsShiny, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                                <TextBlock Text="{Binding Pokemon.Level, StringFormat='Lv. {0}'}" FontSize="16" FontWeight="Black" Foreground="{DynamicResource ColorPokedexAccent}" HorizontalAlignment="Right"/>
                             </Grid>
 
-                            <Image x:Name="imgPokemon" Height="200" Stretch="Uniform" Margin="0,10,0,15"/>
+                            <Image Source="{Binding ImagePath, Converter={StaticResource AbsoluteFilePathConverter}}" Height="200" Stretch="Uniform" Margin="0,10,0,15"/>
 
-                            <TextBlock x:Name="txtNickname" FontSize="22" FontWeight="Black" Foreground="#333" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
-                            <TextBlock x:Name="txtSpecies" FontSize="13" FontWeight="Bold" Foreground="#AAA" HorizontalAlignment="Center" Margin="0,5,0,15"/>
+                            <TextBlock Text="{Binding DisplayNickname}" FontSize="22" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock Text="{Binding Pokemon.BasePokemon}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Center" Margin="0,5,0,15"/>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -97,16 +99,16 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                                    <TextBlock Text="NATURE" FontSize="11" FontWeight="Bold" Foreground="#888"/>
-                                    <Border Background="#E5E5EA" CornerRadius="6" Padding="10,8" Margin="0,4,0,0">
-                                        <TextBlock x:Name="txtNature" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="NATURE" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}"/>
+                                    <Border Background="{DynamicResource ColorBorder}" CornerRadius="6" Padding="10,8" Margin="0,4,0,0">
+                                        <TextBlock Text="{Binding Pokemon.Nature}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center"/>
                                     </Border>
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="1">
-                                    <TextBlock Text="ABILITY" FontSize="11" FontWeight="Bold" Foreground="#888"/>
-                                    <Border Background="#E5E5EA" CornerRadius="6" Padding="10,8" Margin="0,4,0,0">
-                                        <TextBlock x:Name="txtAbility" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="ABILITY" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}"/>
+                                    <Border Background="{DynamicResource ColorBorder}" CornerRadius="6" Padding="10,8" Margin="0,4,0,0">
+                                        <TextBlock Text="{Binding Pokemon.Ability}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                     </Border>
                                 </StackPanel>
                             </Grid>
@@ -114,16 +116,16 @@
                     </Border>
 
                     <StackPanel Grid.Column="2">
-                        <Grid Margin="0,0,0,25" Cursor="Hand" MouseLeftButtonUp="Stats_Click" HorizontalAlignment="Center">
-                            <TextBlock Text="{Binding ChartTitle}" FontSize="16" FontWeight="Black" Foreground="#555"/>
+                        <Grid Margin="0,0,0,10" Cursor="Hand" MouseLeftButtonUp="Stats_Click" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding ChartTitle}" FontSize="15" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                         </Grid>
 
-                        <Border Background="#FAFAFA" CornerRadius="20" Padding="20" Cursor="Hand" MouseLeftButtonUp="Stats_Click" Height="320">
+                        <Border Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="20" Padding="10" Cursor="Hand" MouseLeftButtonUp="Stats_Click" Height="290">
                             <Grid Width="280" Height="280" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-                                <Polygon Points="140,40 226.6,90 226.6,190 140,240 53.4,190 53.4,90" Stroke="#E0E0E0" StrokeThickness="2" Fill="Transparent"/>
-                                <Polygon Points="140,90 183.3,115 183.3,165 140,190 96.7,165 96.7,115" Stroke="#E0E0E0" StrokeThickness="1" Fill="Transparent"/>
-                                <Path Stroke="#E0E0E0" StrokeThickness="1" Data="M140,140 L140,40 M140,140 L226.6,90 M140,140 L226.6,190 M140,140 L140,240 M140,140 L53.4,190 M140,140 L53.4,90"/>
+                                <Polygon Points="140,40 226.6,90 226.6,190 140,240 53.4,190 53.4,90" Stroke="{DynamicResource ColorBorder}" StrokeThickness="2" Fill="Transparent"/>
+                                <Polygon Points="140,90 183.3,115 183.3,165 140,190 96.7,165 96.7,115" Stroke="{DynamicResource ColorBorder}" StrokeThickness="1" Fill="Transparent"/>
+                                <Path Stroke="{DynamicResource ColorBorder}" StrokeThickness="1" Data="M140,140 L140,40 M140,140 L226.6,90 M140,140 L226.6,190 M140,140 L140,240 M140,140 L53.4,190 M140,140 L53.4,90"/>
 
                                 <Polygon Points="{Binding HexagonPointsString}"
                                          Fill="{Binding ChartFillColor}"
@@ -134,7 +136,7 @@
                                     <TextBlock Text="HP" FontSize="12" FontWeight="Bold" Foreground="#FF5959" HorizontalAlignment="Center"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <TextBlock Text="{Binding AllStats[0].NatureSymbol}" Foreground="{Binding AllStats[0].SymbolColor}" FontWeight="Black" FontSize="12" Margin="0,0,2,0"/>
-                                        <TextBlock Text="{Binding AllStats[0].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="#333"/>
+                                        <TextBlock Text="{Binding AllStats[0].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -142,7 +144,7 @@
                                     <TextBlock Text="Attack" FontSize="12" FontWeight="Bold" Foreground="#F5AC78" HorizontalAlignment="Left"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                         <TextBlock Text="{Binding AllStats[1].NatureSymbol}" Foreground="{Binding AllStats[1].SymbolColor}" FontWeight="Black" FontSize="12" Margin="0,0,2,0"/>
-                                        <TextBlock Text="{Binding AllStats[1].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="#333"/>
+                                        <TextBlock Text="{Binding AllStats[1].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -150,7 +152,7 @@
                                     <TextBlock Text="Defense" FontSize="12" FontWeight="Bold" Foreground="#FAE078" HorizontalAlignment="Left"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                                         <TextBlock Text="{Binding AllStats[2].NatureSymbol}" Foreground="{Binding AllStats[2].SymbolColor}" FontWeight="Black" FontSize="12" Margin="0,0,2,0"/>
-                                        <TextBlock Text="{Binding AllStats[2].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="#333"/>
+                                        <TextBlock Text="{Binding AllStats[2].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -158,7 +160,7 @@
                                     <TextBlock Text="Speed" FontSize="12" FontWeight="Bold" Foreground="#FA92B2" HorizontalAlignment="Center"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <TextBlock Text="{Binding AllStats[5].NatureSymbol}" Foreground="{Binding AllStats[5].SymbolColor}" FontWeight="Black" FontSize="12" Margin="0,0,2,0"/>
-                                        <TextBlock Text="{Binding AllStats[5].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="#333"/>
+                                        <TextBlock Text="{Binding AllStats[5].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -166,7 +168,7 @@
                                     <TextBlock Text="Sp. Def" FontSize="12" FontWeight="Bold" Foreground="#A7DB8D" HorizontalAlignment="Right"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <TextBlock Text="{Binding AllStats[4].NatureSymbol}" Foreground="{Binding AllStats[4].SymbolColor}" FontWeight="Black" FontSize="12" Margin="0,0,2,0"/>
-                                        <TextBlock Text="{Binding AllStats[4].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="#333"/>
+                                        <TextBlock Text="{Binding AllStats[4].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -174,13 +176,13 @@
                                     <TextBlock Text="Sp. Atk" FontSize="12" FontWeight="Bold" Foreground="#9DB7F5" HorizontalAlignment="Right"/>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                                         <TextBlock Text="{Binding AllStats[3].NatureSymbol}" Foreground="{Binding AllStats[3].SymbolColor}" FontWeight="Black" FontSize="12" Margin="0,0,2,0"/>
-                                        <TextBlock Text="{Binding AllStats[3].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="#333"/>
+                                        <TextBlock Text="{Binding AllStats[3].DisplayValue}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
 
-                        <TextBlock Text="M O V E S E T" FontSize="16" FontWeight="Black" Foreground="#555" Margin="0,30,0,15"/>
+                        <TextBlock Text="M O V E S E T" FontSize="16" FontWeight="Black" Foreground="{DynamicResource TextColorSecondary}" Margin="0,15,0,10"/>
 
                         <Grid>
                             <Grid.RowDefinitions>
@@ -193,31 +195,25 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Row="0" Grid.Column="0" Background="#F8F8FA" CornerRadius="8" Padding="12" Margin="0,0,0,12">
-                                <TextBlock x:Name="txtMove1" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="0" Grid.Column="0" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                                <TextBlock Text="{Binding DisplayMove1}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
                             </Border>
-                            <Border Grid.Row="0" Grid.Column="2" Background="#F8F8FA" CornerRadius="8" Padding="12" Margin="0,0,0,12">
-                                <TextBlock x:Name="txtMove2" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="0" Grid.Column="2" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="8" Padding="12" Margin="0,0,0,12">
+                                <TextBlock Text="{Binding DisplayMove2}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="0" Background="#F8F8FA" CornerRadius="8" Padding="12">
-                                <TextBlock x:Name="txtMove3" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="1" Grid.Column="0" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="8" Padding="12">
+                                <TextBlock Text="{Binding DisplayMove3}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
                             </Border>
-                            <Border Grid.Row="1" Grid.Column="2" Background="#F8F8FA" CornerRadius="8" Padding="12">
-                                <TextBlock x:Name="txtMove4" FontSize="13" FontWeight="Bold" Foreground="#333" HorizontalAlignment="Center"/>
+                            <Border Grid.Row="1" Grid.Column="2" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="8" Padding="12">
+                                <TextBlock Text="{Binding DisplayMove4}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap"/>
                             </Border>
                         </Grid>
                     </StackPanel>
                 </Grid>
 
                 <Button Grid.Row="2" Content="CLOSE" Click="btnClose_Click" HorizontalAlignment="Right"
-                        Width="130" Height="40" Background="#2C2C2E" Foreground="White" 
-                        FontWeight="Bold" FontSize="14" Cursor="Hand" Margin="0,20,0,0">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                        Width="130" Height="40" Background="{DynamicResource ColorBorder}" Foreground="{DynamicResource TextColorPrimary}" 
+                        Style="{StaticResource MaterialButton}" Margin="0,20,0,0" />
 
             </Grid>
         </Border>

@@ -20,17 +20,26 @@
         </EventTrigger>
     </Window.Triggers>
 
-    <Border Background="White" CornerRadius="20" BorderBrush="#EE1515" BorderThickness="2">
+    <Border Background="{DynamicResource ColorSurface}" CornerRadius="20" 
+            BorderBrush="{DynamicResource ColorPokedex}" BorderThickness="2" 
+            Opacity="0.90" Margin="15">
+
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="15" ShadowDepth="4" Opacity="0.2"/>
+        </Border.Effect>
+
         <Grid>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Pokedéx" FontSize="24" FontWeight="Bold" 
-                           Foreground="#424242" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+                <TextBlock Text="P O K É D E X" FontSize="26" FontWeight="Black" 
+                           Foreground="{DynamicResource TextColorPrimary}" 
+                           HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
                 <TextBlock x:Name="PokeballIcon" 
                            FontFamily="{StaticResource PokemonIcons}" 
                            Text="&#xe80f;" 
                            FontSize="80" 
-                           Foreground="#424242" 
+                           Foreground="{DynamicResource ColorPokedex}" 
                            HorizontalAlignment="Center"
                            RenderTransformOrigin="0.5,0.5">
                     <TextBlock.RenderTransform>
@@ -38,8 +47,9 @@
                     </TextBlock.RenderTransform>
                 </TextBlock>
 
-                <TextBlock x:Name="txtStatus" Text="Synchronize data..." 
-                           FontSize="14" Foreground="#666"
+                <TextBlock x:Name="txtStatus" Text="Synchronizing data..." 
+                           FontSize="14" FontWeight="SemiBold" 
+                           Foreground="{DynamicResource TextColorSecondary}"
                            HorizontalAlignment="Center" Margin="0,20,0,0"/>
             </StackPanel>
         </Grid>

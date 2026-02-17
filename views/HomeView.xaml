@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1600"
+             d:DesignHeight="768" d:DesignWidth="1100"
              Background="Transparent">
 
     <Grid>
-        <Border CornerRadius="20" Background="#FAFAFA" Margin="20">
+        <Border CornerRadius="20" Background="{DynamicResource ColorSurface}" Margin="20">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.2"/>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="5" Opacity="0.1"/>
             </Border.Effect>
 
             <Grid>
@@ -20,27 +20,27 @@
                            FontFamily="{StaticResource PokemonIcons}" 
                            Text="&#xe80f;" 
                            FontSize="240" 
-                           Foreground="#212121" 
+                           Foreground="{DynamicResource TextColorPrimary}" 
                            HorizontalAlignment="Center">
-                    <TextBlock.Effect>
-                            <DropShadowEffect BlurRadius="15" ShadowDepth="4" Opacity="0.3"/>
+                        <TextBlock.Effect>
+                            <DropShadowEffect BlurRadius="15" ShadowDepth="4" Opacity="0.15"/>
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <TextBlock Text="P O K É D E X" FontSize="80" FontWeight="Black" Foreground="#424242" 
+                    <TextBlock Text="P O K É D E X" FontSize="80" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" 
                                HorizontalAlignment="Center">
                         <TextBlock.Effect>
-                            <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.4"/>
+                            <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.15"/>
                         </TextBlock.Effect>
                     </TextBlock>
 
-                    <TextBlock Text="Records of my save files and Pokémon present in Pokémon Home." FontSize="24" FontWeight="SemiBold" Foreground="#BDBDBD" 
+                    <TextBlock Text="Records of my save files and Pokémon present in Pokémon Home." FontSize="24" FontWeight="SemiBold" Foreground="{DynamicResource TextColorSecondary}" 
                                HorizontalAlignment="Center" Margin="0,10,0,0"/>
                 </StackPanel>
 
                 <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="0,0,0,40">
-                    <TextBlock Text="Development by:" FontSize="18" Foreground="#78909C" HorizontalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                    <TextBlock Text="Tiago Guerino de Oliveira Bassani" FontSize="26" Foreground="Black" HorizontalAlignment="Center" FontWeight="Black"/>
+                    <TextBlock Text="Development by:" FontSize="18" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Center" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                    <TextBlock Text="Tiago Guerino de Oliveira Bassani" FontSize="26" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" FontWeight="Black"/>
                 </StackPanel>
             </Grid>
         </Border>

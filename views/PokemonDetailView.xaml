@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="{Binding Pokemon.Name, FallbackValue='Pokemon Data'}" Height="576" Width="1024"
         ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
-        WindowStartupLocation="CenterScreen" Background="#F5F5F7">
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBackground}">
 
     <Window.Resources>
         <services:TypeToBrushConverter x:Key="TypeToBrushConverter" />
@@ -59,7 +59,7 @@
                 <Image Source="{Binding DisplayedImage, Converter={StaticResource AbsoluteFilePathConverter}}" 
                        Stretch="Uniform" Margin="50,0" VerticalAlignment="Center" MaxHeight="280">
                     <Image.Effect>
-                        <DropShadowEffect BlurRadius="15" ShadowDepth="8" Opacity="0.4"/>
+                        <DropShadowEffect BlurRadius="20" ShadowDepth="10" Opacity="0.5"/>
                     </Image.Effect>
                 </Image>
 
@@ -67,7 +67,7 @@
             </Grid>
         </Border>
 
-        <Border Grid.Column="1" Background="White" Padding="30,20,30,20">
+        <Border Grid.Column="1" Background="{DynamicResource ColorSurface}" Padding="30,20,30,20">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -78,7 +78,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0" Margin="0,0,0,10">
-                    <TextBlock Text="{Binding Pokemon.Dex, StringFormat='#{0}'}" FontSize="16" Foreground="#999" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,2"/>
+                    <TextBlock Text="{Binding Pokemon.Dex, StringFormat='#{0}'}" FontSize="16" Foreground="{DynamicResource TextColorSecondary}" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,2"/>
 
                     <Grid HorizontalAlignment="Center" Margin="0,0,0,8">
                         <Grid.ColumnDefinitions>
@@ -90,7 +90,7 @@
                         <Button Grid.Column="0" Content="◀" Click="PrevPoke_Click" Background="Transparent" BorderThickness="0" FontSize="20" Cursor="Hand" VerticalAlignment="Center" Visibility="{Binding HasPreviousPokemon, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Foreground" Value="#D0D0D5"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColorSecondary}"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
@@ -100,19 +100,19 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="#333"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource ColorPokedex}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
                         </Button>
 
-                        <TextBlock Grid.Column="1" Text="{Binding Pokemon.Name}" FontSize="32" FontWeight="Black" Foreground="#333" TextAlignment="Center" TextWrapping="Wrap" Margin="10,0"/>
+                        <TextBlock Grid.Column="1" Text="{Binding Pokemon.Name}" FontSize="32" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center" TextWrapping="Wrap" Margin="10,0"/>
 
                         <Button Grid.Column="2" Content="▶" Click="NextPoke_Click" Background="Transparent" BorderThickness="0" FontSize="20" Cursor="Hand" VerticalAlignment="Center" Visibility="{Binding HasNextPokemon, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Foreground" Value="#D0D0D5"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource TextColorSecondary}"/>
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
@@ -122,7 +122,7 @@
                                     </Setter>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Foreground" Value="#333"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource ColorPokedex}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -143,8 +143,8 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </StackPanel>
-                
-                <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0,15,0,0" Background="#EEE"/>
+
+                <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0,15,0,0" Background="{DynamicResource ColorBorder}"/>
 
                 <Grid Grid.Row="1" Margin="0,15,0,15">
                     <Grid.ColumnDefinitions>
@@ -153,24 +153,24 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <CheckBox Content="✨ Shiny" IsChecked="{Binding IsShiny, Mode=TwoWay}" Visibility="{Binding HasShinyVariant, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,20,0" FontWeight="Bold" FontSize="14" Foreground="#666" Cursor="Hand"/>
-                        <CheckBox Content="♀ Female" IsChecked="{Binding IsFemale, Mode=TwoWay}" Visibility="{Binding HasFemaleVariant, Converter={StaticResource BooleanToVisibilityConverter}}" FontWeight="Bold" FontSize="14" Foreground="#666" Cursor="Hand"/>
+                        <CheckBox Content="✨ Shiny" IsChecked="{Binding IsShiny, Mode=TwoWay}" Visibility="{Binding HasShinyVariant, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,20,0" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColorSecondary}" Cursor="Hand"/>
+                        <CheckBox Content="♀ Female" IsChecked="{Binding IsFemale, Mode=TwoWay}" Visibility="{Binding HasFemaleVariant, Converter={StaticResource BooleanToVisibilityConverter}}" FontWeight="Bold" FontSize="14" Foreground="{DynamicResource TextColorSecondary}" Cursor="Hand"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <StackPanel Margin="0,0,25,0">
-                            <TextBlock Text="HEIGHT" FontSize="11" FontWeight="Bold" Foreground="#AAA" HorizontalAlignment="Right"/>
-                            <TextBlock Text="{Binding Pokemon.Height}" FontSize="15" FontWeight="Bold" Foreground="#555" HorizontalAlignment="Right"/>
+                            <TextBlock Text="HEIGHT" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Pokemon.Height}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Right"/>
                         </StackPanel>
                         <StackPanel>
-                            <TextBlock Text="WEIGHT" FontSize="11" FontWeight="Bold" Foreground="#AAA" HorizontalAlignment="Right"/>
-                            <TextBlock Text="{Binding Pokemon.Weight}" FontSize="15" FontWeight="Bold" Foreground="#555" HorizontalAlignment="Right"/>
+                            <TextBlock Text="WEIGHT" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding Pokemon.Weight}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
 
                 <StackPanel Grid.Row="2" Margin="0,0,0,10">
-                    <TextBlock Text="ABILITIES" FontSize="12" FontWeight="Bold" Foreground="#AAA" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                    <TextBlock Text="ABILITIES" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
                     <ItemsControl ItemsSource="{Binding DisplayAbilities}" HorizontalAlignment="Center">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -179,8 +179,8 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="#F2F2F7" CornerRadius="8" Padding="14,6" Margin="4,0">
-                                    <TextBlock Text="{Binding}" FontSize="13" FontWeight="Bold" Foreground="#444"/>
+                                <Border Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="8" Padding="14,6" Margin="4,0">
+                                    <TextBlock Text="{Binding}" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
@@ -194,72 +194,72 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,-20,0,0">
-                        <TextBlock Text="BASE STATS" FontSize="13" FontWeight="Bold" Foreground="#AAA" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <TextBlock Text="BASE STATS" FontSize="13" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Center" Margin="0,0,0,10"/>
 
                         <Canvas Width="200" Height="200" HorizontalAlignment="Center">
-                            <Polygon Points="100,35 156.29,67.5 156.29,132.5 100,165 43.71,132.5 43.71,67.5" Fill="#F0F0F5" Stroke="#D0D0D5" StrokeThickness="1"/>
-                            <Polygon Points="100,67.5 128.15,83.75 128.15,116.25 100,132.5 71.85,116.25 71.85,83.75" Fill="Transparent" Stroke="#D0D0D5" StrokeThickness="1"/>
-                            <Line X1="100" Y1="35" X2="100" Y2="165" Stroke="#D0D0D5" StrokeThickness="1"/>
-                            <Line X1="43.71" Y1="67.5" X2="156.29" Y2="132.5" Stroke="#D0D0D5" StrokeThickness="1"/>
-                            <Line X1="43.71" Y1="132.5" X2="156.29" Y2="67.5" Stroke="#D0D0D5" StrokeThickness="1"/>
+                            <Polygon Points="100,35 156.29,67.5 156.29,132.5 100,165 43.71,132.5 43.71,67.5" Fill="Transparent" Stroke="{DynamicResource ColorBorder}" StrokeThickness="2"/>
+                            <Polygon Points="100,67.5 128.15,83.75 128.15,116.25 100,132.5 71.85,116.25 71.85,83.75" Fill="Transparent" Stroke="{DynamicResource ColorBorder}" StrokeThickness="1"/>
+                            <Line X1="100" Y1="35" X2="100" Y2="165" Stroke="{DynamicResource ColorBorder}" StrokeThickness="1"/>
+                            <Line X1="43.71" Y1="67.5" X2="156.29" Y2="132.5" Stroke="{DynamicResource ColorBorder}" StrokeThickness="1"/>
+                            <Line X1="43.71" Y1="132.5" X2="156.29" Y2="67.5" Stroke="{DynamicResource ColorBorder}" StrokeThickness="1"/>
 
                             <Polygon Fill="#884A90E2" Stroke="#4A90E2" StrokeThickness="2">
-                                <Polygon.Points>
-                                    <MultiBinding Converter="{StaticResource StatsToPolygonConverter}">
-                                        <Binding Path="Pokemon.Hp"/>
-                                        <Binding Path="Pokemon.Atk"/>
-                                        <Binding Path="Pokemon.Def"/>
-                                        <Binding Path="Pokemon.Spa"/>
-                                        <Binding Path="Pokemon.Spd"/>
-                                        <Binding Path="Pokemon.Spe"/>
-                                    </MultiBinding>
-                                </Polygon.Points>
+                                <Polygon.Style>
+                                    <Style TargetType="Polygon">
+                                        <Setter Property="Points">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource StatsToPolygonConverter}">
+                                                    <Binding Path="Pokemon.Hp"/>
+                                                    <Binding Path="Pokemon.Atk"/>
+                                                    <Binding Path="Pokemon.Def"/>
+                                                    <Binding Path="Pokemon.Spa"/>
+                                                    <Binding Path="Pokemon.Spd"/>
+                                                    <Binding Path="Pokemon.Spe"/>
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Polygon.Style>
                             </Polygon>
 
                             <StackPanel Canvas.Left="85" Canvas.Top="2" Width="30">
                                 <TextBlock Text="HP" FontSize="11" FontWeight="Bold" Foreground="#FF5959" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Pokemon.Hp}" FontSize="12" FontWeight="Black" Foreground="#444" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Pokemon.Hp}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Canvas.Left="162" Canvas.Top="55" Width="35">
                                 <TextBlock Text="ATK" FontSize="11" FontWeight="Bold" Foreground="#F5AC78" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Pokemon.Atk}" FontSize="12" FontWeight="Black" Foreground="#444" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Pokemon.Atk}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Canvas.Left="162" Canvas.Top="120" Width="35">
                                 <TextBlock Text="DEF" FontSize="11" FontWeight="Bold" Foreground="#FAE078" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Pokemon.Def}" FontSize="12" FontWeight="Black" Foreground="#444" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Pokemon.Def}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Canvas.Left="85" Canvas.Top="168" Width="30">
                                 <TextBlock Text="SPE" FontSize="11" FontWeight="Bold" Foreground="#FA92B2" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Pokemon.Spe}" FontSize="12" FontWeight="Black" Foreground="#444" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Pokemon.Spe}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Canvas.Left="-5" Canvas.Top="120" Width="42">
                                 <TextBlock Text="SP.D" FontSize="11" FontWeight="Bold" Foreground="#A7DB8D" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Pokemon.Spd}" FontSize="12" FontWeight="Black" Foreground="#444" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Pokemon.Spd}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center"/>
                             </StackPanel>
                             <StackPanel Canvas.Left="-5" Canvas.Top="55" Width="42">
                                 <TextBlock Text="SP.A" FontSize="11" FontWeight="Bold" Foreground="#9DB7F5" TextAlignment="Center"/>
-                                <TextBlock Text="{Binding Pokemon.Spa}" FontSize="12" FontWeight="Black" Foreground="#444" TextAlignment="Center"/>
+                                <TextBlock Text="{Binding Pokemon.Spa}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" TextAlignment="Center"/>
                             </StackPanel>
                         </Canvas>
                     </StackPanel>
 
-                    <Border Grid.Column="1" Background="#F8F8FA" CornerRadius="12" VerticalAlignment="Center" Padding="25">
+                    <Border Grid.Column="1" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="12" VerticalAlignment="Center" Padding="25">
                         <StackPanel>
-                            <TextBlock Text="TOTAL" FontSize="15" FontWeight="Bold" Foreground="#AAA" HorizontalAlignment="Center" Margin="0,0,0,5"/>
-                            <TextBlock Text="{Binding Pokemon.Bst}" FontSize="40" FontWeight="Black" Foreground="#333" HorizontalAlignment="Center"/>
+                            <TextBlock Text="TOTAL" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                            <TextBlock Text="{Binding Pokemon.Bst}" FontSize="40" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
                 </Grid>
 
                 <Button Grid.Row="4" Content="CLOSE" Click="Close_Click" HorizontalAlignment="Right"
-                        Width="130" Height="40" Background="#2C2C2E" Foreground="White" 
-                        FontWeight="Bold" FontSize="14" Cursor="Hand" Margin="0,10,0,0">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                        Width="130" Height="40" Background="{DynamicResource ColorBorder}" Foreground="{DynamicResource TextColorPrimary}" 
+                        Style="{StaticResource MaterialButton}" Margin="0,10,0,0" />
 
             </Grid>
         </Border>

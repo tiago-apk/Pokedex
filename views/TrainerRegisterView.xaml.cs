@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using Pokedex.viewmodels;
+using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
-using Pokedex.viewmodels;
+using System.Windows.Input;
 
 namespace Pokedex.views
 {
@@ -37,6 +39,14 @@ namespace Pokedex.views
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.Clear();
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            // A Regex verifica se o que foi digitado NÃO é um número (0 a 9)
+            Regex regex = new Regex("[^0-9]+");
+            // Se não for número, marcamos o evento como "Handled" (ou seja, bloqueamos a digitação)
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }

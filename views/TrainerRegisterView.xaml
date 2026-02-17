@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:services="clr-namespace:Pokedex.services"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1600"
+             d:DesignHeight="768" d:DesignWidth="1100"
              Background="Transparent">
 
     <UserControl.Resources>
@@ -13,25 +13,23 @@
     </UserControl.Resources>
 
     <Grid>
-        <Border Background="White" CornerRadius="20" Width="550" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40,50">
+        <Border Background="{DynamicResource ColorSurface}" CornerRadius="16" Width="500" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40,35">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="25" ShadowDepth="8" Opacity="0.1"/>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="6" Opacity="0.08"/>
             </Border.Effect>
 
             <StackPanel>
-                <TextBlock Text="T R A I N E R   C A R D" FontSize="26" FontWeight="Black" Foreground="#2C2C2E" HorizontalAlignment="Center" Margin="0,0,0,35"/>
+                <TextBlock Text="T R A I N E R   C A R D" FontSize="22" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" Margin="0,0,0,30"/>
 
-                <TextBlock Text="NAME" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                <Border Background="#F8F8FA" CornerRadius="8" Margin="0,0,0,20">
-                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontWeight="SemiBold" Foreground="#333" Padding="12" Background="Transparent" BorderThickness="0"/>
-                </Border>
+                <TextBlock Text="NAME" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorTrainerAccent}" Margin="0,0,0,15"/>
 
-                <TextBlock Text="TRAINER ID" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                <Border Background="#F8F8FA" CornerRadius="8" Margin="0,0,0,20">
-                    <TextBox Text="{Binding TrainerId, UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontWeight="SemiBold" Foreground="#333" Padding="12" Background="Transparent" BorderThickness="0" MaxLength="6"/>
-                </Border>
-
-                <Grid Margin="0,0,0,20">
+                <TextBlock Text="TRAINER ID" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Margin="0,0,0,2"/>
+                <TextBox Text="{Binding TrainerId, UpdateSourceTrigger=PropertyChanged}" 
+                         MaxLength="6" 
+                         PreviewTextInput="NumberValidationTextBox"
+                         Tag="{DynamicResource ColorTrainerAccent}" Margin="0,0,0,15"/>
+                <Grid Margin="0,0,0,15">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
@@ -39,40 +37,36 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="REGION" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                        <ComboBox ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}" FontSize="15" Padding="10" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <TextBlock Text="REGION" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Margin="0,0,0,2"/>
+                        <ComboBox ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}" 
+                                  Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorTrainerAccent}"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="GENERATION" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                        <ComboBox ItemsSource="{Binding Generations}" SelectedItem="{Binding SelectedGeneration}" IsEnabled="{Binding Generations.Count, Converter={StaticResource IntToBoolConverter}}" FontSize="15" Padding="10" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <TextBlock Text="GENERATION" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Margin="0,0,0,2"/>
+                        <ComboBox ItemsSource="{Binding Generations}" SelectedItem="{Binding SelectedGeneration}" 
+                                  IsEnabled="{Binding Generations.Count, Converter={StaticResource IntToBoolConverter}}" 
+                                  Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorTrainerAccent}"/>
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Text="GAME" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                <ComboBox ItemsSource="{Binding Games}" SelectedItem="{Binding SelectedGame}" IsEnabled="{Binding Games.Count, Converter={StaticResource IntToBoolConverter}}" FontSize="15" Padding="10" Margin="0,0,0,40" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                <TextBlock Text="GAME" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Margin="0,0,0,2"/>
+                <ComboBox ItemsSource="{Binding Games}" SelectedItem="{Binding SelectedGame}" 
+                          IsEnabled="{Binding Games.Count, Converter={StaticResource IntToBoolConverter}}" 
+                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorTrainerAccent}" Margin="0,0,0,35"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="15"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Margin="0,0,10,0" Cursor="Hand">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                    <Button Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" 
+                            Style="{StaticResource MaterialButton}" Background="{DynamicResource ColorBorder}" Foreground="{DynamicResource TextColorPrimary}"/>
 
-                    <Button Grid.Column="1" Content="SAVE" Click="btnSave_Click" Background="#FFEB3B" Foreground="Black" FontWeight="Bold" FontSize="15" Height="50" Margin="10,0,0,0" Cursor="Hand">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                    <Button Grid.Column="2" Content="SAVE" Click="btnSave_Click" 
+                            Style="{StaticResource MaterialButton}" Background="{DynamicResource ColorTrainer}"/>
                 </Grid>
             </StackPanel>
         </Border>

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:services="clr-namespace:Pokedex.services"
              mc:Ignorable="d" 
-             d:DesignHeight="768" d:DesignWidth="1366"
+             d:DesignHeight="768" d:DesignWidth="1100"
              Background="Transparent">
 
     <UserControl.Resources>
@@ -20,7 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="White" CornerRadius="15" Padding="15">
+        <Border Grid.Column="0" Background="{DynamicResource ColorSurface}" CornerRadius="15" Padding="15">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.1"/>
             </Border.Effect>
@@ -31,7 +31,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="T R A I N E R S" FontSize="18" FontWeight="Black" Foreground="#2C2C2E" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                <TextBlock Text="T R A I N E R S" FontSize="18" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" Margin="0,0,0,15" HorizontalAlignment="Center"/>
 
                 <ListBox x:Name="lstTrainers" Grid.Row="1" Background="Transparent" BorderThickness="0" 
                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -41,7 +41,7 @@
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Padding" Value="0"/>
-                            <Setter Property="Margin" Value="0,0,0,6"/>
+                            <Setter Property="Margin" Value="0,0,0,8"/>
                             <Setter Property="Background" Value="Transparent"/>
                             <Setter Property="BorderThickness" Value="0"/>
                             <Setter Property="Cursor" Value="Hand"/>
@@ -57,7 +57,7 @@
 
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border x:Name="TrainerCard" Background="#F8F8FA" CornerRadius="6" Padding="12,10">
+                            <Border x:Name="TrainerCard" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="8" Padding="12,12">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1.2*"/>
@@ -66,27 +66,29 @@
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="13" FontWeight="Black" Foreground="#333" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
+                                    <TextBlock x:Name="TxtName" Grid.Column="0" Text="{Binding Name}" FontSize="13" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Game}" FontSize="11" FontWeight="Bold" Foreground="#888" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
+                                    <TextBlock x:Name="TxtGame" Grid.Column="1" Text="{Binding Game}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="0,0,10,0"/>
 
-                                    <Border Grid.Column="2" x:Name="BadgeRegion" Background="#E5E5EA" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
-                                        <TextBlock x:Name="TxtRegion" Text="{Binding Region}" FontSize="10" FontWeight="Bold" Foreground="#555" HorizontalAlignment="Center"/>
+                                    <Border Grid.Column="2" x:Name="BadgeRegion" Background="{DynamicResource ColorBorder}" CornerRadius="4" Padding="6,3" Margin="0,0,10,0" VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtRegion" Text="{Binding Region}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center"/>
                                     </Border>
 
-                                    <Border Grid.Column="3" x:Name="BadgeId" Background="#E5E5EA" CornerRadius="4" Padding="6,3" VerticalAlignment="Center">
-                                        <TextBlock x:Name="TxtId" Text="{Binding TrainerId, StringFormat='ID: {0}'}" FontSize="10" FontWeight="Bold" Foreground="#555" HorizontalAlignment="Center"/>
+                                    <Border Grid.Column="3" x:Name="BadgeId" Background="{DynamicResource ColorBorder}" CornerRadius="4" Padding="6,3" VerticalAlignment="Center">
+                                        <TextBlock x:Name="TxtId" Text="{Binding TrainerId, StringFormat='ID: {0}'}" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center"/>
                                     </Border>
                                 </Grid>
                             </Border>
 
                             <DataTemplate.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="True">
-                                    <Setter TargetName="TrainerCard" Property="Background" Value="#B9F6CA"/>
-                                    <Setter TargetName="BadgeRegion" Property="Background" Value="#00E676"/>
-                                    <Setter TargetName="BadgeId" Property="Background" Value="#00E676"/>
-                                    <Setter TargetName="TxtRegion" Property="Foreground" Value="#111111"/>
-                                    <Setter TargetName="TxtId" Property="Foreground" Value="#111111"/>
+                                    <Setter TargetName="TrainerCard" Property="Background" Value="{DynamicResource ColorTeam}"/>
+                                    <Setter TargetName="BadgeRegion" Property="Background" Value="{DynamicResource ColorTeamAccent}"/>
+                                    <Setter TargetName="BadgeId" Property="Background" Value="{DynamicResource ColorTeamAccent}"/>
+                                    <Setter TargetName="TxtName" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="TxtGame" Property="Foreground" Value="#E8F5E9"/>
+                                    <Setter TargetName="TxtRegion" Property="Foreground" Value="White"/>
+                                    <Setter TargetName="TxtId" Property="Foreground" Value="White"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
@@ -95,7 +97,7 @@
             </Grid>
         </Border>
 
-        <Border Grid.Column="2" Background="White" CornerRadius="15" Padding="15">
+        <Border Grid.Column="2" Background="{DynamicResource ColorSurface}" CornerRadius="15" Padding="15">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" ShadowDepth="3" Opacity="0.1"/>
             </Border.Effect>
@@ -107,8 +109,8 @@
                 </Grid.RowDefinitions>
 
                 <TextBlock x:Name="txtTrainerName" 
-           Text="{Binding SelectedTrainer.Name, FallbackValue='SELECT A TRAINER', StringFormat={}{0}’S TEAM}" 
-           FontSize="20" FontWeight="Black" Foreground="#2C2C2E" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                           Text="{Binding SelectedTrainer.Name, FallbackValue='SELECT A TRAINER', StringFormat={}{0}’S TEAM}" 
+                           FontSize="20" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" Margin="0,0,0,15" HorizontalAlignment="Center"/>
 
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                     <ItemsControl x:Name="icPokemons" ItemsSource="{Binding Pokemons}">
@@ -120,9 +122,9 @@
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Width="145" Height="190" Background="#F8F8FA" CornerRadius="10" Margin="8" Cursor="Hand" MouseLeftButtonUp="PokemonCard_Click" Padding="10">
+                                <Border Width="145" Height="190" Background="{DynamicResource ColorSurfaceVariant}" CornerRadius="10" Margin="8" Cursor="Hand" MouseLeftButtonUp="PokemonCard_Click" Padding="10">
                                     <Border.Effect>
-                                        <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.08"/>
+                                        <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.1"/>
                                     </Border.Effect>
                                     <Grid>
                                         <Grid.RowDefinitions>
@@ -133,16 +135,16 @@
                                         </Grid.RowDefinitions>
 
                                         <Grid Grid.Row="0">
-                                            <TextBlock Text="{Binding Dex, StringFormat='#{0}'}" FontSize="11" FontWeight="Bold" Foreground="#999" HorizontalAlignment="Left"/>
+                                            <TextBlock Text="{Binding Dex, StringFormat='#{0}'}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" HorizontalAlignment="Left"/>
                                             <TextBlock Text="🌟" Foreground="#FFD700" FontSize="11" HorizontalAlignment="Center" Visibility="{Binding IsShiny, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                                            <TextBlock Text="{Binding Level, StringFormat='Lv. {0}'}" FontSize="11" FontWeight="Black" Foreground="#E3350D" HorizontalAlignment="Right"/>
+                                            <TextBlock Text="{Binding Level, StringFormat='Lv. {0}'}" FontSize="11" FontWeight="Black" Foreground="{DynamicResource ColorPokedex}" HorizontalAlignment="Right"/>
                                         </Grid>
 
-                                        <TextBlock Grid.Row="1" Text="{Binding Species}" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,2,0,0" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Grid.Row="1" Text="{Binding Species}" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" Margin="0,2,0,0" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"/>
 
                                         <Image Grid.Row="2" Source="{Binding ImagePath, Converter={StaticResource AbsoluteFilePathConverter}}" Stretch="Uniform" Margin="2"/>
 
-                                        <TextBlock Grid.Row="3" Text="{Binding DisplayName}" FontSize="12" FontWeight="Black" Foreground="#333" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                        <TextBlock Grid.Row="3" Text="{Binding DisplayName}" FontSize="12" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                                     </Grid>
                                 </Border>
                             </DataTemplate>

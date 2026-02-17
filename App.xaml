@@ -3,99 +3,207 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
              xmlns:services="clr-namespace:Pokedex.services"
              StartupUri="views/LoadingView.xaml">
+
     <Application.Resources>
 
-        <Style x:Key="PokeButton" TargetType="Button">
-            <Setter Property="Height" Value="45"/>
+        <ResourceDictionary x:Name="ThemeDictionary">
+
+            <SolidColorBrush x:Key="AppBackground" Color="#FAFAFA" />
+            <SolidColorBrush x:Key="ColorSurface" Color="#FFFFFF" />
+            <SolidColorBrush x:Key="ColorSurfaceVariant" Color="#F2F2F7" />
+
+            <SolidColorBrush x:Key="TextColorPrimary" Color="#2C2C2E" />
+            <SolidColorBrush x:Key="TextColorSecondary" Color="#888888" />
+            <SolidColorBrush x:Key="ColorBorder" Color="#E5E5EA" />
+            <SolidColorBrush x:Key="SliderBackground" Color="#E5E5EA" />
+
+
+            <SolidColorBrush x:Key="ColorHome" Color="#212121" />
+            <SolidColorBrush x:Key="ColorHomeText" Color="#FFFFFF" />
+
+            <SolidColorBrush x:Key="ColorPokedex" Color="#F44336" />
+            <SolidColorBrush x:Key="ColorTrainer" Color="#FFEB3B" />
+            <SolidColorBrush x:Key="ColorTeam" Color="#4CAF50" />
+            <SolidColorBrush x:Key="ColorPokemon" Color="#3F51B5" />
+
+            <SolidColorBrush x:Key="ColorPokedexAccent" Color="#D50000" />
+            <SolidColorBrush x:Key="ColorTrainerAccent" Color="#FFD600" />
+            <SolidColorBrush x:Key="ColorTeamAccent" Color="#00C853" />
+            <SolidColorBrush x:Key="ColorPokemonAccent" Color="#304FFE" />
+
+            <Style x:Key="MaterialButton" TargetType="Button">
+                <Setter Property="Height" Value="45"/>
                 <Setter Property="FontSize" Value="14"/>
                 <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="White"/>
                 <Setter Property="BorderThickness" Value="0"/>
                 <Setter Property="Cursor" Value="Hand"/>
-                <Style.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="15"/>
-                    </Style>
-                </Style.Resources>
-        </Style>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="BgBorder" Background="{TemplateBinding Background}" CornerRadius="8">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.2" Direction="270"/>
+                                </Border.Effect>
+                                <Grid>
+                                    <Border x:Name="HoverOverlay" Background="White" Opacity="0" CornerRadius="8"/>
+                                    <Border x:Name="PressedOverlay" Background="Black" Opacity="0" CornerRadius="8"/>
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0"/>
+                                </Grid>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="HoverOverlay" Property="Opacity" Value="0.15"/>
+                                    <Setter TargetName="BgBorder" Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="12" ShadowDepth="3" Opacity="0.2" Direction="270"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="HoverOverlay" Property="Opacity" Value="0"/>
+                                    <Setter TargetName="PressedOverlay" Property="Opacity" Value="0.15"/>
+                                    <Setter TargetName="BgBorder" Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="5" ShadowDepth="1" Opacity="0.2" Direction="270"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <TranslateTransform Y="1"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="BgBorder" Property="Background" Value="#E0E0E0"/>
+                                    <Setter Property="Foreground" Value="#9E9E9E"/>
+                                    <Setter TargetName="BgBorder" Property="Effect" Value="{x:Null}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="Background" Value="#FFEB3B">
+                        <Setter Property="Foreground" Value="#212121"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
-        <Style x:Key="HomeButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#212121"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="PokedexButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#CC0000"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="PokemonButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#3F51B5"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="TrainerButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#FFC107"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <Style x:Key="TeamButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="#4CAF50"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="45"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Style.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="15"/>
-                </Style>
-            </Style.Resources>
-        </Style>
-        <FontFamily x:Key="PokemonIcons">/Pokedex;component/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextColorPrimary}"/>
+                <Setter Property="Padding" Value="4,8,4,8"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ColorBorder}"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TextBox">
+                            <Grid>
+                                <Border x:Name="BaseBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
+                                <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                                <Border x:Name="FocusUnderline" BorderThickness="0,0,0,2" BorderBrush="{TemplateBinding Tag}" Visibility="Collapsed" VerticalAlignment="Bottom"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="FocusUnderline" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="BaseBorder" Property="BorderBrush" Value="Transparent"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="ComboBox" x:Key="MaterialComboBox">
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Foreground" Value="{DynamicResource TextColorPrimary}"/>
+                <Setter Property="Padding" Value="4,8,30,8"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource ColorBorder}"/>
+                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="ComboBox">
+                            <Grid>
+                                <Border x:Name="BgBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4"/>
+
+                                <Path x:Name="Arrow" Data="M0,0 L5,5 L10,0" Stroke="{DynamicResource ColorBorder}" StrokeThickness="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,10,0" IsHitTestVisible="False"/>
+
+                                <ContentPresenter x:Name="ContentSite" IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}" ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}" ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}" Margin="{TemplateBinding Padding}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+                                <TextBox x:Name="PART_EditableTextBox" Visibility="Hidden" Background="Transparent" BorderThickness="0" Margin="4,8,30,8" VerticalAlignment="Center" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" IsReadOnly="{TemplateBinding IsReadOnly}">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="TextBox">
+                                                        <ScrollViewer x:Name="PART_ContentHost" Background="Transparent"/>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+
+                                <ToggleButton x:Name="ToggleButton" Focusable="false" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" ClickMode="Press" Background="Transparent" BorderThickness="0">
+                                    <ToggleButton.Template>
+                                        <ControlTemplate TargetType="ToggleButton">
+                                            <Border Background="Transparent"/>
+                                        </ControlTemplate>
+                                    </ToggleButton.Template>
+                                </ToggleButton>
+
+                                <Popup x:Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                    <Border x:Name="DropDownBorder" Background="{DynamicResource ColorSurface}" BorderBrush="{DynamicResource ColorBorder}" BorderThickness="1" CornerRadius="4" Margin="0,2,0,0" MaxHeight="250">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.15"/>
+                                        </Border.Effect>
+                                        <ScrollViewer SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        </ScrollViewer>
+                                    </Border>
+                                </Popup>
+
+                                <Border x:Name="FocusUnderline" BorderThickness="0,0,0,2" BorderBrush="{TemplateBinding Tag}" Visibility="Collapsed" VerticalAlignment="Bottom"/>
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEditable" Value="True">
+                                    <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="ContentSite" Property="Visibility" Value="Hidden"/>
+                                    <Setter TargetName="ToggleButton" Property="Width" Value="30"/>
+                                    <Setter TargetName="ToggleButton" Property="HorizontalAlignment" Value="Right"/>
+                                </Trigger>
+
+                                <Trigger Property="IsDropDownOpen" Value="True">
+                                    <Setter TargetName="FocusUnderline" Property="Visibility" Value="Visible"/>
+                                    <Setter TargetName="BgBorder" Property="BorderBrush" Value="Transparent"/>
+                                    <Setter TargetName="Arrow" Property="Path.Stroke" Value="{Binding Tag, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Slider" x:Key="MaterialSlider">
+                <Setter Property="Background" Value="{DynamicResource SliderBackground}"/>
+                <Setter Property="BorderBrush" Value="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+            </Style>
+
+            <FontFamily x:Key="PokemonIcons">/Pokedex;component/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
 
             <services:TypeToBrushConverter x:Key="TypeToBrushConverter" />
             <services:TypeToIconConverter x:Key="TypeToIconConverter" />
             <services:TypeImageConverter x:Key="TypeImageConverter" />
             <services:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+            <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
-
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

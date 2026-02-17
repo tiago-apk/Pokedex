@@ -15,7 +15,7 @@
         <FontFamily x:Key="PokeFont">pack://application:,,,/assets/PokemonIcons.ttf#PokemonIcons</FontFamily>
     </UserControl.Resources>
 
-    <Grid Background="#F5F5F7">
+    <Grid Background="{DynamicResource AppBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -33,32 +33,32 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Button Command="{Binding DataContext.FilterByRegionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding}"
-                        Margin="8,0" Padding="10"
-                        Background="Transparent" 
-                        BorderThickness="0" 
-                        Cursor="Hand"
-                        Foreground="#555" 
-                        ToolTip="{Binding Name}">
+                                    CommandParameter="{Binding}"
+                                    Margin="8,0" Padding="10"
+                                    Background="Transparent" 
+                                    BorderThickness="0" 
+                                    Cursor="Hand"
+                                    Foreground="{DynamicResource TextColorSecondary}" 
+                                    ToolTip="{Binding Name}">
 
                                 <Button.Content>
                                     <TextBlock Text="{Binding Icon}" 
-                                   FontFamily="{StaticResource PokeFont}"
-                                   FontSize="24"/>
+                                               FontFamily="{StaticResource PokeFont}"
+                                               FontSize="24"/>
                                 </Button.Content>
 
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}" 
-                                    CornerRadius="10" 
-                                    Padding="{TemplateBinding Padding}">
+                                                CornerRadius="10" 
+                                                Padding="{TemplateBinding Padding}">
                                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         </Border>
 
                                         <ControlTemplate.Triggers>
                                             <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="#E0E0E0"/>
-                                                <Setter Property="Foreground" Value="#FF5555"/>
+                                                <Setter Property="Background" Value="{DynamicResource ColorSurfaceVariant}"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource ColorPokedex}"/>
                                             </Trigger>
                                         </ControlTemplate.Triggers>
                                     </ControlTemplate>
@@ -68,9 +68,10 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            <Border Background="White" CornerRadius="0,0,0,0" BorderBrush="#EEE" BorderThickness="0,1,0,0" Padding="20,5">
+
+            <Border Background="{DynamicResource ColorSurface}" CornerRadius="0,0,0,0" BorderBrush="{DynamicResource ColorBorder}" BorderThickness="0,1,0,0" Padding="20,5">
                 <TextBlock Text="{Binding CurrentRegionName}" 
-                           FontSize="24" FontWeight="Bold" Foreground="#333" 
+                           FontSize="24" FontWeight="Bold" Foreground="{DynamicResource TextColorPrimary}" 
                            HorizontalAlignment="Left" Margin="10,0"/>
             </Border>
         </StackPanel>
@@ -109,23 +110,26 @@
                             CommandParameter="{Binding}">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
-                                <Border Background="White" 
+                                <Border Background="{DynamicResource ColorSurface}" 
                                         BorderBrush="{Binding Types, Converter={StaticResource TypeToBrushConverter}}" 
                                         BorderThickness="3" 
                                         CornerRadius="15" 
                                         Width="140" Height="190">
                                     <Border.Effect>
-                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.1"/>
+                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.08"/>
                                     </Border.Effect>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Dex, StringFormat='#{0:D3}'}" 
-                                                   FontSize="10" FontWeight="Bold" Foreground="Gray" 
+                                                   FontSize="10" FontWeight="Bold" Foreground="{DynamicResource TextColorSecondary}" 
                                                    Margin="10,5,0,0" HorizontalAlignment="Left"/>
+
                                         <Image Source="{Binding Image, Converter={StaticResource AbsoluteFilePathConverter}}" 
                                                Height="80" Margin="0,5"/>
+
                                         <TextBlock Text="{Binding Name}" FontSize="14" 
                                                    FontWeight="Bold" HorizontalAlignment="Center" 
-                                                   Foreground="#212121" Margin="0,2"/>
+                                                   Foreground="{DynamicResource TextColorPrimary}" Margin="0,2"/>
+
                                         <ItemsControl ItemsSource="{Binding Types}" HorizontalAlignment="Center" Margin="0,5">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>

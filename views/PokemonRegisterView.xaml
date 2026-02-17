@@ -4,55 +4,57 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1600"
+             d:DesignHeight="700" d:DesignWidth="1100"
              Background="Transparent">
 
     <Grid>
-        <Border Background="White" CornerRadius="20" Width="980" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40,40">
+        <Border Background="{DynamicResource ColorSurface}" CornerRadius="16" Width="880" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="30,25">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="25" ShadowDepth="8" Opacity="0.1"/>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="6" Opacity="0.08"/>
             </Border.Effect>
 
             <StackPanel>
-                <TextBlock Text="P O K É M O N   B U I L D E R" FontSize="26" FontWeight="Black" Foreground="#2C2C2E" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+                <TextBlock Text="P O K É M O N   B U I L D E R" FontSize="22" FontWeight="Black" Foreground="{DynamicResource TextColorPrimary}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1.1*"/>
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="1.2*"/>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <TextBlock Text="TRAINER" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox ItemsSource="{Binding Trainers}" SelectedItem="{Binding SelectedTrainer}" DisplayMemberPath="Name" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
 
-                        <TextBlock Text="POKÉMON (BASE)" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox ItemsSource="{Binding FilteredSpecies}" SelectedItem="{Binding SelectedBasePokemon}" DisplayMemberPath="Name" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <TextBlock Text="TRAINER" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
+                        <ComboBox ItemsSource="{Binding Trainers}" SelectedItem="{Binding SelectedTrainer}" DisplayMemberPath="Name" 
+                                  Margin="0,0,0,12" Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
 
-                        <TextBlock Text="FORM / VARIANT" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox ItemsSource="{Binding AvailableForms}" SelectedItem="{Binding SelectedForm}" DisplayMemberPath="Name" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <TextBlock Text="POKÉMON (BASE)" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
+                        <ComboBox ItemsSource="{Binding FilteredSpecies}" SelectedItem="{Binding SelectedBasePokemon}" DisplayMemberPath="Name" 
+                                  Margin="0,0,0,12" Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
 
-                        <Grid Margin="0,0,0,15">
+                        <TextBlock Text="FORM / VARIANT" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
+                        <ComboBox ItemsSource="{Binding AvailableForms}" SelectedItem="{Binding SelectedForm}" DisplayMemberPath="Name" 
+                                  Margin="0,0,0,12" Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
+
+                        <Grid Margin="0,0,0,12">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="15"/>
-                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition Width="35"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="NICKNAME" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                                <Border Background="#F8F8FA" CornerRadius="6">
-                                    <TextBox Text="{Binding Nickname, UpdateSourceTrigger=PropertyChanged}" FontSize="14" FontWeight="SemiBold" Foreground="#333" Padding="10" Background="Transparent" BorderThickness="0"/>
-                                </Border>
+                                <TextBlock Text="NICKNAME" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
+                                <TextBox Text="{Binding Nickname, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
-                                <ToggleButton IsChecked="{Binding IsShiny, Mode=TwoWay}" Width="40" Height="40" Cursor="Hand" Background="Transparent" BorderThickness="0" ToolTip="Make Shiny!">
+                                <ToggleButton IsChecked="{Binding IsShiny, Mode=TwoWay}" Width="35" Height="35" Cursor="Hand" Background="Transparent" BorderThickness="0" ToolTip="Make Shiny!">
                                     <ToggleButton.Style>
                                         <Style TargetType="ToggleButton">
                                             <Setter Property="Content" Value="⭐"/>
-                                            <Setter Property="FontSize" Value="22"/>
+                                            <Setter Property="FontSize" Value="20"/>
                                             <Setter Property="Foreground" Value="#E0E0E0"/>
                                             <Setter Property="Template">
                                                 <Setter.Value>
@@ -65,7 +67,7 @@
                                                 <Trigger Property="IsChecked" Value="True">
                                                     <Setter Property="Foreground" Value="#FFD700"/>
                                                     <Setter Property="Content" Value="🌟"/>
-                                                    <Setter Property="FontSize" Value="28"/>
+                                                    <Setter Property="FontSize" Value="24"/>
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -74,41 +76,43 @@
                             </StackPanel>
                         </Grid>
 
-                        <TextBlock Text="ABILITY" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox ItemsSource="{Binding AvailableAbilities}" SelectedItem="{Binding Ability}" IsEditable="True" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <TextBlock Text="ABILITY" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
+                        <ComboBox ItemsSource="{Binding AvailableAbilities}" SelectedItem="{Binding Ability}" IsEditable="True" 
+                                  Margin="0,0,0,12" Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
 
-                        <Grid Margin="0,0,0,20">
+                        <Grid Margin="0,0,0,10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="15"/>
-                                <ColumnDefinition Width="160"/>
+                                <ColumnDefinition Width="140"/>
                             </Grid.ColumnDefinitions>
 
                             <StackPanel Grid.Column="0">
-                                <TextBlock Text="NATURE" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                                <ComboBox ItemsSource="{Binding Natures}" SelectedItem="{Binding SelectedNature}" DisplayMemberPath="Name" FontSize="14" Padding="8" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <TextBlock Text="NATURE" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
+                                <ComboBox ItemsSource="{Binding Natures}" SelectedItem="{Binding SelectedNature}" DisplayMemberPath="Name" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="LEVEL" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
+                                <TextBlock Text="LEVEL" FontSize="11" FontWeight="Bold" Foreground="#888" Margin="0,0,0,2"/>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="45"/>
                                     </Grid.ColumnDefinitions>
-                                    <Slider Value="{Binding Level, Mode=TwoWay}" Grid.Column="0" Minimum="1" Maximum="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,10,0"/>
-                                    <Border Grid.Column="1" Background="#F8F8FA" CornerRadius="6">
-                                        <TextBox Text="{Binding Level, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" MaxLength="3" FontSize="14" FontWeight="Bold" Foreground="#333" Padding="8" Background="Transparent" BorderThickness="0"/>
-                                    </Border>
+                                    <Slider Value="{Binding Level, Mode=TwoWay}" Grid.Column="0" Minimum="1" Maximum="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,8,0"
+                                            Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+
+                                    <TextBox Grid.Column="1" Text="{Binding Level, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3"/>
                                 </Grid>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
-                        <TextBlock Text="GENETICS &amp; TRAINING" FontSize="13" FontWeight="ExtraBold" Foreground="#555" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <TextBlock Text="GENETICS &amp; TRAINING" FontSize="12" FontWeight="ExtraBold" Foreground="{DynamicResource TextColorPrimary}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
 
-                        <Border Background="#F2F2F7" CornerRadius="12" Padding="15">
+                        <Border Background="{DynamicResource ColorSurface}" CornerRadius="10" Padding="12">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -120,81 +124,57 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="60"/>
+                                    <ColumnDefinition Width="55"/>
                                     <ColumnDefinition Width="1*"/>
-                                    <ColumnDefinition Width="30"/>
-                                    <ColumnDefinition Width="15"/>
-                                    <ColumnDefinition Width="1.3*"/>
                                     <ColumnDefinition Width="35"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="1.3*"/>
+                                    <ColumnDefinition Width="40"/>
                                 </Grid.ColumnDefinitions>
 
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="STAT" FontSize="11" FontWeight="Bold" Foreground="#888" VerticalAlignment="Center"/>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="IV (0-31)" FontSize="10" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,10"/>
-                                <TextBlock Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Text="EV (0-255)" FontSize="10" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,10"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="STAT" FontSize="10" FontWeight="Bold" Foreground="#888" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="IV (0-31)" FontSize="9" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,6"/>
+                                <TextBlock Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Text="EV (0-255)" FontSize="9" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,6"/>
 
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="HP" FontSize="13" FontWeight="Black" Foreground="#FF5959" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvHp, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="1" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding IvHp, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
-                                </Border>
-                                <Slider Grid.Row="1" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvHp}" Value="{Binding EvHp, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="1" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding EvHp, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
-                                </Border>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="HP" FontSize="12" FontWeight="Black" Foreground="#FF5959" VerticalAlignment="Center" Margin="0,3"/>
+                                <Slider Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvHp, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="1" Grid.Column="2" Text="{Binding IvHp, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="2" Margin="0,2" Padding="2"/>
+                                <Slider Grid.Row="1" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvHp}" Value="{Binding EvHp, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding EvHp, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3" Margin="0,2" Padding="2"/>
 
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Attack" FontSize="13" FontWeight="Black" Foreground="#F5AC78" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvAtk, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="2" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding IvAtk, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
-                                </Border>
-                                <Slider Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvAtk}" Value="{Binding EvAtk, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="2" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding EvAtk, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
-                                </Border>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Attack" FontSize="12" FontWeight="Black" Foreground="#F5AC78" VerticalAlignment="Center" Margin="0,3"/>
+                                <Slider Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvAtk, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding IvAtk, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="2" Margin="0,2" Padding="2"/>
+                                <Slider Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvAtk}" Value="{Binding EvAtk, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding EvAtk, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3" Margin="0,2" Padding="2"/>
 
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Defense" FontSize="13" FontWeight="Black" Foreground="#FAE078" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvDef, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="3" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding IvDef, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
-                                </Border>
-                                <Slider Grid.Row="3" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvDef}" Value="{Binding EvDef, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="3" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding EvDef, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
-                                </Border>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Defense" FontSize="12" FontWeight="Black" Foreground="#FAE078" VerticalAlignment="Center" Margin="0,3"/>
+                                <Slider Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvDef, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="3" Grid.Column="2" Text="{Binding IvDef, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="2" Margin="0,2" Padding="2"/>
+                                <Slider Grid.Row="3" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvDef}" Value="{Binding EvDef, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="3" Grid.Column="5" Text="{Binding EvDef, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3" Margin="0,2" Padding="2"/>
 
-                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Sp. Atk" FontSize="13" FontWeight="Black" Foreground="#9DB7F5" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpa, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="4" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding IvSpa, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
-                                </Border>
-                                <Slider Grid.Row="4" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpa}" Value="{Binding EvSpa, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="4" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding EvSpa, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
-                                </Border>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Sp. Atk" FontSize="12" FontWeight="Black" Foreground="#9DB7F5" VerticalAlignment="Center" Margin="0,3"/>
+                                <Slider Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpa, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding IvSpa, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="2" Margin="0,2" Padding="2"/>
+                                <Slider Grid.Row="4" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpa}" Value="{Binding EvSpa, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="4" Grid.Column="5" Text="{Binding EvSpa, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3" Margin="0,2" Padding="2"/>
 
-                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Sp. Def" FontSize="13" FontWeight="Black" Foreground="#A7DB8D" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider Grid.Row="5" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpd, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="5" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding IvSpd, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
-                                </Border>
-                                <Slider Grid.Row="5" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpd}" Value="{Binding EvSpd, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="5" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding EvSpd, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
-                                </Border>
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Sp. Def" FontSize="12" FontWeight="Black" Foreground="#A7DB8D" VerticalAlignment="Center" Margin="0,3"/>
+                                <Slider Grid.Row="5" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpd, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding IvSpd, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="2" Margin="0,2" Padding="2"/>
+                                <Slider Grid.Row="5" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpd}" Value="{Binding EvSpd, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="5" Grid.Column="5" Text="{Binding EvSpd, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3" Margin="0,2" Padding="2"/>
 
-                                <TextBlock Grid.Row="6" Grid.Column="0" Text="Speed" FontSize="13" FontWeight="Black" Foreground="#FA92B2" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider Grid.Row="6" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpe, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="6" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding IvSpe, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
-                                </Border>
-                                <Slider Grid.Row="6" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpe}" Value="{Binding EvSpe, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
-                                <Border Grid.Row="6" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox Text="{Binding EvSpe, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
-                                </Border>
+                                <TextBlock Grid.Row="6" Grid.Column="0" Text="Speed" FontSize="12" FontWeight="Black" Foreground="#FA92B2" VerticalAlignment="Center" Margin="0,3"/>
+                                <Slider Grid.Row="6" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpe, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding IvSpe, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="2" Margin="0,2" Padding="2"/>
+                                <Slider Grid.Row="6" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpe}" Value="{Binding EvSpe, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0" Style="{StaticResource MaterialSlider}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <TextBox Grid.Row="6" Grid.Column="5" Text="{Binding EvSpe, UpdateSourceTrigger=PropertyChanged}" Tag="{DynamicResource ColorPokemonAccent}" TextAlignment="Center" MaxLength="3" Margin="0,2" Padding="2"/>
                             </Grid>
                         </Border>
 
-                        <TextBlock Text="MOVESET" FontSize="13" FontWeight="ExtraBold" Foreground="#555" Margin="0,20,0,10" HorizontalAlignment="Center"/>
+                        <TextBlock Text="MOVESET" FontSize="12" FontWeight="ExtraBold" Foreground="#555" Margin="0,15,0,8" HorizontalAlignment="Center"/>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -206,48 +186,42 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
-                                <TextBlock Text="MOVE 1" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves1}" SelectedItem="{Binding Move1}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,8">
+                                <TextBlock Text="MOVE 1" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves1}" SelectedItem="{Binding Move1}" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10">
-                                <TextBlock Text="MOVE 2" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves2}" SelectedItem="{Binding Move2}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                            <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
+                                <TextBlock Text="MOVE 2" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves2}" SelectedItem="{Binding Move2}" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0">
-                                <TextBlock Text="MOVE 3" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves3}" SelectedItem="{Binding Move3}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <TextBlock Text="MOVE 3" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves3}" SelectedItem="{Binding Move3}" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="2">
-                                <TextBlock Text="MOVE 4" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves4}" SelectedItem="{Binding Move4}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <TextBlock Text="MOVE 4" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves4}" SelectedItem="{Binding Move4}" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
                 </Grid>
 
-                <Grid Margin="0,30,0,0">
+                <Grid Margin="0,20,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                    <Button Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Foreground="{DynamicResource TextColorPrimary}"
+                            Style="{StaticResource MaterialButton}" Background="{DynamicResource ColorBorder}" Height="40"/>
 
-                    <Button Grid.Column="2" Content="SAVE POKÉMON" Click="btnSave_Click" Background="#5090D6" Foreground="White" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                    <Button Grid.Column="2" Content="SAVE POKÉMON" Click="btnSave_Click" 
+                            Style="{StaticResource MaterialButton}" Background="{DynamicResource ColorPokemon}" Height="40"/>
                 </Grid>
             </StackPanel>
         </Border>

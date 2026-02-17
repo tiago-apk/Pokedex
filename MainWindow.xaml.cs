@@ -35,5 +35,11 @@ namespace Pokedex
                 this.DragMove();
             }
         }
+
+        private void btnTheme_Click(object sender, RoutedEventArgs e)
+        {
+            // Pede ao App.xaml para inverter as cores globais
+            ((App)Application.Current).ToggleTheme();
+        }
     }
 }
