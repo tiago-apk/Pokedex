@@ -12,9 +12,6 @@ using Pokedex.viewmodels;
 
 namespace Pokedex
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -22,6 +19,21 @@ namespace Pokedex
             InitializeComponent();
             // VINCULA O VIEWMODEL À JANELA
             this.DataContext = new MainViewModel();
+        }
+
+        // Fecha a aplicação completamente
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        // Permite arrastar a janela clicando no fundo (já que removemos a barra do topo)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ButtonState == MouseButtonState.Pressed)
+            {
+                this.DragMove();
+            }
         }
     }
 }

@@ -3,9 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:services="clr-namespace:Pokedex.services"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1600"
              Background="Transparent">
+
+    <UserControl.Resources>
+        <services:IntToBoolConverter x:Key="IntToBoolConverter" />
+    </UserControl.Resources>
 
     <Grid>
         <Border Background="White" CornerRadius="20" Width="550" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="40,50">
@@ -18,12 +23,12 @@
 
                 <TextBlock Text="NAME" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
                 <Border Background="#F8F8FA" CornerRadius="8" Margin="0,0,0,20">
-                    <TextBox x:Name="txtName" FontSize="16" FontWeight="SemiBold" Foreground="#333" Padding="12" Background="Transparent" BorderThickness="0"/>
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontWeight="SemiBold" Foreground="#333" Padding="12" Background="Transparent" BorderThickness="0"/>
                 </Border>
 
                 <TextBlock Text="TRAINER ID" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
                 <Border Background="#F8F8FA" CornerRadius="8" Margin="0,0,0,20">
-                    <TextBox x:Name="txtTrainerId" FontSize="16" FontWeight="SemiBold" Foreground="#333" Padding="12" Background="Transparent" BorderThickness="0" MaxLength="6"/>
+                    <TextBox Text="{Binding TrainerId, UpdateSourceTrigger=PropertyChanged}" FontSize="16" FontWeight="SemiBold" Foreground="#333" Padding="12" Background="Transparent" BorderThickness="0" MaxLength="6"/>
                 </Border>
 
                 <Grid Margin="0,0,0,20">
@@ -35,32 +40,17 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="REGION" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="cmbRegion" FontSize="15" Padding="10" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"
-                                  SelectionChanged="cmbRegion_SelectionChanged">
-                            <ComboBoxItem Content="Kanto"/>
-                            <ComboBoxItem Content="Johto"/>
-                            <ComboBoxItem Content="Hoenn"/>
-                            <ComboBoxItem Content="Sinnoh"/>
-                            <ComboBoxItem Content="Unova"/>
-                            <ComboBoxItem Content="Kalos"/>
-                            <ComboBoxItem Content="Alola"/>
-                            <ComboBoxItem Content="Galar"/>
-                            <ComboBoxItem Content="Hisui"/>
-                            <ComboBoxItem Content="Paldea"/>
-                        </ComboBox>
+                        <ComboBox ItemsSource="{Binding Regions}" SelectedItem="{Binding SelectedRegion}" FontSize="15" Padding="10" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                     </StackPanel>
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="GENERATION" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="cmbGeneration" IsEnabled="False" FontSize="15" Padding="10" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"
-                                  SelectionChanged="cmbGeneration_SelectionChanged">
-                        </ComboBox>
+                        <ComboBox ItemsSource="{Binding Generations}" SelectedItem="{Binding SelectedGeneration}" IsEnabled="{Binding Generations.Count, Converter={StaticResource IntToBoolConverter}}" FontSize="15" Padding="10" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                     </StackPanel>
                 </Grid>
 
                 <TextBlock Text="GAME" FontSize="13" FontWeight="Bold" Foreground="#888" Margin="0,0,0,5"/>
-                <ComboBox x:Name="cmbGame" IsEnabled="False" FontSize="15" Padding="10" Margin="0,0,0,40" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold">
-                </ComboBox>
+                <ComboBox ItemsSource="{Binding Games}" SelectedItem="{Binding SelectedGame}" IsEnabled="{Binding Games.Count, Converter={StaticResource IntToBoolConverter}}" FontSize="15" Padding="10" Margin="0,0,0,40" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -68,7 +58,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnCancel" Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Margin="0,0,10,0" Cursor="Hand">
+                    <Button Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Margin="0,0,10,0" Cursor="Hand">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -76,7 +66,7 @@
                         </Button.Resources>
                     </Button>
 
-                    <Button x:Name="btnSave" Grid.Column="1" Content="SAVE" Click="btnSave_Click" Background="#E3350D" Foreground="White" FontWeight="Bold" FontSize="15" Height="50" Margin="10,0,0,0" Cursor="Hand">
+                    <Button Grid.Column="1" Content="SAVE" Click="btnSave_Click" Background="#FFEB3B" Foreground="Black" FontWeight="Bold" FontSize="15" Height="50" Margin="10,0,0,0" Cursor="Hand">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>

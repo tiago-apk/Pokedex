@@ -16,6 +16,9 @@
     <Compile Update="views\PokedexView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="views\RegistredPokemonDetailView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="views\TrainerListView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

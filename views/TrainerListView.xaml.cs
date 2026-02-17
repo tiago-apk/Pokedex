@@ -1,28 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Pokedex.models;
+using Pokedex.viewmodels;
 
 namespace Pokedex.views
 {
-    /// <summary>
-    /// Interação lógica para TrainerLisView.xam
-    /// </summary>
     public partial class TrainerListView : UserControl
     {
+        private TrainerListViewModel _viewModel;
+
         public TrainerListView()
         {
             InitializeComponent();
+            _viewModel = new TrainerListViewModel();
+            this.DataContext = _viewModel;
+        }
+
+        private void PokemonCard_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is Border border && border.DataContext is DisplayPokemon clickedPoke)
+            {
+                // Pegamos o ID do treinador diretamente da ViewModel refatorada
+                if (_viewModel.SelectedTrainer != null)
+                {
+                    var detailWindow = new RegisteredPokemonDetailView(clickedPoke.Id, _viewModel.SelectedTrainer.Id);
+                    detailWindow.ShowDialog();
+                }
+            }
         }
     }
 }

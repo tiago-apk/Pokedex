@@ -4,6 +4,20 @@
              xmlns:services="clr-namespace:Pokedex.services"
              StartupUri="views/LoadingView.xaml">
     <Application.Resources>
+
+        <Style x:Key="PokeButton" TargetType="Button">
+            <Setter Property="Height" Value="45"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Style.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Style.Resources>
+        </Style>
+
         <Style x:Key="HomeButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#212121"/>
             <Setter Property="Foreground" Value="White"/>

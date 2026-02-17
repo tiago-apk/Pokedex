@@ -134,4 +134,31 @@ O dia de hoje foi marcado por uma reestruturação profunda do aplicativo, trans
 * **Database Integration:** Criado o modelo `RegisteredPokemon.cs` para salvar o time diretamente amarrado à ID do Treinador no SQLite.
 
 ---
+
+# 📜 Diário de Desenvolvimento - Pokedéx (Sessão 17/02)
+
+Hoje foi um dia de grande avanço na arquitetura e nas funcionalidades principais do **Pokémon Builder / Pokédex**. O foco principal foi a estruturação visual e a transição definitiva para o padrão de design MVVM, garantindo um código limpo, reativo e livre de erros de interface.
+
+## 🚀 O que foi feito hoje
+
+* **Telas de Exibição (Read-Only):**
+    * Criação da tela principal de exibição de **Treinadores**, listando as suas equipas ativas.
+    * Desenvolvimento da tela de **Detalhes do Pokémon**, permitindo visualizar os status finais, habilidades, naturezas e moveset escolhidos pelo treinador.
+* **Refatoração Profissional (MVVM):**
+    * Limpeza completa dos ficheiros *Code-Behind* (`.xaml.cs`). Toda a lógica de negócio foi migrada para as respetivas `ViewModels`.
+    * Implementação de `Bindings` reativos em todos os elementos da interface (ComboBoxes, TextBoxes, Sliders, ToggleButtons).
+* **Regras de Negócio e Validações Inteligentes:**
+    * **Anti-Duplicação de Moves:** Criada uma lógica dinâmica onde a seleção de um golpe o remove imediatamente das outras opções, impedindo a criação de *movesets* duplicados.
+    * **Bloqueio de EVs (Effort Values):** O limite global de **510 pontos** (e 255 por atributo) foi blindado. Os sliders agora calculam matematicamente o máximo disponível e "travam" fisicamente a interface quando o limite é atingido.
+    * **Seleção em Cascata Precisa:** A seleção do Treinador agora dita, de forma matemática e automática, o limite da Pokédex (ex: *Hisui = Dex 905*) e filtra os ataques permitidos até àquela Geração.
+    * **Habilidades Reativas:** O campo `Ability` deixou de ser um texto livre e passou a ser uma ComboBox que puxa automaticamente as habilidades base e a *Hidden Ability* do Pokémon (e Forma) selecionado.
+
+## 🔜 O que vamos fazer a seguir (Próximos Passos)
+
+1.  **Novas Mega Evoluções:**
+    * Adicionar suporte e dados para novas Mega Evoluções no banco de dados e garantir que a mecânica de mudança de stats e habilidades reflita corretamente no Builder.
+2.  **Polimento Visual (UI/UX):**
+    * Implementar efeitos de *Hover* (quando o rato passa por cima) nos botões principais, utilizando transições suaves para cores próximas às originais de cada botão (ex: Azul claro para o botão *Save*, Cinza escuro para o *Cancel*).
+3.  **Clean Code Contínuo:**
+    * Manter a vigilância na separação de responsabilidades (UI vs Lógica) e refatorar qualquer código remanescente que não esteja de acordo com os padrões rigorosos do MVVM.
 *Development by: [Tiago Guerino de Oliveira Bassani] - Projeto C# WPF & SQLite*

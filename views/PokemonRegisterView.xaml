@@ -25,13 +25,13 @@
 
                     <StackPanel Grid.Column="0">
                         <TextBlock Text="TRAINER" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="cmbTrainer" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding Trainers}" SelectedItem="{Binding SelectedTrainer}" DisplayMemberPath="Name" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
 
                         <TextBlock Text="POKÉMON (BASE)" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="cmbPokemon" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding FilteredSpecies}" SelectedItem="{Binding SelectedBasePokemon}" DisplayMemberPath="Name" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
 
                         <TextBlock Text="FORM / VARIANT" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="cmbForm" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding AvailableForms}" SelectedItem="{Binding SelectedForm}" DisplayMemberPath="Name" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
 
                         <Grid Margin="0,0,0,15">
                             <Grid.ColumnDefinitions>
@@ -43,12 +43,12 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="NICKNAME" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
                                 <Border Background="#F8F8FA" CornerRadius="6">
-                                    <TextBox x:Name="txtNickname" FontSize="14" FontWeight="SemiBold" Foreground="#333" Padding="10" Background="Transparent" BorderThickness="0"/>
+                                    <TextBox Text="{Binding Nickname, UpdateSourceTrigger=PropertyChanged}" FontSize="14" FontWeight="SemiBold" Foreground="#333" Padding="10" Background="Transparent" BorderThickness="0"/>
                                 </Border>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
-                                <ToggleButton x:Name="tglShiny" Width="40" Height="40" Cursor="Hand" Background="Transparent" BorderThickness="0" ToolTip="Make Shiny!">
+                                <ToggleButton IsChecked="{Binding IsShiny, Mode=TwoWay}" Width="40" Height="40" Cursor="Hand" Background="Transparent" BorderThickness="0" ToolTip="Make Shiny!">
                                     <ToggleButton.Style>
                                         <Style TargetType="ToggleButton">
                                             <Setter Property="Content" Value="⭐"/>
@@ -75,7 +75,7 @@
                         </Grid>
 
                         <TextBlock Text="ABILITY" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                        <ComboBox x:Name="cmbAbility" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                        <ComboBox ItemsSource="{Binding AvailableAbilities}" SelectedItem="{Binding Ability}" IsEditable="True" FontSize="14" Padding="8" Margin="0,0,0,15" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
 
                         <Grid Margin="0,0,0,20">
                             <Grid.ColumnDefinitions>
@@ -86,7 +86,7 @@
 
                             <StackPanel Grid.Column="0">
                                 <TextBlock Text="NATURE" FontSize="12" FontWeight="Bold" Foreground="#888" Margin="0,0,0,4"/>
-                                <ComboBox x:Name="cmbNature" FontSize="14" Padding="8" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding Natures}" SelectedItem="{Binding SelectedNature}" DisplayMemberPath="Name" FontSize="14" Padding="8" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                             </StackPanel>
 
                             <StackPanel Grid.Column="2">
@@ -96,15 +96,14 @@
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="45"/>
                                     </Grid.ColumnDefinitions>
-                                    <Slider x:Name="sldLevel" Grid.Column="0" Minimum="1" Maximum="100" Value="50" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,10,0"/>
+                                    <Slider Value="{Binding Level, Mode=TwoWay}" Grid.Column="0" Minimum="1" Maximum="100" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,10,0"/>
                                     <Border Grid.Column="1" Background="#F8F8FA" CornerRadius="6">
-                                        <TextBox x:Name="txtLevel" Text="{Binding Value, ElementName=sldLevel, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" MaxLength="3" FontSize="14" FontWeight="Bold" Foreground="#333" Padding="8" Background="Transparent" BorderThickness="0"/>
+                                        <TextBox Text="{Binding Level, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" MaxLength="3" FontSize="14" FontWeight="Bold" Foreground="#333" Padding="8" Background="Transparent" BorderThickness="0"/>
                                     </Border>
                                 </Grid>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
-
 
                     <StackPanel Grid.Column="2">
                         <TextBlock Text="GENETICS &amp; TRAINING" FontSize="13" FontWeight="ExtraBold" Foreground="#555" Margin="0,0,0,10" HorizontalAlignment="Center"/>
@@ -134,63 +133,63 @@
                                 <TextBlock Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Text="EV (0-255)" FontSize="10" FontWeight="Bold" Foreground="#888" HorizontalAlignment="Right" Margin="0,0,5,10"/>
 
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="HP" FontSize="13" FontWeight="Black" Foreground="#FF5959" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider x:Name="sldIvHp" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvHp, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="1" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtIvHp" Text="{Binding Value, ElementName=sldIvHp, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                    <TextBox Text="{Binding IvHp, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
                                 </Border>
-                                <Slider x:Name="sldEvHp" ValueChanged="EvSlider_ValueChanged" Grid.Row="1" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="1" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvHp}" Value="{Binding EvHp, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="1" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtEvHp" Text="{Binding Value, ElementName=sldEvHp, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                    <TextBox Text="{Binding EvHp, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
                                 </Border>
 
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Attack" FontSize="13" FontWeight="Black" Foreground="#F5AC78" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider x:Name="sldIvAtk" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvAtk, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="2" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtIvAtk" Text="{Binding Value, ElementName=sldIvAtk, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                    <TextBox Text="{Binding IvAtk, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
                                 </Border>
-                                <Slider x:Name="sldEvAtk" ValueChanged="EvSlider_ValueChanged" Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="2" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvAtk}" Value="{Binding EvAtk, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="2" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtEvAtk" Text="{Binding Value, ElementName=sldEvAtk, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                    <TextBox Text="{Binding EvAtk, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
                                 </Border>
 
                                 <TextBlock Grid.Row="3" Grid.Column="0" Text="Defense" FontSize="13" FontWeight="Black" Foreground="#FAE078" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider x:Name="sldIvDef" Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvDef, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="3" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtIvDef" Text="{Binding Value, ElementName=sldIvDef, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                    <TextBox Text="{Binding IvDef, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
                                 </Border>
-                                <Slider x:Name="sldEvDef" ValueChanged="EvSlider_ValueChanged" Grid.Row="3" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="3" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvDef}" Value="{Binding EvDef, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="3" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtEvDef" Text="{Binding Value, ElementName=sldEvDef, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                    <TextBox Text="{Binding EvDef, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
                                 </Border>
 
                                 <TextBlock Grid.Row="4" Grid.Column="0" Text="Sp. Atk" FontSize="13" FontWeight="Black" Foreground="#9DB7F5" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider x:Name="sldIvSpa" Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="4" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpa, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="4" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtIvSpa" Text="{Binding Value, ElementName=sldIvSpa, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                    <TextBox Text="{Binding IvSpa, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
                                 </Border>
-                                <Slider x:Name="sldEvSpa" ValueChanged="EvSlider_ValueChanged" Grid.Row="4" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="4" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpa}" Value="{Binding EvSpa, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="4" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtEvSpa" Text="{Binding Value, ElementName=sldEvSpa, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                    <TextBox Text="{Binding EvSpa, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
                                 </Border>
 
                                 <TextBlock Grid.Row="5" Grid.Column="0" Text="Sp. Def" FontSize="13" FontWeight="Black" Foreground="#A7DB8D" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider x:Name="sldIvSpd" Grid.Row="5" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="5" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpd, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="5" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtIvSpd" Text="{Binding Value, ElementName=sldIvSpd, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                    <TextBox Text="{Binding IvSpd, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
                                 </Border>
-                                <Slider x:Name="sldEvSpd" ValueChanged="EvSlider_ValueChanged" Grid.Row="5" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="5" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpd}" Value="{Binding EvSpd, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="5" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtEvSpd" Text="{Binding Value, ElementName=sldEvSpd, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                    <TextBox Text="{Binding EvSpd, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
                                 </Border>
 
                                 <TextBlock Grid.Row="6" Grid.Column="0" Text="Speed" FontSize="13" FontWeight="Black" Foreground="#FA92B2" VerticalAlignment="Center" Margin="0,4"/>
-                                <Slider x:Name="sldIvSpe" Grid.Row="6" Grid.Column="1" Minimum="0" Maximum="31" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="6" Grid.Column="1" Minimum="0" Maximum="31" Value="{Binding IvSpe, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="6" Grid.Column="2" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtIvSpe" Text="{Binding Value, ElementName=sldIvSpe, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
+                                    <TextBox Text="{Binding IvSpe, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="2"/>
                                 </Border>
-                                <Slider x:Name="sldEvSpe" ValueChanged="EvSlider_ValueChanged" Grid.Row="6" Grid.Column="4" Minimum="0" Maximum="255" Value="0" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
+                                <Slider Grid.Row="6" Grid.Column="4" Minimum="0" Maximum="{Binding MaxEvSpe}" Value="{Binding EvSpe, Mode=TwoWay}" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Margin="0,0,5,0"/>
                                 <Border Grid.Row="6" Grid.Column="5" Background="White" CornerRadius="4" Margin="0,4">
-                                    <TextBox x:Name="txtEvSpe" Text="{Binding Value, ElementName=sldEvSpe, StringFormat=0, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
+                                    <TextBox Text="{Binding EvSpe, UpdateSourceTrigger=PropertyChanged}" TextAlignment="Center" FontSize="12" FontWeight="Bold" Foreground="#555" Background="Transparent" BorderThickness="0" MaxLength="3"/>
                                 </Border>
                             </Grid>
                         </Border>
@@ -209,19 +208,19 @@
 
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,10">
                                 <TextBlock Text="MOVE 1" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox x:Name="cmbMove1" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves1}" SelectedItem="{Binding Move1}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                             </StackPanel>
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,10">
                                 <TextBlock Text="MOVE 2" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox x:Name="cmbMove2" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves2}" SelectedItem="{Binding Move2}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="0">
                                 <TextBlock Text="MOVE 3" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox x:Name="cmbMove3" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves3}" SelectedItem="{Binding Move3}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                             </StackPanel>
                             <StackPanel Grid.Row="1" Grid.Column="2">
                                 <TextBlock Text="MOVE 4" FontSize="10" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox x:Name="cmbMove4" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves4}" SelectedItem="{Binding Move4}" IsEditable="True" FontSize="13" Padding="6" Background="#F8F8FA" BorderBrush="#E5E5EA" Foreground="#333" FontWeight="SemiBold"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
@@ -234,7 +233,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnCancel" Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
+                    <Button Grid.Column="0" Content="CANCEL" Click="btnCancel_Click" Background="#E5E5EA" Foreground="#555" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>
@@ -242,7 +241,7 @@
                         </Button.Resources>
                     </Button>
 
-                    <Button x:Name="btnSave" Grid.Column="2" Content="SAVE POKÉMON" Click="btnSave_Click" Background="#5090D6" Foreground="White" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
+                    <Button Grid.Column="2" Content="SAVE POKÉMON" Click="btnSave_Click" Background="#5090D6" Foreground="White" FontWeight="Bold" FontSize="15" Height="50" Cursor="Hand">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="10"/>

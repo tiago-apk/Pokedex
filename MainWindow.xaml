@@ -9,18 +9,21 @@
         mc:Ignorable="d"
         Title="Pokémon Manager" Height="768" Width="1336"
         WindowStartupLocation="CenterScreen"
-        Background="#FAFAFA">
-    <Window.Resources>
+        WindowStyle="None" 
+        ResizeMode="NoResize"
+        Background="#FAFAFA"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
 
+    <Window.Resources>
         <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
             <views:HomeView />
         </DataTemplate>
-        
+
         <DataTemplate DataType="{x:Type viewmodels:PokedexViewModel}">
             <views:PokedexView />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodels:RegisterPokemonViewModel}">
+        <DataTemplate DataType="{x:Type viewmodels:PokemonRegisterViewModel}">
             <views:PokemonRegisterView />
         </DataTemplate>
 
@@ -35,7 +38,7 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="250"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
@@ -57,6 +60,16 @@
 
                     <Button Content="Trainers &amp; Teams" Style="{StaticResource TeamButtonStyle}" 
                             Command="{Binding ShowTrainerListCommand}" Margin="0,50,0,0"/>
+
+                    <Button Content="Close" 
+                            Click="btnClose_Click" 
+                            Margin="0,50,0,0" 
+                            Background="Transparent" 
+                            Foreground="#E3350D" 
+                            BorderThickness="0" 
+                            FontSize="16" 
+                            FontWeight="Bold" 
+                            Cursor="Hand"/>
                 </StackPanel>
 
                 <TextBlock Text="v2.0 - SQLite Edition" Foreground="#FFCCCC" 

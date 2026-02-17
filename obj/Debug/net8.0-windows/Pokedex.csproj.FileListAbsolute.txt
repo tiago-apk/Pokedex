@@ -3131,15 +3131,13 @@ C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\wi
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\Pokedex.csproj.AssemblyReference.cache
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\HomeView.baml
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\LoadingView.baml
-C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokemonRegisterView.baml
-C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\TrainerListView.baml
-C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\TrainerRegisterView.baml
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\MainWindow.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\HomeView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\LoadingView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokedexView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokemonDetailView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokemonRegisterView.g.cs
+C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\RegistredPokemonDetailView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\TrainerListView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\TrainerRegisterView.g.cs
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\App.g.cs
@@ -3151,6 +3149,10 @@ C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\App.baml
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\MainWindow.baml
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokedexView.baml
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokemonDetailView.baml
+C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\PokemonRegisterView.baml
+C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\RegistredPokemonDetailView.baml
+C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\TrainerListView.baml
+C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\views\TrainerRegisterView.baml
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\Pokedex.g.resources
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\Pokedex.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\Pokedex.AssemblyInfoInputs.cache
