@@ -8,6 +8,15 @@ using System.Windows;
 
 namespace Pokedex.viewmodels
 {
+    // ==========================================
+    // CLASSE AUXILIAR PARA MOVES NA UI
+    // ==========================================
+    public class MoveOption
+    {
+        public string Name { get; set; }
+        public bool IsLearned { get; set; }
+    }
+
     public class PokemonRegisterViewModel : BaseViewModel
     {
         // ==========================================
@@ -26,21 +35,21 @@ namespace Pokedex.viewmodels
         public ObservableCollection<string> AvailableAbilities { get => _availableAbilities; set { _availableAbilities = value; OnPropertyChanged(); } }
 
         // ==========================================
-        // LISTAS DE MOVES INTELIGENTES (Anti-Duplicação)
+        // LISTAS DE MOVES INTELIGENTES (Com Destaque)
         // ==========================================
         private List<string> _baseTrainerMoves = new List<string>(); // Guarda todos os golpes permitidos para a Geração do Treinador
 
-        private ObservableCollection<string> _availableMoves1;
-        public ObservableCollection<string> AvailableMoves1 { get => _availableMoves1; set { _availableMoves1 = value; OnPropertyChanged(); } }
+        private ObservableCollection<MoveOption> _availableMoves1;
+        public ObservableCollection<MoveOption> AvailableMoves1 { get => _availableMoves1; set { _availableMoves1 = value; OnPropertyChanged(); } }
 
-        private ObservableCollection<string> _availableMoves2;
-        public ObservableCollection<string> AvailableMoves2 { get => _availableMoves2; set { _availableMoves2 = value; OnPropertyChanged(); } }
+        private ObservableCollection<MoveOption> _availableMoves2;
+        public ObservableCollection<MoveOption> AvailableMoves2 { get => _availableMoves2; set { _availableMoves2 = value; OnPropertyChanged(); } }
 
-        private ObservableCollection<string> _availableMoves3;
-        public ObservableCollection<string> AvailableMoves3 { get => _availableMoves3; set { _availableMoves3 = value; OnPropertyChanged(); } }
+        private ObservableCollection<MoveOption> _availableMoves3;
+        public ObservableCollection<MoveOption> AvailableMoves3 { get => _availableMoves3; set { _availableMoves3 = value; OnPropertyChanged(); } }
 
-        private ObservableCollection<string> _availableMoves4;
-        public ObservableCollection<string> AvailableMoves4 { get => _availableMoves4; set { _availableMoves4 = value; OnPropertyChanged(); } }
+        private ObservableCollection<MoveOption> _availableMoves4;
+        public ObservableCollection<MoveOption> AvailableMoves4 { get => _availableMoves4; set { _availableMoves4 = value; OnPropertyChanged(); } }
 
         // ==========================================
         // PROPRIEDADES DE SELEÇÃO
@@ -69,6 +78,7 @@ namespace Pokedex.viewmodels
                 OnPropertyChanged();
                 LoadBaseStats();
                 LoadAbilities();
+                UpdateMoveLists();
             }
         }
 
@@ -99,7 +109,7 @@ namespace Pokedex.viewmodels
             get => _move1;
             set
             {
-                if (_move1 == value || _isUpdatingMoves) return; // Se for igual ou estiver atualizando, ignora!
+                if (_move1 == value || _isUpdatingMoves) return;
                 _move1 = value;
                 OnPropertyChanged();
                 UpdateMoveLists();
@@ -141,6 +151,7 @@ namespace Pokedex.viewmodels
                 UpdateMoveLists();
             }
         }
+
         // ==========================================
         // STATS BASE E IVS
         // ==========================================
@@ -155,7 +166,7 @@ namespace Pokedex.viewmodels
         public int IvSpe { get => _ivSpe; set { _ivSpe = value; OnPropertyChanged(); RecalculateAll(); } }
 
         // ==========================================
-        // EVS COM BLOQUEIO INTELIGENTE (Max 510 total / 255 por stat)
+        // EVS COM BLOQUEIO INTELIGENTE
         // ==========================================
         private int _evHp, _evAtk, _evDef, _evSpa, _evSpd, _evSpe;
 
@@ -232,7 +243,6 @@ namespace Pokedex.viewmodels
 
             using (var db = new AppDbContext())
             {
-                // Carrega todos os golpes possíveis uma única vez
                 _baseTrainerMoves = db.Moves.AsEnumerable()
                                       .Where(m => RomanToInt(m.Gen) <= trainerGen)
                                       .Select(m => m.Name).OrderBy(n => n).ToList();
@@ -244,12 +254,10 @@ namespace Pokedex.viewmodels
                 FilteredSpecies = new ObservableCollection<PokedexEntry>(species);
             }
 
-            // Reseta seleções
             SelectedBasePokemon = null;
             SelectedForm = null;
             Move1 = Move2 = Move3 = Move4 = null;
 
-            // Constrói as 4 listas de golpes
             UpdateMoveLists();
         }
 
@@ -277,7 +285,6 @@ namespace Pokedex.viewmodels
             AvailableAbilities = new ObservableCollection<string>();
             if (SelectedForm == null || SelectedForm.Abilities == null) return;
 
-            // Varre a lista de habilidades do Pokémon e adiciona ao ComboBox
             foreach (var ab in SelectedForm.Abilities)
             {
                 if (!string.IsNullOrWhiteSpace(ab))
@@ -289,33 +296,66 @@ namespace Pokedex.viewmodels
             Ability = AvailableAbilities.FirstOrDefault();
         }
 
-
-
-        // Esta é a regra de Ouro Anti-Duplicação:
         // ==========================================
-        // PROPRIEDADES DE MOVES COM TRAVA ANTI-LOOP
+        // LOGICA DE MOVES (Anti-Loop e Destaque)
         // ==========================================
-        private bool _isUpdatingMoves = false; // <-- NOSSO CADEADO DE SEGURANÇA
+        private bool _isUpdatingMoves = false;
 
-
-
-        // ==========================================
-        // REGRA DE OURO ANTI-DUPLICAÇÃO
-        // ==========================================
         private void UpdateMoveLists()
         {
             if (_baseTrainerMoves == null || !_baseTrainerMoves.Any()) return;
 
-            // FECHA O CADEADO: Impede que as ComboBoxes disparem novos ciclos enquanto recriamos as listas
+            // 1. GUARDA TUDO ANTES DE MEXER
+            string backupM1 = _move1;
+            string backupM2 = _move2;
+            string backupM3 = _move3;
+            string backupM4 = _move4;
+
             _isUpdatingMoves = true;
 
-            AvailableMoves1 = new ObservableCollection<string>(_baseTrainerMoves.Where(m => m == Move1 || (m != Move2 && m != Move3 && m != Move4)));
-            AvailableMoves2 = new ObservableCollection<string>(_baseTrainerMoves.Where(m => m == Move2 || (m != Move1 && m != Move3 && m != Move4)));
-            AvailableMoves3 = new ObservableCollection<string>(_baseTrainerMoves.Where(m => m == Move3 || (m != Move1 && m != Move2 && m != Move4)));
-            AvailableMoves4 = new ObservableCollection<string>(_baseTrainerMoves.Where(m => m == Move4 || (m != Move1 && m != Move2 && m != Move3)));
+            var learnedMoves = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (SelectedForm != null && SelectedForm.Moves != null)
+            {
+                foreach (var m in SelectedForm.Moves)
+                {
+                    if (!string.IsNullOrWhiteSpace(m.Name))
+                        learnedMoves.Add(m.Name);
+                }
+            }
 
-            // ABRE O CADEADO: As listas já foram atualizadas com segurança
+            IEnumerable<MoveOption> GenerateList(string currentMove, string[] otherMoves)
+            {
+                return _baseTrainerMoves
+                    .Where(m => m == currentMove || !otherMoves.Contains(m))
+                    .Select(m => new MoveOption { Name = m, IsLearned = learnedMoves.Contains(m) })
+                    .OrderByDescending(o => o.IsLearned)
+                    .ThenBy(o => o.Name);
+            }
+
+            // 2. Troca as listas
+            AvailableMoves1 = new ObservableCollection<MoveOption>(GenerateList(backupM1, new[] { backupM2, backupM3, backupM4 }));
+            AvailableMoves2 = new ObservableCollection<MoveOption>(GenerateList(backupM2, new[] { backupM1, backupM3, backupM4 }));
+            AvailableMoves3 = new ObservableCollection<MoveOption>(GenerateList(backupM3, new[] { backupM1, backupM2, backupM4 }));
+            AvailableMoves4 = new ObservableCollection<MoveOption>(GenerateList(backupM4, new[] { backupM1, backupM2, backupM3 }));
+
+            // 3. RESTAURA DA MEMÓRIA
+            _move1 = backupM1;
+            _move2 = backupM2;
+            _move3 = backupM3;
+            _move4 = backupM4;
+
             _isUpdatingMoves = false;
+
+            // 4. FORÇA O ECRÃ A LER OS TEXTOS DE NOVO
+            Application.Current.Dispatcher.InvokeAsync(() =>
+            {
+                _isUpdatingMoves = true;
+                OnPropertyChanged(nameof(Move1));
+                OnPropertyChanged(nameof(Move2));
+                OnPropertyChanged(nameof(Move3));
+                OnPropertyChanged(nameof(Move4));
+                _isUpdatingMoves = false;
+            }, System.Windows.Threading.DispatcherPriority.Background);
         }
 
         private int GetDexLimit(int gen, string game)
@@ -382,11 +422,104 @@ namespace Pokedex.viewmodels
         }
 
         // ==========================================
+        // VALIDAÇÃO DE NÍVEL DE EVOLUÇÃO E GOLPES
+        // ==========================================
+        // ==========================================
+        // VALIDAÇÃO DE NÍVEL DE EVOLUÇÃO E GOLPES
+        // ==========================================
+        // ==========================================
+        // VALIDAÇÃO DE NÍVEL DE EVOLUÇÃO E GOLPES
+        // ==========================================
+        private bool ValidateEvolutionLevel()
+        {
+            if (SelectedForm == null) return true;
+
+            string currentSpecies = SelectedForm.Name;
+            string evolvesFrom = SelectedForm.Evolution?.EvolvesFrom;
+
+            using (var db = new AppDbContext())
+            {
+                // LOOP DE RAIO-X: Vai varrendo a árvore toda para trás (Pai, Avô, Bisavô...)
+                while (!string.IsNullOrWhiteSpace(evolvesFrom))
+                {
+                    // 1. Busca a pré-evolução no banco (Ex: Charmeleon)
+                    var preEvo = db.PokedexEntries.AsEnumerable()
+                                   .FirstOrDefault(p => string.Equals(p.Name, evolvesFrom, StringComparison.OrdinalIgnoreCase)
+                                                     || p.Name.StartsWith(evolvesFrom, StringComparison.OrdinalIgnoreCase));
+
+                    if (preEvo == null || preEvo.Evolution == null || preEvo.Evolution.EvolvesTo == null)
+                        break; // Se não achar mais de onde evoluir, a checagem acabou e está válido.
+
+                    // 2. Procura a regra exata que gerou o nosso currentSpecies
+                    // O "Contains" resolve o problema de nomes de Formas (ex: Charizard Mega)
+                    var evoDetail = preEvo.Evolution.EvolvesTo
+                                    .FirstOrDefault(e => currentSpecies.Contains(e.Species, StringComparison.OrdinalIgnoreCase))
+                                    ?? preEvo.Evolution.EvolvesTo.FirstOrDefault(); // Fallback de segurança
+
+                    // 3. A REGRA DE OURO: Ignoramos os textos (level-up, stone, etc). 
+                    // Se existe um MinLevel no banco e ele for maior que 1, a regra tem de ser respeitada!
+                    if (evoDetail != null && evoDetail.MinLevel.HasValue && evoDetail.MinLevel.Value > 1)
+                    {
+                        if (this.Level < evoDetail.MinLevel.Value)
+                        {
+                            MessageBox.Show(
+                                $"{currentSpecies} requires level {evoDetail.MinLevel.Value} because of its evolution from {preEvo.Name}.\nYour current level is {this.Level}, which is too low!",
+                                "Invalid Evolution Level",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                            return false; // Bloqueia o salvamento na hora!
+                        }
+                    }
+
+                    // 4. Retrocede um passo na árvore genealógica (Ex: Agora passa de Charmeleon para analisar o Charmander)
+                    currentSpecies = preEvo.Name;
+                    evolvesFrom = preEvo.Evolution.EvolvesFrom;
+                }
+            }
+
+            return true;
+        }
+
+        private bool ValidateMoveLevel(string moveName)
+        {
+            if (string.IsNullOrWhiteSpace(moveName) || SelectedForm == null || SelectedForm.Moves == null)
+                return true;
+
+            // Blindagem contra ataques com nome nulo no JSON
+            var moveInfo = SelectedForm.Moves.FirstOrDefault(m => string.Equals(m.Name, moveName, StringComparison.OrdinalIgnoreCase));
+
+            // Blindagem contra ataques com Method nulo
+            if (moveInfo != null && string.Equals(moveInfo.Method, "level-up", StringComparison.OrdinalIgnoreCase))
+            {
+                if (this.Level < moveInfo.Level)
+                {
+                    MessageBox.Show(
+                        $"{SelectedForm.Name} can only learn '{moveInfo.Name}' at level {moveInfo.Level}.\nYour current level is {this.Level}.",
+                        "Invalid Move Level",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // ==========================================
         // GRAVAÇÃO NO BANCO
         // ==========================================
         public bool SavePokemon()
         {
             if (SelectedTrainer == null || SelectedForm == null) return false;
+
+            // 1. Barreira de Evolução: Bloqueia evoluções com nível impossível (Ex: Charizard nv 10)
+            if (!ValidateEvolutionLevel()) return false;
+
+            // 2. Barreira de Golpes: Bloqueia ataques aprendidos no futuro
+            if (!ValidateMoveLevel(Move1)) return false;
+            if (!ValidateMoveLevel(Move2)) return false;
+            if (!ValidateMoveLevel(Move3)) return false;
+            if (!ValidateMoveLevel(Move4)) return false;
 
             try
             {
@@ -395,14 +528,15 @@ namespace Pokedex.viewmodels
                     db.RegisteredPokemons.Add(new RegisteredPokemon
                     {
                         TrainerId = SelectedTrainer.Id,
-                        TrainerName = SelectedTrainer.Name,
-                        BasePokemon = SelectedBasePokemon.Name,
-                        Form = SelectedForm.Name,
-                        Nickname = Nickname,
+                        TrainerName = SelectedTrainer.Name ?? "",
+                        BasePokemon = SelectedBasePokemon.Name ?? "",
+                        Form = SelectedForm.Name ?? "",
+                        Nickname = Nickname ?? "",
                         Level = Level,
-                        Ability = Ability,
-                        Nature = SelectedNature?.Name,
+                        Ability = Ability ?? "",
+                        Nature = SelectedNature?.Name ?? "",
                         IsShiny = IsShiny,
+
                         IvHp = IvHp,
                         IvAtk = IvAtk,
                         IvDef = IvDef,
@@ -415,18 +549,23 @@ namespace Pokedex.viewmodels
                         EvSpa = EvSpa,
                         EvSpd = EvSpd,
                         EvSpe = EvSpe,
-                        Move1 = Move1,
-                        Move2 = Move2,
-                        Move3 = Move3,
-                        Move4 = Move4
+
+                        Move1 = Move1 ?? "",
+                        Move2 = Move2 ?? "",
+                        Move3 = Move3 ?? "",
+                        Move4 = Move4 ?? ""
                     });
+
                     db.SaveChanges();
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao salvar no banco: {ex.Message}", "Erro", MessageBoxButton.OK, MessageBoxImage.Error);
+                string erroReal = ex.Message;
+                if (ex.InnerException != null) erroReal += "\n\nDetalhes:\n" + ex.InnerException.Message;
+
+                MessageBox.Show(erroReal, "Erro ao Salvar", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
         }

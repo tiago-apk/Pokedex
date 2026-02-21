@@ -188,23 +188,150 @@
 
                             <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,0,8">
                                 <TextBlock Text="MOVE 1" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves1}" SelectedItem="{Binding Move1}" IsEditable="True" 
-                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves1}" 
+                                          Text="{Binding Move1, UpdateSourceTrigger=PropertyChanged}" 
+                                          TextSearch.TextPath="Name" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Padding="8,4" Margin="0,2">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                <Setter Property="Background" Value="#8C9EFF"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding Name}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                    <Setter Property="Foreground" Value="Black"/>
+                                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
+
                             <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,0,0,8">
                                 <TextBlock Text="MOVE 2" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves2}" SelectedItem="{Binding Move2}" IsEditable="True" 
-                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves2}" 
+                                          Text="{Binding Move2, UpdateSourceTrigger=PropertyChanged}" 
+                                          TextSearch.TextPath="Name" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Padding="8,4" Margin="0,2">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                <Setter Property="Background" Value="#8C9EFF"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding Name}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                    <Setter Property="Foreground" Value="Black"/>
+                                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
+
                             <StackPanel Grid.Row="1" Grid.Column="0">
                                 <TextBlock Text="MOVE 3" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves3}" SelectedItem="{Binding Move3}" IsEditable="True" 
-                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves3}" 
+                                          Text="{Binding Move3, UpdateSourceTrigger=PropertyChanged}" 
+                                          TextSearch.TextPath="Name" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Padding="8,4" Margin="0,2">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                <Setter Property="Background" Value="#8C9EFF"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding Name}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                    <Setter Property="Foreground" Value="Black"/>
+                                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
+
                             <StackPanel Grid.Row="1" Grid.Column="2">
                                 <TextBlock Text="MOVE 4" FontSize="9" FontWeight="Bold" Foreground="#AAA" Margin="0,0,0,2"/>
-                                <ComboBox ItemsSource="{Binding AvailableMoves4}" SelectedItem="{Binding Move4}" IsEditable="True" 
-                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}"/>
+                                <ComboBox ItemsSource="{Binding AvailableMoves4}" 
+                                          Text="{Binding Move4, UpdateSourceTrigger=PropertyChanged}" 
+                                          TextSearch.TextPath="Name" IsEditable="True" 
+                                          Style="{StaticResource MaterialComboBox}" Tag="{DynamicResource ColorPokemonAccent}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border CornerRadius="4" Padding="8,4" Margin="0,2">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                <Setter Property="Background" Value="#8C9EFF"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding Name}">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsLearned}" Value="True">
+                                                                    <Setter Property="Foreground" Value="Black"/>
+                                                                    <Setter Property="FontWeight" Value="Bold"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
                             </StackPanel>
                         </Grid>
                     </StackPanel>

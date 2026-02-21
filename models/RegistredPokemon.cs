@@ -10,22 +10,22 @@ namespace Pokedex.models
 
         // A ligação ao Treinador (Foreign Key lógica)
         public int TrainerId { get; set; }
-        public string TrainerName { get; set; }
+        public string? TrainerName { get; set; }
 
         // Dados Base
-        public string BasePokemon { get; set; }
+        public string? BasePokemon { get; set; }
         public string Form { get; set; }
-        public string Nickname { get; set; }
+        public string? Nickname { get; set; }
         public bool IsShiny { get; set; }
         public int Level { get; set; }
-        public string Nature { get; set; }
-        public string Ability { get; set; }
+        public string? Nature { get; set; }
+        public string? Ability { get; set; }
 
         // Golpes
-        public string Move1 { get; set; }
-        public string Move2 { get; set; }
-        public string Move3 { get; set; }
-        public string Move4 { get; set; }
+        public string? Move1 { get; set; }
+        public string? Move2 { get; set; }
+        public string? Move3 { get; set; }
+        public string? Move4 { get; set; }
 
         // IVs
         public int IvHp { get; set; }

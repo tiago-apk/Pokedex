@@ -69,7 +69,7 @@ namespace Pokedex.views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Pokedex;V1.0.0.0;component/views/registredpokemondetailview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Pokedex;component/views/registredpokemondetailview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\views\RegistredPokemonDetailView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

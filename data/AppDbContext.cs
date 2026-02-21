@@ -24,7 +24,7 @@ namespace Pokedex.data
         {
             // --- Configurações para PokedexEntry ---
 
-            // Converte a List<PokemonType> para String (JSON) para o SQLite
+            // Converte a List<string> para String (JSON) para o SQLite
             modelBuilder.Entity<PokedexEntry>()
                 .Property(p => p.Types)
                 .HasConversion(
@@ -45,18 +45,34 @@ namespace Pokedex.data
                 .Property(p => p.Forms)
                 .HasConversion<string>();
 
+            // =========================================================
+            // NOVAS CONVERSÕES PARA DADOS COMPLEXOS DA POKEAPI
+            // =========================================================
+
+            modelBuilder.Entity<PokedexEntry>()
+                .Property(p => p.Evolution)
+                .IsRequired(false) // <-- ADICIONA ISTO PARA PERMITIR NULOS
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                    v => JsonSerializer.Deserialize<EvolutionData>(v, (JsonSerializerOptions)null)
+                );
+
+            // CORREÇÃO AQUI: Mudado de Dictionary para List<MoveData>
+            modelBuilder.Entity<PokedexEntry>()
+                .Property(p => p.Moves)
+                .IsRequired(false) // <-- ADICIONA ISTO PARA PERMITIR NULOS
+                .HasConversion(
+                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                    v => JsonSerializer.Deserialize<List<MoveData>>(v, (JsonSerializerOptions)null)
+                );
+
 
             // --- Configurações para Move ---
-
-            // Salva os Enums de Move como String para facilitar leitura externa
             modelBuilder.Entity<Move>().Property(m => m.Type).HasConversion<string>();
             modelBuilder.Entity<Move>().Property(m => m.Accuracy).HasConversion<string>();
             modelBuilder.Entity<Move>().Property(m => m.Gen).HasConversion<string>();
 
-
             // --- Configurações para Nature ---
-
-            // Salva os Enums de StatType como String
             modelBuilder.Entity<Nature>().Property(n => n.Increase).HasConversion<string>();
             modelBuilder.Entity<Nature>().Property(n => n.Decrease).HasConversion<string>();
 

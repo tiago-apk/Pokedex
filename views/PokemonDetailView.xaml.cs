@@ -72,5 +72,35 @@ namespace Pokedex.views
             if (DataContext is PokemonDetailViewModel vm)
                 vm.NextForm();
         }
+
+        // =========================================================
+        // NAVEGAÇÃO DE EVOLUÇÕES (Imagens e Setas)
+        // =========================================================
+
+        private void PrevEvoPath_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is PokemonDetailViewModel vm)
+                vm.PreviousEvolutionPath();
+        }
+
+        private void NextEvoPath_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is PokemonDetailViewModel vm)
+                vm.NextEvolutionPath();
+        }
+
+        // =========================================================
+        // CLIQUE NA IMAGEM DA LINHA EVOLUTIVA
+        // =========================================================
+        private void EvolutionNode_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is System.Windows.Controls.Button btn && btn.Tag is string targetDex)
+            {
+                if (DataContext is PokemonDetailViewModel vm)
+                {
+                    vm.NavigateToPokemonByDex(targetDex);
+                }
+            }
+        }
     }
 }

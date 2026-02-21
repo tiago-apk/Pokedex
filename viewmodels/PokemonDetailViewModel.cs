@@ -34,284 +34,337 @@ namespace Pokedex.viewmodels
         public bool IsShiny
         {
             get => _isShiny;
-            set { _isShiny = value; OnPropertyChanged(); UpdateDisplayedImage(); }
+            set
+            {
+                if (_isShiny == value) return;
+                _isShiny = value;
+                OnPropertyChanged();
+                UpdateDisplayedImage();
+                LoadEvolutionData();
+            }
         }
 
         private bool _isFemale;
         public bool IsFemale
         {
             get => _isFemale;
-            set { _isFemale = value; OnPropertyChanged(); ApplyGenderForm(); }
+            set
+            {
+                if (_isFemale == value) return;
+                _isFemale = value;
+                OnPropertyChanged();
+                ApplyGenderForm();
+            }
         }
 
-        // ==========================================
-        // NOVAS PROPRIEDADES: NAVEGAÇÃO DA POKÉDEX
-        // ==========================================
         private bool _hasPreviousPokemon;
-        public bool HasPreviousPokemon
-        {
-            get => _hasPreviousPokemon;
-            set { _hasPreviousPokemon = value; OnPropertyChanged(); }
-        }
+        public bool HasPreviousPokemon { get => _hasPreviousPokemon; set { _hasPreviousPokemon = value; OnPropertyChanged(); } }
 
         private bool _hasNextPokemon;
-        public bool HasNextPokemon
-        {
-            get => _hasNextPokemon;
-            set { _hasNextPokemon = value; OnPropertyChanged(); }
-        }
-
-        private PokedexEntry _previousPokemonEntry;
-        private PokedexEntry _nextPokemonEntry;
-
-
-        private bool _hasFemaleVariant;
-        public bool HasFemaleVariant
-        {
-            get => _hasFemaleVariant;
-            set { _hasFemaleVariant = value; OnPropertyChanged(); }
-        }
-
-        private bool _hasShinyVariant;
-        public bool HasShinyVariant
-        {
-            get => _hasShinyVariant;
-            set { _hasShinyVariant = value; OnPropertyChanged(); }
-        }
+        public bool HasNextPokemon { get => _hasNextPokemon; set { _hasNextPokemon = value; OnPropertyChanged(); } }
 
         private bool _hasMultipleForms;
-        public bool HasMultipleForms
-        {
-            get => _hasMultipleForms;
-            set { _hasMultipleForms = value; OnPropertyChanged(); }
-        }
+        public bool HasMultipleForms { get => _hasMultipleForms; set { _hasMultipleForms = value; OnPropertyChanged(); } }
+
+        private bool _hasShinyVariant;
+        public bool HasShinyVariant { get => _hasShinyVariant; set { _hasShinyVariant = value; OnPropertyChanged(); } }
+
+        private bool _hasFemaleVariant;
+        public bool HasFemaleVariant { get => _hasFemaleVariant; set { _hasFemaleVariant = value; OnPropertyChanged(); } }
+
+        // PROPRIEDADES: MEGA E GIGANTAMAX
+        private bool _hasMegaEvolution;
+        public bool HasMegaEvolution { get => _hasMegaEvolution; set { _hasMegaEvolution = value; OnPropertyChanged(); } }
+
+        private bool _hasGigantamax;
+        public bool HasGigantamax { get => _hasGigantamax; set { _hasGigantamax = value; OnPropertyChanged(); } }
+
+        public string MegaIconPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "type_images", "stats", "Megaevolution_icon.png");
+        public string DynamaxIconPath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "type_images", "stats", "Dynamax_icon.png");
 
         private List<PokedexEntry> _alternateForms;
-        private List<PokedexEntry> _allEntriesForThisDex;
         private int _currentFormIndex = 0;
 
-        private PokedexEntry _maleForm;
-        private PokedexEntry _femaleForm;
+        // ==========================================
+        // PROPRIEDADES: LINHA EVOLUTIVA
+        // ==========================================
+        private List<List<EvolutionNode>> _allEvolutionPaths;
+        private int _currentPathIndex = 0;
 
-        public PokemonDetailViewModel(PokedexEntry entry)
+        private List<EvolutionNode> _currentEvolutionLine;
+        public List<EvolutionNode> CurrentEvolutionLine
         {
-            Pokemon = entry;
+            get => _currentEvolutionLine;
+            set { _currentEvolutionLine = value; OnPropertyChanged(); }
+        }
+
+        private bool _hasMultipleEvolutionPaths;
+        public bool HasMultipleEvolutionPaths { get => _hasMultipleEvolutionPaths; set { _hasMultipleEvolutionPaths = value; OnPropertyChanged(); } }
+
+        private bool _hasEvolution;
+        public bool HasEvolution { get => _hasEvolution; set { _hasEvolution = value; OnPropertyChanged(); } }
+        // ==========================================
+
+        public PokemonDetailViewModel(PokedexEntry pokemon)
+        {
+            Pokemon = pokemon;
+            _isShiny = false;
+            _isFemale = false;
             InitializeData();
         }
 
-        private void InitializeData()
+        private void InitializeData(string targetDex = null)
         {
-            LoadNavigationData();
-            LoadFormsData();
-            UpdateVariantsVisibilityForCurrent();
-            ApplyGenderForm();
-        }
+            LoadAlternateForms();
+            LoadAdjacentPokemonPresence();
+            LoadEvolutionData();
 
-        // ==========================================
-        // MÁGICA DA NAVEGAÇÃO (PRÓXIMO/ANTERIOR)
-        // ==========================================
-        private int ParseDex(string dexStr)
-        {
-            if (string.IsNullOrEmpty(dexStr)) return 99999;
-            string clean = dexStr.Replace("#", "").Trim().Split('.')[0].Split('_')[0].Split('-')[0];
-            int.TryParse(clean, out int res);
-            return res;
-        }
-
-        private void LoadNavigationData()
-        {
-            using (var db = new AppDbContext())
+            if (targetDex != null)
             {
-                // Pega TODOS os Pokémons Base (Aqueles que NÃO possuem '.' no Dex)
-                var basePokes = db.PokedexEntries
-                    .ToList()
-                    .Where(p => !string.IsNullOrEmpty(p.Dex) && !p.Dex.Contains("."))
-                    .OrderBy(p => ParseDex(p.Dex)) // Ordena numericamente pelo número da Dex
+                int foundIndex = _alternateForms.FindIndex(f => f.Dex == targetDex);
+                _currentFormIndex = foundIndex >= 0 ? foundIndex : 0;
+            }
+            else
+            {
+                _currentFormIndex = 0;
+            }
+
+            ApplyGenderForm();
+            UpdateVariantsVisibilityForCurrent();
+        }
+
+        private void LoadAlternateForms()
+        {
+            using (var context = new AppDbContext())
+            {
+                string baseDex = Pokemon.Dex.Split('.')[0];
+                _alternateForms = context.PokedexEntries
+                    .Where(p => p.Dex == baseDex || p.Dex.StartsWith(baseDex + "."))
+                    .OrderBy(p => p.Dex)
                     .ToList();
+            }
+            HasMultipleForms = _alternateForms.Count > 1;
+        }
 
-                string currentBaseDex = ExtractBaseDex(Pokemon.Dex);
-                var currentBase = basePokes.FirstOrDefault(p => ParseDex(p.Dex) == ParseDex(currentBaseDex));
+        private void LoadAdjacentPokemonPresence()
+        {
+            using (var context = new AppDbContext())
+            {
+                string currentDexStr = Pokemon.Dex;
+                var allDexes = context.PokedexEntries.Select(p => p.Dex).Distinct().ToList();
+                var sortedDexes = allDexes.OrderBy(d => { if (double.TryParse(d, out double num)) return num; return 99999; }).ToList();
 
-                int idx = basePokes.IndexOf(currentBase);
+                int currentIndex = sortedDexes.IndexOf(currentDexStr);
+                HasPreviousPokemon = currentIndex > 0;
+                HasNextPokemon = currentIndex < sortedDexes.Count - 1 && currentIndex >= 0;
+            }
+        }
 
-                if (idx >= 0)
+        private void LoadEvolutionData()
+        {
+            using (var context = new AppDbContext())
+            {
+                var root = Pokemon;
+                HashSet<string> visitedRoots = new HashSet<string>();
+                visitedRoots.Add(root.Dex);
+
+                while (root != null && root.Evolution != null && !string.IsNullOrEmpty(root.Evolution.EvolvesFrom))
                 {
-                    HasPreviousPokemon = idx > 0;
-                    HasNextPokemon = idx < basePokes.Count - 1;
+                    var parent = context.PokedexEntries.FirstOrDefault(p => p.Name.ToLower() == root.Evolution.EvolvesFrom.ToLower());
+                    if (parent == null) break;
 
-                    _previousPokemonEntry = idx > 0 ? basePokes[idx - 1] : null;
-                    _nextPokemonEntry = idx < basePokes.Count - 1 ? basePokes[idx + 1] : null;
+                    if (visitedRoots.Contains(parent.Dex)) break;
+                    visitedRoots.Add(parent.Dex);
+
+                    root = parent;
+                }
+
+                if (root == null) root = Pokemon;
+
+                _allEvolutionPaths = new List<List<EvolutionNode>>();
+
+                void BuildPaths(PokedexEntry current, List<EvolutionNode> currentPath, EvolutionDetail incomingEvo)
+                {
+                    var node = new EvolutionNode
+                    {
+                        Species = current.Name,
+                        ImagePath = GetFormattedImagePathForEvolution(current.Image),
+                        TargetDex = current.Dex,
+                        IsCurrent = current.Dex == Pokemon.Dex,
+                        ShowIncomingArrow = incomingEvo != null,
+                        MinLevel = incomingEvo?.MinLevel?.ToString(),
+                        Item = incomingEvo?.Item,
+                        Method = incomingEvo?.Method
+                    };
+
+                    if (incomingEvo != null)
+                    {
+                        string conditionVal = "";
+                        var conditionProp = incomingEvo.GetType().GetProperty("Condition");
+                        if (conditionProp != null)
+                            conditionVal = conditionProp.GetValue(incomingEvo)?.ToString() ?? "";
+
+                        node.ProcessarRegrasDeEvolucao(incomingEvo.Method, incomingEvo.Item, conditionVal, incomingEvo.MinLevel);
+                    }
+
+                    var newPath = new List<EvolutionNode>(currentPath) { node };
+
+                    if (current.Evolution?.EvolvesTo != null && current.Evolution.EvolvesTo.Count > 0)
+                    {
+                        foreach (var evo in current.Evolution.EvolvesTo)
+                        {
+                            var next = context.PokedexEntries.FirstOrDefault(p => p.Name.ToLower() == evo.Species.ToLower());
+                            if (next != null)
+                            {
+                                if (currentPath.Any(n => n.TargetDex == next.Dex)) continue;
+                                BuildPaths(next, newPath, evo);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _allEvolutionPaths.Add(newPath);
+                    }
+                }
+
+                BuildPaths(root, new List<EvolutionNode>(), null);
+
+                if (Pokemon.Dex != root.Dex)
+                    _allEvolutionPaths = _allEvolutionPaths.Where(path => path.Any(n => n.IsCurrent)).ToList();
+
+                if (_allEvolutionPaths.Count == 0)
+                {
+                    HasEvolution = false;
+                    HasMultipleEvolutionPaths = false;
                 }
                 else
                 {
-                    HasPreviousPokemon = false;
-                    HasNextPokemon = false;
+                    _currentPathIndex = _allEvolutionPaths.FindIndex(path => path.Any(n => n.IsCurrent));
+                    if (_currentPathIndex == -1) _currentPathIndex = 0;
+
+                    CurrentEvolutionLine = _allEvolutionPaths[_currentPathIndex];
+                    HasEvolution = CurrentEvolutionLine.Count > 1;
+                    HasMultipleEvolutionPaths = _allEvolutionPaths.Count > 1;
                 }
             }
         }
 
-        public void GoToNextPokemon()
+        private string GetFormattedImagePathForEvolution(string rawPath)
         {
-            if (_nextPokemonEntry != null) ChangePokemon(_nextPokemonEntry);
+            if (string.IsNullOrWhiteSpace(rawPath)) return "";
+            if (IsShiny && !rawPath.Contains("/shiny/"))
+                return rawPath.Replace("/normal/", "/shiny/");
+            return rawPath;
         }
 
-        public void GoToPreviousPokemon()
+        public void NavigateToPokemonByDex(string dex)
         {
-            if (_previousPokemonEntry != null) ChangePokemon(_previousPokemonEntry);
-        }
+            if (string.IsNullOrEmpty(dex) || Pokemon.Dex == dex) return;
 
-        private void ChangePokemon(PokedexEntry newBase)
-        {
-            Pokemon = newBase;
-
-            // Desliga os filtros visuais ao mudar de Pokémon
-            _isShiny = false;
-            OnPropertyChanged(nameof(IsShiny));
-            _isFemale = false;
-            OnPropertyChanged(nameof(IsFemale));
-            _currentFormIndex = 0;
-
-            InitializeData();
-        }
-
-        // ==========================================
-        // RESTO DO CÓDIGO INTACTO
-        // ==========================================
-        private string ExtractBaseDex(string dexStr)
-        {
-            if (string.IsNullOrEmpty(dexStr)) return "";
-            string clean = dexStr.Replace("#", "").Trim();
-            string basePart = clean.Split('.')[0].Split('_')[0].Split('-')[0];
-            return basePart.TrimStart('0');
-        }
-
-        private void CopyStats(PokedexEntry target, PokedexEntry source)
-        {
-            if (target == null || source == null) return;
-            if (target.Hp == 0)
+            using (var context = new AppDbContext())
             {
-                target.Hp = source.Hp; target.Atk = source.Atk; target.Def = source.Def;
-                target.Spa = source.Spa; target.Spd = source.Spd; target.Spe = source.Spe; target.Bst = source.Bst;
-            }
-            if (string.IsNullOrWhiteSpace(target.Height)) target.Height = source.Height;
-            if (string.IsNullOrWhiteSpace(target.Weight)) target.Weight = source.Weight;
-            bool hasAnyType = target.Types != null && target.Types.Any(t => !string.IsNullOrWhiteSpace(t));
-            if (!hasAnyType) target.Types = source.Types?.ToList() ?? new List<string>();
-            bool hasAnyAbility = target.Abilities != null && target.Abilities.Any(a => !string.IsNullOrWhiteSpace(a));
-            if (!hasAnyAbility) target.Abilities = source.Abilities?.ToList() ?? new List<string>();
-        }
-
-        private void LoadFormsData()
-        {
-            using (var db = new AppDbContext())
-            {
-                var allDbEntries = db.PokedexEntries.ToList();
-                if (string.IsNullOrEmpty(Pokemon.Dex)) return;
-
-                string myBaseDex = ExtractBaseDex(Pokemon.Dex);
-                _allEntriesForThisDex = allDbEntries.Where(p => ExtractBaseDex(p.Dex) == myBaseDex).OrderBy(p => p.Id).ToList();
-
-                var baseForm = _allEntriesForThisDex.FirstOrDefault(p => !p.Dex.Contains(".") && !p.Dex.Contains("_")) ?? _allEntriesForThisDex.FirstOrDefault();
-                _maleForm = _allEntriesForThisDex.FirstOrDefault(p => p.Forms?.ToLower() == "male" || (p.Forms?.ToLower() == "gender" && p.Dex.EndsWith(".1")));
-                _femaleForm = _allEntriesForThisDex.FirstOrDefault(p => p.Forms?.ToLower() == "female" || (p.Forms?.ToLower() == "gender" && p.Dex.EndsWith(".2")));
-
-                if (baseForm != null && baseForm.Hp == 0)
+                var targetPokemon = context.PokedexEntries.FirstOrDefault(p => p.Dex == dex);
+                if (targetPokemon != null)
                 {
-                    var filler = _maleForm ?? _allEntriesForThisDex.FirstOrDefault(p => p.Dex.EndsWith(".1"));
-                    if (filler != null && filler.Hp > 0) CopyStats(baseForm, filler);
+                    Pokemon = targetPokemon;
+                    InitializeData(dex);
                 }
-
-                foreach (var form in _allEntriesForThisDex)
-                {
-                    if (baseForm != null && form != baseForm)
-                    {
-                        if (string.IsNullOrWhiteSpace(form.Name)) form.Name = baseForm.Name;
-                        CopyStats(form, baseForm);
-                    }
-                    if (form.Types != null) form.Types = form.Types.Where(t => !string.IsNullOrWhiteSpace(t)).ToList();
-                    if (!string.IsNullOrEmpty(form.Dex)) form.Dex = form.Dex.Split('.')[0].Split('_')[0].Split('-')[0];
-                }
-
-                _alternateForms = new List<PokedexEntry>();
-                var seenImages = new HashSet<string>();
-
-                foreach (var p in _allEntriesForThisDex)
-                {
-                    string f = p.Forms?.ToLower() ?? "";
-                    bool isGenderSpecific = f == "male" || f == "female" || f == "gender";
-                    bool hasFemaleSuffix = p.Image != null && p.Image.ToLower().Contains("_female");
-
-                    if (isGenderSpecific || hasFemaleSuffix) continue;
-
-                    string img = Path.GetFileName(p.Image?.ToLower().Trim() ?? "");
-                    if (!seenImages.Contains(img))
-                    {
-                        seenImages.Add(img);
-                        _alternateForms.Add(p);
-                    }
-                }
-
-                if (_alternateForms.Count == 0 && baseForm != null) _alternateForms.Add(baseForm);
-                else if (baseForm != null && !_alternateForms.Contains(baseForm)) _alternateForms.Insert(0, baseForm);
-
-                HasMultipleForms = _alternateForms.Count > 1;
-                _currentFormIndex = _alternateForms.FindIndex(p => p.Id == Pokemon.Id);
-                if (_currentFormIndex == -1) _currentFormIndex = 0;
             }
         }
 
-        private bool FormHasShiny(PokedexEntry entry)
+        public void NextEvolutionPath()
         {
-            if (entry == null) return false;
-            bool IsValidStr(string s)
-            {
-                if (string.IsNullOrWhiteSpace(s)) return false;
-                string clean = s.Trim().ToLower();
-                return clean != "null" && clean != "none" && clean != "false" && clean != "0";
-            }
-            return IsValidStr(entry.Shiny) || IsValidStr(entry.FemaleShiny);
+            if (_allEvolutionPaths == null || _allEvolutionPaths.Count <= 1) return;
+            _currentPathIndex = (_currentPathIndex + 1) % _allEvolutionPaths.Count;
+            CurrentEvolutionLine = _allEvolutionPaths[_currentPathIndex];
         }
 
-        private void UpdateVariantsVisibilityForCurrent()
+        public void PreviousEvolutionPath()
         {
-            if (_alternateForms == null || _alternateForms.Count == 0) return;
-            var currentBase = _alternateForms[_currentFormIndex];
-
-            bool hasShiny = FormHasShiny(currentBase);
-            HasShinyVariant = hasShiny;
-            if (!hasShiny && _isShiny) { _isShiny = false; OnPropertyChanged(nameof(IsShiny)); }
-
-            bool hasFemaleCol = !string.IsNullOrWhiteSpace(currentBase.Female) && currentBase.Female.ToLower() != "false" && currentBase.Female != "0";
-            bool hasFemaleRow = _allEntriesForThisDex.Any(p => p.Forms?.ToLower() == "female" || p.Forms?.ToLower() == "gender" || (p.Image?.ToLower().Contains("_female") ?? false));
-            HasFemaleVariant = hasFemaleCol || _femaleForm != null || hasFemaleRow;
-
-            if (!HasFemaleVariant && _isFemale) { _isFemale = false; OnPropertyChanged(nameof(IsFemale)); }
+            if (_allEvolutionPaths == null || _allEvolutionPaths.Count <= 1) return;
+            _currentPathIndex = (_currentPathIndex - 1 + _allEvolutionPaths.Count) % _allEvolutionPaths.Count;
+            CurrentEvolutionLine = _allEvolutionPaths[_currentPathIndex];
         }
 
         private void ApplyGenderForm()
         {
             if (_alternateForms == null || _alternateForms.Count == 0) return;
-            var currentBase = _alternateForms[_currentFormIndex];
 
-            if (IsFemale) Pokemon = (_femaleForm != null && _currentFormIndex == 0) ? _femaleForm : currentBase;
-            else Pokemon = (_currentFormIndex == 0 && _maleForm != null) ? _maleForm : currentBase;
+            var currentForm = _alternateForms[_currentFormIndex];
+            Pokemon = currentForm;
 
-            UpdateDisplayAbilities();
+            DisplayAbilities = new List<string>(Pokemon.Abilities.Where(a => !string.IsNullOrWhiteSpace(a)));
             UpdateDisplayedImage();
+            LoadEvolutionData();
         }
 
-        private void UpdateDisplayAbilities()
+        private bool FormHasShiny(PokedexEntry form) => !string.IsNullOrWhiteSpace(form.Shiny);
+        private bool FormHasFemale(PokedexEntry form) => !string.IsNullOrWhiteSpace(form.Female);
+
+        private void UpdateVariantsVisibilityForCurrent()
         {
-            var list = new List<string>();
-            if (Pokemon != null && Pokemon.Abilities != null)
+            if (_alternateForms == null || _alternateForms.Count == 0) return;
+
+            var currentForm = _alternateForms[_currentFormIndex];
+            HasShinyVariant = FormHasShiny(currentForm);
+            HasFemaleVariant = FormHasFemale(currentForm);
+
+            if (!HasShinyVariant) IsShiny = false;
+            if (!HasFemaleVariant) IsFemale = false;
+
+            HasMegaEvolution = currentForm.Name.Contains("Mega ", StringComparison.OrdinalIgnoreCase) ||
+                               currentForm.Name.Contains("Primal ", StringComparison.OrdinalIgnoreCase);
+
+            HasGigantamax = currentForm.Name.Contains("Gigantamax", StringComparison.OrdinalIgnoreCase) ||
+                            currentForm.Name.Contains("G-Max", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public void GoToNextPokemon()
+        {
+            using (var context = new AppDbContext())
             {
-                for (int i = 0; i < Pokemon.Abilities.Count; i++)
+                string currentDexStr = Pokemon.Dex;
+                var allDexes = context.PokedexEntries.Select(p => p.Dex).Distinct().ToList();
+                var sortedDexes = allDexes.OrderBy(d => { if (double.TryParse(d, out double num)) return num; return 99999; }).ToList();
+
+                int currentIndex = sortedDexes.IndexOf(currentDexStr);
+                if (currentIndex < sortedDexes.Count - 1)
                 {
-                    string ab = Pokemon.Abilities[i];
-                    if (!string.IsNullOrWhiteSpace(ab)) list.Add(i == 2 ? $"{ab} (HA)" : ab);
+                    string nextDexStr = sortedDexes[currentIndex + 1];
+                    var nextPokemon = context.PokedexEntries.FirstOrDefault(p => p.Dex == nextDexStr && (p.Forms == "" || p.Forms == null)) ?? context.PokedexEntries.FirstOrDefault(p => p.Dex == nextDexStr);
+                    if (nextPokemon != null)
+                    {
+                        Pokemon = nextPokemon;
+                        _isShiny = false;
+                        _isFemale = false;
+                        InitializeData();
+                    }
                 }
             }
-            DisplayAbilities = list;
+        }
+
+        public void GoToPreviousPokemon()
+        {
+            using (var context = new AppDbContext())
+            {
+                string currentDexStr = Pokemon.Dex;
+                var allDexes = context.PokedexEntries.Select(p => p.Dex).Distinct().ToList();
+                var sortedDexes = allDexes.OrderBy(d => { if (double.TryParse(d, out double num)) return num; return 99999; }).ToList();
+
+                int currentIndex = sortedDexes.IndexOf(currentDexStr);
+                if (currentIndex > 0)
+                {
+                    string prevDexStr = sortedDexes[currentIndex - 1];
+                    var prevPokemon = context.PokedexEntries.FirstOrDefault(p => p.Dex == prevDexStr && (p.Forms == "" || p.Forms == null)) ?? context.PokedexEntries.FirstOrDefault(p => p.Dex == prevDexStr);
+                    if (prevPokemon != null)
+                    {
+                        Pokemon = prevPokemon;
+                        _isShiny = false;
+                        _isFemale = false;
+                        InitializeData();
+                    }
+                }
+            }
         }
 
         public void NextForm()
@@ -365,6 +418,112 @@ namespace Pokedex.viewmodels
 
             string suffix = IsFemale ? "_female" : "";
             DisplayedImage = $"{(IsShiny ? "assets/pokemon_images/shiny" : "assets/pokemon_images/normal")}/{nameOnly}{suffix}{ext}";
+        }
+    }
+
+    public class EvolutionNode
+    {
+        public string Species { get; set; }
+        public string ImagePath { get; set; }
+        public string TargetDex { get; set; }
+        public bool IsCurrent { get; set; }
+        public bool ShowIncomingArrow { get; set; }
+        public string MinLevel { get; set; }
+        public string Item { get; set; }
+        public string Method { get; set; }
+
+        public string EvoItemImagePath { get; set; }
+        public string EvoConditionText { get; set; }
+        public string EvoToolTip { get; set; }
+
+        public void ProcessarRegrasDeEvolucao(string methodRaw, string item, string condition, int? minLevel)
+        {
+            string imgName = "Lvl_up";
+            string text = "";
+            string toolTip = "";
+
+            string method = (methodRaw ?? "").ToLower();
+            string originalMethod = methodRaw ?? "";
+            item = item ?? "";
+            condition = condition ?? "";
+
+            string extraFromMethod = "";
+            int plusIndex = originalMethod.IndexOf('+');
+            if (plusIndex >= 0 && plusIndex < originalMethod.Length - 1)
+            {
+                extraFromMethod = originalMethod.Substring(plusIndex + 1).Trim();
+            }
+
+            string finalCondition = !string.IsNullOrWhiteSpace(condition) ? condition : extraFromMethod;
+
+            if (method.Contains("use item") || method.Contains("stone"))
+            {
+                imgName = !string.IsNullOrWhiteSpace(item) ? item : "Lvl_up";
+                text = finalCondition;
+            }
+            // ==========================================
+            // NOVA REGRA DE TRADE
+            // ==========================================
+            else if (method.Contains("trade"))
+            {
+                if (!string.IsNullOrWhiteSpace(item))
+                {
+                    imgName = item;
+                    text = "Trade"; // Força a dizer Trade
+                }
+                else if (method.Contains("holding"))
+                {
+                    // Tenta caçar o nome do item mágico no meio da frase "holding [ItemName]"
+                    int holdingIndex = originalMethod.ToLower().IndexOf("holding");
+                    imgName = originalMethod.Substring(holdingIndex + "holding".Length).Trim();
+                    text = "Trade"; // Força a dizer Trade
+                }
+                else
+                {
+                    imgName = "Linking_Cord";
+                    // Se não tiver item, mas tiver outra condição
+                    text = string.IsNullOrWhiteSpace(finalCondition) ? "Trade" : finalCondition;
+                }
+            }
+            // ==========================================
+            else if (method.Contains("level-up") || method.Contains("level up"))
+            {
+                if (!string.IsNullOrWhiteSpace(item))
+                {
+                    imgName = item;
+                    text = string.IsNullOrWhiteSpace(finalCondition) ? "Lv. Up" : finalCondition;
+                }
+                else
+                {
+                    imgName = "Lvl_up";
+                    if (!string.IsNullOrWhiteSpace(finalCondition))
+                        text = finalCondition;
+                    else if (minLevel.HasValue && minLevel.Value > 1)
+                        text = $"Lv. {minLevel.Value}";
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(finalCondition))
+                    text = finalCondition;
+                else if (minLevel.HasValue && minLevel.Value > 1)
+                    text = $"Lv. {minLevel.Value}";
+            }
+
+            toolTip = originalMethod;
+            if (!string.IsNullOrWhiteSpace(item) && !originalMethod.Contains(item, StringComparison.OrdinalIgnoreCase))
+                toolTip += $" ({item})";
+            if (minLevel.HasValue && minLevel.Value > 1 && !toolTip.Contains(minLevel.Value.ToString()))
+                toolTip += $" (Lv. {minLevel.Value})";
+
+            if (!string.IsNullOrWhiteSpace(text) && text.Length > 0)
+                text = char.ToUpper(text[0]) + text.Substring(1);
+
+            imgName = imgName.Replace(" ", "_").Replace("'", "").Replace("é", "e").Replace(":", "") + ".png";
+
+            EvoItemImagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "evolution_itens", imgName);
+            EvoConditionText = text;
+            EvoToolTip = toolTip.Trim();
         }
     }
 }

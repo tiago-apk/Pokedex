@@ -213,4 +213,29 @@ A janela `RegisteredPokemonDetailView` foi o nosso maior desafio e sucesso do di
 
 > **Status Atual:** 🟢 Funcional e Modernizado.
 
+# 🚀 # 📜 Diário de Desenvolvimento - Pokedéx (Sessão 21/02)
+
+## 🗄️ 1. Banco de Dados & Estrutura Base (JSON)
+* **Adição de Movesets:** Integração completa da lista de ataques (`Moves`) de cada espécie no banco de dados, incluindo método de aprendizagem (level-up, machine, etc.) e nível necessário.
+* **Evoluções Complexas:** Estruturação profunda das regras de evolução (`EvolutionDetail`), suportando condições avançadas como "Trade + holding item", evoluções regionais (ex: Galarian Linoone -> Obstagoon) e ramificações divergentes (ex: Pikachu -> Raichu / Alolan Raichu).
+* **Prevenção de Erros (SQLite):** Implementação de proteção contra valores Nulos (`NOT NULL constraint failed`). Textos vazios e propriedades ausentes agora são devidamente traduzidos para strings vazias (`""`) antes de atingir o banco de dados.
+
+## 🛠️ 2. Pokémon Builder (Formulário de Registo)
+* **Correção do Bug do WPF (ComboBox):** Resolução definitiva do problema onde os golpes (`Moves`) selecionados desapareciam visualmente. Implementação de *Binding* via `Text` e proteção de *Thread* via `Dispatcher.InvokeAsync`.
+* **Trava de Validação (Anti-Hack):**
+  * **Level-Up Moves:** O sistema agora bloqueia o registo de Pokémon com ataques que exigem um nível superior ao nível atual selecionado.
+  * **Nível de Evolução:** Implementação de um "Raio-X Genealógico" (Loop recursivo) que varre a árvore evolutiva de trás para a frente. O sistema impede gravar um Pokémon (ex: Charizard) num nível inferior ao nível exigido para evoluir das suas formas anteriores.
+* **Refatoração UI:** Ajustes nas caixas de seleção, cores dinâmicas para ataques e aprimoramento da estabilidade visual do formulário.
+
+## 📖 3. Pokédex Details (Interface de Visualização)
+* **Reestruturação da Linha Evolutiva:**
+  * Implementação de um `ScrollViewer` horizontal para comportar linhas evolutivas massivas (como a do Obstagoon) sem cortar a interface.
+  * Redimensionamento cirúrgico dos ícones dos Pokémon na árvore (de 55 para 45) para otimização de espaço.
+* **Sistema Dinâmico de Ícones e Métodos de Evolução:**
+  * O sistema agora lê a regra de evolução de cada Pokémon e insere imagens miniaturizadas do método na seta (ex: Imagem da `Fire Stone`, `Metal Coat`, `Linking Cord` ou ícone de `Lvl_up`).
+  * Geração inteligente de legendas flutuantes (`ToolTip`) contendo detalhes técnicos (Ex: "level-up + at Alola").
+  * Separação lógica via C# de strings que contenham o modificador `+` ou a palavra `holding`.
+* **Navegação Regional Blindada:** Clicar num Pokémon da árvore evolutiva agora direciona exatamente para a sua variante/forma (ex: Alolan Raichu) e não apenas para a base genética da Pokédex (Raichu Normal).
+* **Badges de Mega Evolução e Gigantamax:** Adição de ícones exclusivos nos cantos superiores da imagem principal, que acendem *apenas* se o utilizador estiver ativamente a visualizar a forma Mega ou G-Max do Pokémon.
+
 *Development by: [Tiago Guerino de Oliveira Bassani] - Projeto C# WPF & SQLite*

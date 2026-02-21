@@ -53,17 +53,129 @@
                 <DropShadowEffect BlurRadius="10" ShadowDepth="0" Opacity="0.3"/>
             </Border.Effect>
 
-            <Grid>
-                <Button Content="‹" HorizontalAlignment="Left" Margin="20,0,0,0" Click="PreviousForm_Click" Style="{StaticResource NavButtonStyle}" Visibility="{Binding HasMultipleForms, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <Image Source="{Binding DisplayedImage, Converter={StaticResource AbsoluteFilePathConverter}}" 
-                       Stretch="Uniform" Margin="50,0" VerticalAlignment="Center" MaxHeight="280">
-                    <Image.Effect>
-                        <DropShadowEffect BlurRadius="20" ShadowDepth="10" Opacity="0.5"/>
-                    </Image.Effect>
-                </Image>
+                <Grid Grid.Row="0">
+                    <Button Content="‹" HorizontalAlignment="Left" Click="PreviousForm_Click" Style="{StaticResource NavButtonStyle}" Visibility="{Binding HasMultipleForms, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-                <Button Content="›" HorizontalAlignment="Right" Margin="0,0,20,0" Click="NextForm_Click" Style="{StaticResource NavButtonStyle}" Visibility="{Binding HasMultipleForms, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image Source="{Binding DisplayedImage, Converter={StaticResource AbsoluteFilePathConverter}}" 
+                               Stretch="Uniform" Margin="50,10" MaxHeight="250">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="20" ShadowDepth="10" Opacity="0.5"/>
+                            </Image.Effect>
+                        </Image>
+
+                        <Image Source="{Binding MegaIconPath}" Width="35" Height="35" 
+                               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="40,15,0,0"
+                               Visibility="{Binding HasMegaEvolution, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               ToolTip="Mega Evolution">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6"/>
+                            </Image.Effect>
+                        </Image>
+
+                        <Image Source="{Binding DynamaxIconPath}" Width="35" Height="35" 
+                               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,15,40,0"
+                               Visibility="{Binding HasGigantamax, Converter={StaticResource BooleanToVisibilityConverter}}"
+                               ToolTip="Gigantamax Form">
+                            <Image.Effect>
+                                <DropShadowEffect BlurRadius="5" ShadowDepth="2" Opacity="0.6"/>
+                            </Image.Effect>
+                        </Image>
+                    </Grid>
+
+                    <Button Content="›" HorizontalAlignment="Right" Click="NextForm_Click" Style="{StaticResource NavButtonStyle}" Visibility="{Binding HasMultipleForms, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                </Grid>
+
+                <TextBlock Grid.Row="1" Text="{Binding Pokemon.Description}" 
+                           Foreground="White" FontSize="14" FontWeight="Medium" 
+                           TextWrapping="Wrap" TextAlignment="Center" Margin="10,15,10,25"
+                           Opacity="0.95"/>
+
+                <StackPanel Grid.Row="2" Margin="0,0,0,10" Visibility="{Binding HasEvolution, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="EVOLUTION PATH" FontSize="11" FontWeight="Bold" Foreground="White" Opacity="0.7" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0" Content="◀" Click="PrevEvoPath_Click" Style="{StaticResource NavButtonStyle}" Width="30" Height="30" FontSize="16"
+                                Visibility="{Binding HasMultipleEvolutionPaths, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                        <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" MaxWidth="300" Margin="5,0">
+                            <ItemsControl ItemsSource="{Binding CurrentEvolutionLine}" HorizontalAlignment="Center">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2,0">
+
+                                            <StackPanel VerticalAlignment="Center" Margin="0,0,12,0" Visibility="{Binding ShowIncomingArrow, Converter={StaticResource BooleanToVisibilityConverter}}" ToolTip="{Binding EvoToolTip}">
+                                                <Image Source="{Binding EvoItemImagePath, Converter={StaticResource AbsoluteFilePathConverter}}" Width="28" Height="28" Stretch="Uniform" HorizontalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality" Margin="0,0,0,4">
+                                                    <Image.Effect>
+                                                        <DropShadowEffect BlurRadius="6" ShadowDepth="2" Opacity="0.6"/>
+                                                    </Image.Effect>
+                                                </Image>
+                                                <TextBlock Text="{Binding EvoConditionText}" FontSize="9" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" TextWrapping="Wrap" MaxWidth="60" TextAlignment="Center" Margin="0,0,0,2"/>
+                                                <TextBlock Text="➔" FontSize="18" Foreground="White" Opacity="0.9" HorizontalAlignment="Center" Margin="0,-4,0,0"/>
+                                            </StackPanel>
+
+                                            <Button Click="EvolutionNode_Click" Tag="{Binding TargetDex}" Background="Transparent" BorderThickness="0" Cursor="Hand">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border x:Name="NodeBorder" Background="Transparent" BorderThickness="2" BorderBrush="Transparent" CornerRadius="12" Padding="4">
+                                                            <StackPanel>
+                                                                <Image Source="{Binding ImagePath, Converter={StaticResource AbsoluteFilePathConverter}}" 
+                                                                       Width="45" Height="45" Stretch="Uniform">
+                                                                    <Image.Effect>
+                                                                        <DropShadowEffect BlurRadius="10" ShadowDepth="3" Opacity="0.5"/>
+                                                                    </Image.Effect>
+                                                                </Image>
+                                                                <TextBlock Text="{Binding Species}" FontWeight="Bold" Foreground="White" FontSize="10" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                                            </StackPanel>
+                                                        </Border>
+
+                                                        <ControlTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                                                <Setter TargetName="NodeBorder" Property="Background" Value="#55FFFFFF"/>
+                                                                <Setter TargetName="NodeBorder" Property="BorderBrush" Value="#FFFFFFFF"/>
+                                                            </DataTrigger>
+                                                            <MultiDataTrigger>
+                                                                <MultiDataTrigger.Conditions>
+                                                                    <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}" Value="True"/>
+                                                                    <Condition Binding="{Binding IsCurrent}" Value="False"/>
+                                                                </MultiDataTrigger.Conditions>
+                                                                <Setter TargetName="NodeBorder" Property="Background" Value="#22FFFFFF"/>
+                                                            </MultiDataTrigger>
+                                                        </ControlTemplate.Triggers>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                            </Button>
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <Button Grid.Column="2" Content="▶" Click="NextEvoPath_Click" Style="{StaticResource NavButtonStyle}" Width="30" Height="30" FontSize="16"
+                                Visibility="{Binding HasMultipleEvolutionPaths, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    </Grid>
+                </StackPanel>
+
             </Grid>
         </Border>
 

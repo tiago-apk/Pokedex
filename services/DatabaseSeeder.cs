@@ -45,9 +45,31 @@ namespace Pokedex.services
             {
                 foreach (var entry in wrapper.Pokedex)
                 {
-                    // AQUI ESTAVA O ERRO!
-                    // Removido o gerador automático de caminhos. 
-                    // Agora o código respeita rigorosamente os dados reais fornecidos pelo JSON.
+                    // =========================================================
+                    // 1. SANITIZAÇÃO DE DESCRIÇÃO (Herança da Forma Base)
+                    // =========================================================
+                    if (string.IsNullOrWhiteSpace(entry.Description) ||
+                        entry.Description.Trim().Equals("description not found", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Se o Dex tem ponto (ex: 003.1), procuramos a base (003)
+                        if (!string.IsNullOrWhiteSpace(entry.Dex) && entry.Dex.Contains("."))
+                        {
+                            string baseDex = entry.Dex.Split('.')[0];
+                            var baseEntry = wrapper.Pokedex.FirstOrDefault(p => p.Dex == baseDex);
+
+                            // Se encontrou a base e ela TEM uma descrição válida, copiamos
+                            if (baseEntry != null &&
+                                !string.IsNullOrWhiteSpace(baseEntry.Description) &&
+                                !baseEntry.Description.Trim().Equals("description not found", StringComparison.OrdinalIgnoreCase))
+                            {
+                                entry.Description = baseEntry.Description;
+                            }
+                        }
+                    }
+
+                    // =========================================================
+                    // 2. SANITIZAÇÃO DE VARIANTES E SHINIES
+                    // =========================================================
 
                     // Sanitização do Shiny
                     if (!string.IsNullOrWhiteSpace(entry.Shiny))
