@@ -3129,12 +3129,11 @@ C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Defense_icon.png
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Dynamax_icon.png
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\HP_icon.png
+C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Megaevolution_icon.png
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Special_Attack_icon.png
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Special_Defense_icon.png
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Speed_icon.png
-C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\data_raw\moves.json
-C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\data_raw\natures.json
-C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\data_raw\pokedex.json
+C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\data_raw\pokedex.db
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\Pokedex.exe
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\Pokedex.deps.json
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\Pokedex.runtimeconfig.json
@@ -3168,8 +3167,11 @@ C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\li
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-musl-riscv64\native\libe_sqlite3.so
+C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-riscv64\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
 C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
@@ -3218,4 +3220,3 @@ C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\refint\Poke
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\Pokedex.pdb
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\Pokedex.genruntimeconfig.cache
 C:\Users\lokic\source\repos\Pokedex\Pokedex\obj\Debug\net8.0-windows\ref\Pokedex.dll
-C:\Users\lokic\source\repos\Pokedex\Pokedex\bin\Debug\net8.0-windows\assets\type_images\stats\Megaevolution_icon.png

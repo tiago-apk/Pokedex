@@ -1,14 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pokedex.models;
-using System.Collections.Generic;
-using System.Text.Json;
 
 namespace Pokedex.data
 {
     public class AppDbContext : DbContext
     {
-        // Tabelas do Banco de Dados
-        public DbSet<PokedexEntry> PokedexEntries { get; set; }
+        // Tabelas Principais do Pokémon
+        public DbSet<Pokemon> Pokemons { get; set; }
+        public DbSet<PokemonType> PokemonTypes { get; set; }
+        public DbSet<PokemonAbility> PokemonAbilities { get; set; }
+        public DbSet<PokemonMove> PokemonMoves { get; set; }
+        public DbSet<PokemonEggGroup> PokemonEggGroups { get; set; }
+        public DbSet<Evolution> Evolutions { get; set; }
+        public DbSet<CosmeticForm> CosmeticForms { get; set; }
+        public DbSet<LocalDex> LocalDexes { get; set; }
+        public DbSet<PokedexDescription> PokedexDescriptions { get; set; }
+
+        // Tabelas Adicionais (Que já tinhas no teu projeto)
         public DbSet<Move> Moves { get; set; }
         public DbSet<Nature> Natures { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
@@ -16,65 +24,61 @@ namespace Pokedex.data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Define o arquivo físico do banco de dados SQLite
-            optionsBuilder.UseSqlite("Data Source=pokedex.db");
+            // Pega o caminho base de onde o programa está a correr (a pasta bin/Debug...)
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Junta o caminho com a tua pasta "data_raw"
+            string dbPath = System.IO.Path.Combine(baseDir, "data_raw", "pokedex.db");
+
+            // Diz ao SQLite para usar esse caminho exato
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
+            optionsBuilder.UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // --- Configurações para PokedexEntry ---
+            // --- Configuração das Chaves Primárias Compostas ---
+            modelBuilder.Entity<PokemonType>()
+                .HasKey(pt => new { pt.PokemonId, pt.TypeName });
 
-            // Converte a List<string> para String (JSON) para o SQLite
-            modelBuilder.Entity<PokedexEntry>()
-                .Property(p => p.Types)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
-                );
+            modelBuilder.Entity<PokemonAbility>()
+                .HasKey(pa => new { pa.PokemonId, pa.AbilityName });
 
-            // Converte a List<string> de Abilities para String (JSON)
-            modelBuilder.Entity<PokedexEntry>()
-                .Property(p => p.Abilities)
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null)
-                );
+            modelBuilder.Entity<PokemonEggGroup>()
+                .HasKey(pe => new { pe.PokemonId, pe.EggGroupName });
 
-            // Salva o Enum Forms como String no banco
-            modelBuilder.Entity<PokedexEntry>()
-                .Property(p => p.Forms)
-                .HasConversion<string>();
+            // --- Configuração das Relações (Foreign Keys) ---
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.Types).WithOne(pt => pt.Pokemon).HasForeignKey(pt => pt.PokemonId);
 
-            // =========================================================
-            // NOVAS CONVERSÕES PARA DADOS COMPLEXOS DA POKEAPI
-            // =========================================================
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.Abilities).WithOne(pa => pa.Pokemon).HasForeignKey(pa => pa.PokemonId);
 
-            modelBuilder.Entity<PokedexEntry>()
-                .Property(p => p.Evolution)
-                .IsRequired(false) // <-- ADICIONA ISTO PARA PERMITIR NULOS
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<EvolutionData>(v, (JsonSerializerOptions)null)
-                );
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.Descriptions).WithOne(pd => pd.Pokemon).HasForeignKey(pd => pd.PokemonId);
 
-            // CORREÇÃO AQUI: Mudado de Dictionary para List<MoveData>
-            modelBuilder.Entity<PokedexEntry>()
-                .Property(p => p.Moves)
-                .IsRequired(false) // <-- ADICIONA ISTO PARA PERMITIR NULOS
-                .HasConversion(
-                    v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
-                    v => JsonSerializer.Deserialize<List<MoveData>>(v, (JsonSerializerOptions)null)
-                );
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.Moves).WithOne(pm => pm.Pokemon).HasForeignKey(pm => pm.PokemonId);
 
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.EggGroups).WithOne(pe => pe.Pokemon).HasForeignKey(pe => pe.PokemonId);
 
-            // --- Configurações para Move ---
-            modelBuilder.Entity<Move>().Property(m => m.Type).HasConversion<string>();
-            modelBuilder.Entity<Move>().Property(m => m.Accuracy).HasConversion<string>();
-            modelBuilder.Entity<Move>().Property(m => m.Gen).HasConversion<string>();
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.CosmeticForms).WithOne(cf => cf.Pokemon).HasForeignKey(cf => cf.PokemonId);
 
-            // --- Configurações para Nature ---
-            modelBuilder.Entity<Nature>().Property(n => n.Increase).HasConversion<string>();
-            modelBuilder.Entity<Nature>().Property(n => n.Decrease).HasConversion<string>();
+            modelBuilder.Entity<Pokemon>()
+                .HasMany(p => p.LocalDexes).WithOne(ld => ld.Pokemon).HasForeignKey(ld => ld.PokemonId);
+
+            // A tabela de evoluções tem DUAS chaves estrangeiras para a mesma tabela (Pokemon)
+            modelBuilder.Entity<Evolution>()
+                .HasOne(e => e.FromPokemon)
+                .WithMany(p => p.EvolvesTo)
+                .HasForeignKey(e => e.FromPokemonId);
+
+            modelBuilder.Entity<Evolution>()
+                .HasOne(e => e.ToPokemon)
+                .WithMany(p => p.EvolvesFrom)
+                .HasForeignKey(e => e.ToPokemonId);
 
             base.OnModelCreating(modelBuilder);
         }

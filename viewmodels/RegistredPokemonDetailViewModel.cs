@@ -4,8 +4,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging; // ➔ ADICIONADO PARA LER A IMAGEM
 using Pokedex.data;
 using Pokedex.models;
 
@@ -13,11 +13,17 @@ namespace Pokedex.viewmodels
 {
     public enum StatDisplayMode { Calculated, IV, EV }
 
+    public class DexInfoWrapper
+    {
+        public string Dex { get; set; }
+    }
+
     public class RegisteredPokemonDetailViewModel : INotifyPropertyChanged
     {
         private StatDisplayMode _currentMode = StatDisplayMode.Calculated;
         private int _currentPokemonId;
-        private int _trainerId;
+        private string _trainerId;
+        private Pokemon _basePokemon;
 
         public int? PreviousId { get; private set; }
         public int? NextId { get; private set; }
@@ -32,238 +38,256 @@ namespace Pokedex.viewmodels
             {
                 _pokemon = value;
                 OnPropertyChanged();
-                // Avisamos a Janela que estas informações formatadas também mudaram!
-                OnPropertyChanged(nameof(DisplayNickname));
-                OnPropertyChanged(nameof(HeaderTitle));
-                OnPropertyChanged(nameof(DisplayMove1));
-                OnPropertyChanged(nameof(DisplayMove2));
-                OnPropertyChanged(nameof(DisplayMove3));
-                OnPropertyChanged(nameof(DisplayMove4));
+                RefreshAll();
             }
         }
 
-        private PokedexEntry _baseDex;
-        public PokedexEntry BaseDex
-        {
-            get => _baseDex;
-            set { _baseDex = value; OnPropertyChanged(); }
-        }
+        // ==========================================
+        // PROPRIEDADES VISUAIS (IMAGENS E TEXTOS)
+        // ==========================================
+        public DexInfoWrapper BaseDex => new DexInfoWrapper { Dex = _basePokemon?.NationalDex?.ToString("D4") ?? "???" };
 
-        private Nature _natureDb;
-
-        // =========================================================
-        // PROPRIEDADES FORMATADAS PARA A TELA (RESOLVEM OS ERROS)
-        // =========================================================
-        public string DisplayNickname => Pokemon != null && !string.IsNullOrWhiteSpace(Pokemon.Nickname) ? Pokemon.Nickname : Pokemon?.Form;
-
-        public string HeaderTitle => Pokemon != null ? $"{Pokemon.TrainerName.ToUpper()}'S POKÉMON" : "P O K É M O N   S T A T U S";
-
-        public string DisplayMove1 => string.IsNullOrWhiteSpace(Pokemon?.Move1) ? "-" : Pokemon.Move1;
-        public string DisplayMove2 => string.IsNullOrWhiteSpace(Pokemon?.Move2) ? "-" : Pokemon.Move2;
-        public string DisplayMove3 => string.IsNullOrWhiteSpace(Pokemon?.Move3) ? "-" : Pokemon.Move3;
-        public string DisplayMove4 => string.IsNullOrWhiteSpace(Pokemon?.Move4) ? "-" : Pokemon.Move4;
-
-        // Propriedade que envia a Imagem já renderizada para a Janela
-        private ImageSource _pokemonImageSource;
-        public ImageSource PokemonImageSource
-        {
-            get => _pokemonImageSource;
-            set { _pokemonImageSource = value; OnPropertyChanged(); }
-        }
-
-        private string _chartTitle = "CALCULATED STATS";
-        public string ChartTitle { get => _chartTitle; set { _chartTitle = value; OnPropertyChanged(); } }
-
-        private Brush _chartFillColor;
-        public Brush ChartFillColor { get => _chartFillColor; set { _chartFillColor = value; OnPropertyChanged(); } }
-
-        private Brush _chartStrokeColor;
-        public Brush ChartStrokeColor { get => _chartStrokeColor; set { _chartStrokeColor = value; OnPropertyChanged(); } }
-
-        private string _hexagonPointsString;
-        public string HexagonPointsString { get => _hexagonPointsString; set { _hexagonPointsString = value; OnPropertyChanged(); } }
-
-        public ObservableCollection<StatPoint> AllStats { get; set; }
-
-        public RegisteredPokemonDetailViewModel(int pokemonId, int trainerId)
-        {
-            _currentPokemonId = pokemonId;
-            _trainerId = trainerId;
-            AllStats = new ObservableCollection<StatPoint>();
-
-            LoadPokemonData();
-        }
-
-        private string _imagePath;
         public string ImagePath
         {
-            get => _imagePath;
-            set { _imagePath = value; OnPropertyChanged(); }
+            get
+            {
+                if (Pokemon == null || _basePokemon == null) return null;
+                return (Pokemon.IsShiny && !string.IsNullOrWhiteSpace(_basePokemon.ImageShiny))
+                        ? _basePokemon.ImageShiny
+                        : _basePokemon.ImageNormal;
+            }
         }
 
-        public void LoadPokemonData()
+        public string DisplayNickname => !string.IsNullOrWhiteSpace(Pokemon?.Nickname) ? Pokemon.Nickname : Pokemon?.PokemonId;
+        public string HeaderTitle => $"{DisplayNickname} (Nív. {Pokemon?.Level})";
+        public string DisplayMove1 => Pokemon?.Move1 ?? "---";
+        public string DisplayMove2 => Pokemon?.Move2 ?? "---";
+        public string DisplayMove3 => Pokemon?.Move3 ?? "---";
+        public string DisplayMove4 => Pokemon?.Move4 ?? "---";
+
+        // ==========================================
+        // PROPRIEDADES DO GRÁFICO (CHART BINDINGS)
+        // ==========================================
+        public ObservableCollection<StatItemViewModel> AllStats { get; set; } = new ObservableCollection<StatItemViewModel>();
+
+        public string ChartTitle => _currentMode switch
+        {
+            StatDisplayMode.IV => "Individual Values (IVs)",
+            StatDisplayMode.EV => "Effort Values (EVs)",
+            _ => "Pokemon Stats"
+        };
+
+        public Brush ChartFillColor => _currentMode switch
+        {
+            StatDisplayMode.IV => new SolidColorBrush(Color.FromArgb(120, 156, 39, 176)),
+            StatDisplayMode.EV => new SolidColorBrush(Color.FromArgb(120, 255, 152, 0)),
+            _ => new SolidColorBrush(Color.FromArgb(120, 33, 150, 243))
+        };
+
+        public Brush ChartStrokeColor => _currentMode switch
+        {
+            StatDisplayMode.IV => Brushes.Purple,
+            StatDisplayMode.EV => Brushes.DarkOrange,
+            _ => Brushes.DodgerBlue
+        };
+
+        public PointCollection HexagonPointsString
+        {
+            get
+            {
+                var points = new PointCollection();
+                if (AllStats == null || AllStats.Count < 6) return points;
+
+                // ==========================================================
+                // AS COORDENADAS EXATAS DO TEU XAML!
+                // O teu Grid tem 280x280 e a teia de fundo cruza-se em 140,140
+                // ==========================================================
+                double centerX = 140;
+                double centerY = 140;
+                double maxRadius = 100; // A ponta mais extrema da tua teia no XAML
+                double minRadius = 0;   // Fica colado ao centro se o EV for 0
+
+                // Mantém o gráfico dentro dos limites lógicos
+                double maxVal = _currentMode switch
+                {
+                    StatDisplayMode.IV => 31,
+                    StatDisplayMode.EV => 252,
+                    _ => Math.Max(150, AllStats.Max(s => s.NumericValue))
+                };
+
+                // Ordem EXATA dos pontos no teu XAML para alinhar com os teus TextBlocks:
+                // 0: HP (Cima -> -90º ou 270º)
+                // 1: Attack (Dir. Cima -> -30º ou 330º)
+                // 2: Defense (Dir. Baixo -> 30º)
+                // 5: Speed (Baixo -> 90º)
+                // 4: Sp. Def (Esq. Baixo -> 150º)
+                // 3: Sp. Atk (Esq. Cima -> 210º)
+                int[] drawOrder = { 0, 1, 2, 5, 4, 3 };
+                double[] angles = { 270, 330, 30, 90, 150, 210 };
+
+                for (int i = 0; i < 6; i++)
+                {
+                    int statIndex = drawOrder[i];
+                    double val = AllStats[statIndex].NumericValue;
+
+                    double r = (val / maxVal) * maxRadius;
+                    if (r > maxRadius) r = maxRadius;
+                    if (r < minRadius) r = minRadius;
+
+                    // Matemática do WPF para encontrar os pontos X,Y
+                    double rad = angles[i] * Math.PI / 180.0;
+                    double x = centerX + r * Math.Cos(rad);
+                    double y = centerY + r * Math.Sin(rad);
+
+                    points.Add(new Point(x, y));
+                }
+                return points;
+            }
+        }
+
+        // ==========================================
+        // CONSTRUTOR E CARREGAMENTO
+        // ==========================================
+        public RegisteredPokemonDetailViewModel(int id, string trainerId)
+        {
+            _currentPokemonId = id;
+            _trainerId = trainerId;
+            LoadPokemon(id);
+        }
+
+        public void LoadPokemon(int id)
         {
             using (var db = new AppDbContext())
             {
-                Pokemon = db.RegisteredPokemons.FirstOrDefault(p => p.Id == _currentPokemonId);
+                // REMOVIDO O INCLUDE QUE DAVA ERRO AQUI!
+                Pokemon = db.RegisteredPokemons
+                            .FirstOrDefault(p => p.Id == id);
+
                 if (Pokemon == null) return;
 
-                BaseDex = db.PokedexEntries.FirstOrDefault(d => d.Name == Pokemon.Form);
-                _natureDb = db.Natures.FirstOrDefault(n => n.Name == Pokemon.Nature);
+                _basePokemon = db.Pokemons.FirstOrDefault(p => p.Id == Pokemon.PokemonId);
 
-                LoadNavigationIds(db);
-            }
-
-            // ➔ CORREÇÃO DA IMAGEM: Apenas enviamos a string do caminho!
-            if (BaseDex != null)
-            {
-                ImagePath = Pokemon.IsShiny && !string.IsNullOrWhiteSpace(BaseDex.Shiny) ? BaseDex.Shiny : BaseDex.Image;
-            }
-
-            AllStats.Clear();
-            AllStats.Add(new StatPoint("HP", BaseDex?.Hp ?? 0, Pokemon.IvHp, Pokemon.EvHp, Pokemon.Level, _natureDb, _currentMode));
-            AllStats.Add(new StatPoint("Attack", BaseDex?.Atk ?? 0, Pokemon.IvAtk, Pokemon.EvAtk, Pokemon.Level, _natureDb, _currentMode));
-            AllStats.Add(new StatPoint("Defense", BaseDex?.Def ?? 0, Pokemon.IvDef, Pokemon.EvDef, Pokemon.Level, _natureDb, _currentMode));
-            AllStats.Add(new StatPoint("Sp. Atk", BaseDex?.Spa ?? 0, Pokemon.IvSpa, Pokemon.EvSpa, Pokemon.Level, _natureDb, _currentMode));
-            AllStats.Add(new StatPoint("Sp. Def", BaseDex?.Spd ?? 0, Pokemon.IvSpd, Pokemon.EvSpd, Pokemon.Level, _natureDb, _currentMode));
-            AllStats.Add(new StatPoint("Speed", BaseDex?.Spe ?? 0, Pokemon.IvSpe, Pokemon.EvSpe, Pokemon.Level, _natureDb, _currentMode));
-
-            UpdateColors();
-            CalculatePolygonPoints();
-        }
-
-        private void LoadNavigationIds(AppDbContext db)
-        {
-            var trainerPokemonIds = db.RegisteredPokemons
+                var allForTrainer = db.RegisteredPokemons
                                       .Where(p => p.TrainerId == _trainerId)
                                       .OrderBy(p => p.Id)
                                       .Select(p => p.Id)
                                       .ToList();
 
-            int currentIndex = trainerPokemonIds.IndexOf(_currentPokemonId);
-            PreviousId = currentIndex > 0 ? trainerPokemonIds[currentIndex - 1] : (int?)null;
-            NextId = currentIndex >= 0 && currentIndex < trainerPokemonIds.Count - 1 ? trainerPokemonIds[currentIndex + 1] : (int?)null;
+                int index = allForTrainer.IndexOf(id);
+                PreviousId = index > 0 ? allForTrainer[index - 1] : (int?)null;
+                NextId = index < allForTrainer.Count - 1 ? allForTrainer[index + 1] : (int?)null;
+
+                RefreshAll();
+            }
         }
+
+        public void PreviousPokemon() { if (HasPrevious) LoadPokemon(PreviousId.Value); }
+        public void NextPokemon() { if (HasNext) LoadPokemon(NextId.Value); }
 
         public void ToggleStatsMode()
         {
-            _currentMode = _currentMode switch
-            {
-                StatDisplayMode.Calculated => StatDisplayMode.EV,
-                StatDisplayMode.EV => StatDisplayMode.IV,
-                StatDisplayMode.IV => StatDisplayMode.Calculated,
-                _ => StatDisplayMode.Calculated
-            };
-
-            ChartTitle = _currentMode switch
-            {
-                StatDisplayMode.Calculated => "CALCULATED STATS",
-                StatDisplayMode.IV => "INDIVIDUAL VALUES (IVs)",
-                StatDisplayMode.EV => "EFFORT VALUES (EVs)",
-                _ => "STATS"
-            };
-
-            foreach (var stat in AllStats) stat.Mode = _currentMode;
-
-            UpdateColors();
-            CalculatePolygonPoints();
+            if (_currentMode == StatDisplayMode.Calculated) SwitchMode(StatDisplayMode.IV);
+            else if (_currentMode == StatDisplayMode.IV) SwitchMode(StatDisplayMode.EV);
+            else SwitchMode(StatDisplayMode.Calculated);
         }
 
-        private void UpdateColors()
+        public void SwitchMode(StatDisplayMode mode)
         {
-            var converter = new BrushConverter();
-            switch (_currentMode)
+            _currentMode = mode;
+            UpdateStats();
+        }
+
+        private void RefreshAll()
+        {
+            OnPropertyChanged(nameof(DisplayNickname));
+            OnPropertyChanged(nameof(HeaderTitle));
+            OnPropertyChanged(nameof(DisplayMove1));
+            OnPropertyChanged(nameof(DisplayMove2));
+            OnPropertyChanged(nameof(DisplayMove3));
+            OnPropertyChanged(nameof(DisplayMove4));
+            OnPropertyChanged(nameof(HasPrevious));
+            OnPropertyChanged(nameof(HasNext));
+            OnPropertyChanged(nameof(BaseDex));
+            OnPropertyChanged(nameof(ImagePath));
+
+            UpdateStats();
+        }
+
+        private void UpdateStats()
+        {
+            if (Pokemon == null) return;
+
+            using (var db = new AppDbContext())
             {
-                case StatDisplayMode.Calculated:
-                    ChartFillColor = (SolidColorBrush)converter.ConvertFromString("#B39DDB"); // Deep Purple 200
-                    ChartStrokeColor = (SolidColorBrush)converter.ConvertFromString("#651FFF"); // Deep Purple A400
-                    break;
-                case StatDisplayMode.EV:
-                    ChartFillColor = (SolidColorBrush)converter.ConvertFromString("#80DEEA"); // Cyan 200
-                    ChartStrokeColor = (SolidColorBrush)converter.ConvertFromString("#00E5FF"); // Cyan A400
-                    break;
-                case StatDisplayMode.IV:
-                    ChartFillColor = (SolidColorBrush)converter.ConvertFromString("#FFCC80"); // Orange 200
-                    ChartStrokeColor = (SolidColorBrush)converter.ConvertFromString("#FF9100"); // Orange A400
-                    break;
+                var nature = db.Natures.FirstOrDefault(n => n.Name == Pokemon.Nature);
+
+                AllStats.Clear();
+                AllStats.Add(new StatItemViewModel("HP", _basePokemon?.Hp ?? 0, Pokemon.IvHp, Pokemon.EvHp, Pokemon.Level, "hp", nature, _currentMode));
+                AllStats.Add(new StatItemViewModel("Atk", _basePokemon?.Attack ?? 0, Pokemon.IvAtk, Pokemon.EvAtk, Pokemon.Level, "attack", nature, _currentMode));
+                AllStats.Add(new StatItemViewModel("Def", _basePokemon?.Defense ?? 0, Pokemon.IvDef, Pokemon.EvDef, Pokemon.Level, "defense", nature, _currentMode));
+                AllStats.Add(new StatItemViewModel("Sp. Atk", _basePokemon?.SpAtk ?? 0, Pokemon.IvSpa, Pokemon.EvSpa, Pokemon.Level, "special attack", nature, _currentMode));
+                AllStats.Add(new StatItemViewModel("Sp. Def", _basePokemon?.SpDef ?? 0, Pokemon.IvSpd, Pokemon.EvSpd, Pokemon.Level, "special defense", nature, _currentMode));
+                AllStats.Add(new StatItemViewModel("Spe", _basePokemon?.Speed ?? 0, Pokemon.IvSpe, Pokemon.EvSpe, Pokemon.Level, "speed", nature, _currentMode));
+
+                OnPropertyChanged(nameof(ChartTitle));
+                OnPropertyChanged(nameof(ChartFillColor));
+                OnPropertyChanged(nameof(ChartStrokeColor));
+                OnPropertyChanged(nameof(HexagonPointsString));
             }
         }
-
-        private void CalculatePolygonPoints()
-        {
-            double centerX = 140, centerY = 140, maxRadius = 100;
-            double maxVal = _currentMode switch { StatDisplayMode.Calculated => 500.0, StatDisplayMode.EV => 255.0, StatDisplayMode.IV => 31.0, _ => 100.0 };
-
-            var points = new List<System.Windows.Point>();
-            double[] angles = { 270, 330, 30, 90, 150, 210 };
-
-            for (int i = 0; i < 6; i++)
-            {
-                double val = _currentMode switch { StatDisplayMode.Calculated => AllStats[i].FinalStat, StatDisplayMode.EV => AllStats[i].EV, StatDisplayMode.IV => AllStats[i].IV, _ => 0 };
-                double ratio = Math.Max(0, Math.Min(1.0, val / maxVal));
-
-                double r = maxRadius * ratio;
-                double rad = angles[i] * Math.PI / 180.0;
-                points.Add(new System.Windows.Point(centerX + r * Math.Cos(rad), centerY + r * Math.Sin(rad)));
-            }
-            HexagonPointsString = string.Join(" ", points.Select(p => $"{p.X.ToString(System.Globalization.CultureInfo.InvariantCulture)},{p.Y.ToString(System.Globalization.CultureInfo.InvariantCulture)}"));
-        }
-
-        public void NextPokemon() { if (HasNext) { _currentPokemonId = NextId.Value; LoadPokemonData(); } }
-        public void PreviousPokemon() { if (HasPrevious) { _currentPokemonId = PreviousId.Value; LoadPokemonData(); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    public class StatPoint : INotifyPropertyChanged
+    public class StatItemViewModel : INotifyPropertyChanged
     {
         public string Name { get; set; }
-        public int BaseStat { get; set; }
-        public int IV { get; set; }
-        public int EV { get; set; }
-        public int FinalStat { get; set; }
+        public int NumericValue { get; set; }
+        public string DisplayValue => NumericValue.ToString();
         public string NatureSymbol { get; set; }
-        public Brush SymbolColor { get; set; }
+        public SolidColorBrush SymbolColor { get; set; }
 
-        private StatDisplayMode _mode;
-        public StatDisplayMode Mode
+        public StatItemViewModel(string name, int @base, int iv, int ev, int level, string target, Nature natureDb, StatDisplayMode mode)
         {
-            get => _mode;
-            set { _mode = value; OnPropertyChanged(nameof(DisplayValue)); }
-        }
-
-        public string DisplayValue => _mode switch { StatDisplayMode.Calculated => FinalStat.ToString(), StatDisplayMode.IV => IV.ToString(), StatDisplayMode.EV => EV.ToString(), _ => "" };
-
-        public StatPoint(string name, int baseStat, int iv, int ev, int level, Nature natureDb, StatDisplayMode initialMode)
-        {
-            Name = name; BaseStat = baseStat; IV = iv; EV = ev; _mode = initialMode;
-            CalculateFinalStat(level, natureDb);
+            Name = name;
+            Calculate(@base, iv, ev, level, target, natureDb, mode);
             SetNatureSymbols(natureDb);
         }
 
-        private void CalculateFinalStat(int level, Nature natureDb)
+        private void Calculate(int @base, int iv, int ev, int level, string target, Nature natureDb, StatDisplayMode mode)
         {
-            if (Name == "HP") FinalStat = (int)Math.Floor((2 * BaseStat + IV + Math.Floor(EV / 4.0)) * level / 100.0) + level + 10;
+            if (mode == StatDisplayMode.IV) { NumericValue = iv; }
+            else if (mode == StatDisplayMode.EV) { NumericValue = ev; }
             else
             {
-                double statBeforeNature = Math.Floor((2 * BaseStat + IV + Math.Floor(EV / 4.0)) * level / 100.0) + 5;
                 double natureMod = 1.0;
-                if (natureDb != null)
+                int statBeforeNature;
+
+                if (Name == "HP")
                 {
-                    string target = Name.ToLower() == "sp. atk" ? "special attack" : Name.ToLower() == "sp. def" ? "special defense" : Name.ToLower();
-                    string inc = natureDb.Increase?.ToLower() ?? "";
-                    string dec = natureDb.Decrease?.ToLower() ?? "";
+                    statBeforeNature = (int)Math.Floor((double)((2 * @base + iv + (ev / 4)) * level) / 100) + level + 10;
+                }
+                else
+                {
+                    statBeforeNature = (int)Math.Floor((double)((2 * @base + iv + (ev / 4)) * level) / 100) + 5;
+                    string inc = natureDb?.Increase?.ToLower() ?? "";
+                    string dec = natureDb?.Decrease?.ToLower() ?? "";
                     if (inc.Contains(target)) natureMod = 1.1; else if (dec.Contains(target)) natureMod = 0.9;
                 }
-                FinalStat = (int)Math.Floor(statBeforeNature * natureMod);
+                NumericValue = (int)Math.Floor(statBeforeNature * natureMod);
             }
         }
 
         private void SetNatureSymbols(Nature natureDb)
         {
             if (natureDb == null || Name == "HP") { NatureSymbol = ""; return; }
-            string target = Name.ToLower() == "sp. atk" ? "special attack" : Name.ToLower() == "sp. def" ? "special defense" : Name.ToLower();
+            string target = Name.ToLower() switch
+            {
+                "sp. atk" => "special attack",
+                "sp. def" => "special defense",
+                _ => Name.ToLower()
+            };
             string inc = natureDb.Increase?.ToLower() ?? "";
             string dec = natureDb.Decrease?.ToLower() ?? "";
 

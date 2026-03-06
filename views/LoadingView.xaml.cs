@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using Pokedex.data;
-using Pokedex.services;
 
 namespace Pokedex.views
 {
@@ -18,16 +18,19 @@ namespace Pokedex.views
         {
             try
             {
-                // Task.Run para processar o banco sem travar a interface
+                // Task.Run para aquecer o banco sem travar a animação da interface
                 await Task.Run(() =>
                 {
                     using (var db = new AppDbContext())
                     {
-                        DatabaseSeeder.Initialize(db);
+                        // "Aquece" o Entity Framework fazendo a primeira consulta (MUITO mais rápido que o Seeder antigo)
+                        bool isDbAlive = db.Pokemons.Any();
                     }
                 });
 
-                await Task.Delay(5000); // Pausa breve para feedback visual
+                // Baixei a pausa de 5000 (5 segundos) para 1500 (1.5 segundos)
+                // Isto é apenas para o utilizador ver a tua animação bonita da Pokébola antes de abrir a app!
+                await Task.Delay(1500);
 
                 MainWindow main = new MainWindow();
                 main.Show();
@@ -35,7 +38,7 @@ namespace Pokedex.views
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erro ao carregar dados: {ex.Message}");
+                MessageBox.Show($"Database connection error: {ex.Message}\nCheck if pokedex.db is in the correct folder.", "Loading Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 this.Close();
             }
         }

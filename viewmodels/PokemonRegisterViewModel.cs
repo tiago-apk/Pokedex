@@ -1,16 +1,15 @@
-﻿using Pokedex.data;
+﻿using Microsoft.EntityFrameworkCore;
+using Pokedex.data;
 using Pokedex.models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Diagnostics;
 
 namespace Pokedex.viewmodels
 {
-    // ==========================================
-    // CLASSE AUXILIAR PARA MOVES NA UI
-    // ==========================================
     public class MoveOption
     {
         public string Name { get; set; }
@@ -20,523 +19,207 @@ namespace Pokedex.viewmodels
     public class PokemonRegisterViewModel : BaseViewModel
     {
         // ==========================================
-        // LISTAS E COMBOBOXES
+        // LISTAS (ITEMS SOURCE)
         // ==========================================
-        public ObservableCollection<Trainer> Trainers { get; set; }
-        public ObservableCollection<Nature> Natures { get; set; }
+        public ObservableCollection<Trainer> Trainers { get; set; } = new ObservableCollection<Trainer>();
+        public ObservableCollection<Nature> Natures { get; set; } = new ObservableCollection<Nature>();
+        public ObservableCollection<Pokemon> FilteredSpecies { get; set; } = new ObservableCollection<Pokemon>();
+        public ObservableCollection<Pokemon> AvailableForms { get; set; } = new ObservableCollection<Pokemon>();
+        public ObservableCollection<string> AvailableAbilities { get; set; } = new ObservableCollection<string>();
 
-        private ObservableCollection<PokedexEntry> _filteredSpecies;
-        public ObservableCollection<PokedexEntry> FilteredSpecies { get => _filteredSpecies; set { _filteredSpecies = value; OnPropertyChanged(); } }
-
-        private ObservableCollection<PokedexEntry> _availableForms;
-        public ObservableCollection<PokedexEntry> AvailableForms { get => _availableForms; set { _availableForms = value; OnPropertyChanged(); } }
-
-        private ObservableCollection<string> _availableAbilities;
-        public ObservableCollection<string> AvailableAbilities { get => _availableAbilities; set { _availableAbilities = value; OnPropertyChanged(); } }
-
-        // ==========================================
-        // LISTAS DE MOVES INTELIGENTES (Com Destaque)
-        // ==========================================
-        private List<string> _baseTrainerMoves = new List<string>(); // Guarda todos os golpes permitidos para a Geração do Treinador
-
-        private ObservableCollection<MoveOption> _availableMoves1;
-        public ObservableCollection<MoveOption> AvailableMoves1 { get => _availableMoves1; set { _availableMoves1 = value; OnPropertyChanged(); } }
-
-        private ObservableCollection<MoveOption> _availableMoves2;
-        public ObservableCollection<MoveOption> AvailableMoves2 { get => _availableMoves2; set { _availableMoves2 = value; OnPropertyChanged(); } }
-
-        private ObservableCollection<MoveOption> _availableMoves3;
-        public ObservableCollection<MoveOption> AvailableMoves3 { get => _availableMoves3; set { _availableMoves3 = value; OnPropertyChanged(); } }
-
-        private ObservableCollection<MoveOption> _availableMoves4;
-        public ObservableCollection<MoveOption> AvailableMoves4 { get => _availableMoves4; set { _availableMoves4 = value; OnPropertyChanged(); } }
+        public ObservableCollection<MoveOption> AvailableMoves1 { get; set; } = new ObservableCollection<MoveOption>();
+        public ObservableCollection<MoveOption> AvailableMoves2 { get; set; } = new ObservableCollection<MoveOption>();
+        public ObservableCollection<MoveOption> AvailableMoves3 { get; set; } = new ObservableCollection<MoveOption>();
+        public ObservableCollection<MoveOption> AvailableMoves4 { get; set; } = new ObservableCollection<MoveOption>();
 
         // ==========================================
-        // PROPRIEDADES DE SELEÇÃO
+        // PROPRIEDADES SELECIONADAS (BINDINGS)
         // ==========================================
         private Trainer _selectedTrainer;
-        public Trainer SelectedTrainer
-        {
-            get => _selectedTrainer;
-            set { _selectedTrainer = value; OnPropertyChanged(); ApplyTrainerRules(); }
-        }
+        public Trainer SelectedTrainer { get => _selectedTrainer; set { _selectedTrainer = value; OnPropertyChanged(); ApplyTrainerRules(); } }
 
-        private PokedexEntry _selectedBasePokemon;
-        public PokedexEntry SelectedBasePokemon
-        {
-            get => _selectedBasePokemon;
-            set { _selectedBasePokemon = value; OnPropertyChanged(); FilterForms(); }
-        }
+        private Pokemon _selectedBasePokemon;
+        public Pokemon SelectedBasePokemon { get => _selectedBasePokemon; set { _selectedBasePokemon = value; OnPropertyChanged(); UpdateForms(); } }
 
-        private PokedexEntry _selectedForm;
-        public PokedexEntry SelectedForm
-        {
-            get => _selectedForm;
-            set
-            {
-                _selectedForm = value;
-                OnPropertyChanged();
-                LoadBaseStats();
-                LoadAbilities();
-                UpdateMoveLists();
-            }
-        }
+        private Pokemon _selectedForm;
+        public Pokemon SelectedForm { get => _selectedForm; set { _selectedForm = value; OnPropertyChanged(); UpdateAbilitiesAndMoves(); } }
 
-        private Nature _selectedNature;
-        public Nature SelectedNature
-        {
-            get => _selectedNature;
-            set { _selectedNature = value; OnPropertyChanged(); RecalculateAll(); }
-        }
-
-        // ==========================================
-        // CAMPOS DE TEXTO E CONFIGURAÇÕES BÁSICAS
-        // ==========================================
-        private string _nickname, _ability;
-        public string Nickname { get => _nickname; set { _nickname = value; OnPropertyChanged(); } }
+        private string _ability;
         public string Ability { get => _ability; set { _ability = value; OnPropertyChanged(); } }
 
-        private bool _isShiny;
-        public bool IsShiny { get => _isShiny; set { _isShiny = value; OnPropertyChanged(); } }
-
-        private int _level = 50;
-        public int Level { get => _level; set { _level = value; OnPropertyChanged(); RecalculateAll(); } }
-
-        // Se o valor de um move mudar, recalculamos as opções dos outros
-        private string _move1, _move2, _move3, _move4;
-        public string Move1
-        {
-            get => _move1;
-            set
-            {
-                if (_move1 == value || _isUpdatingMoves) return;
-                _move1 = value;
-                OnPropertyChanged();
-                UpdateMoveLists();
-            }
-        }
-
-        public string Move2
-        {
-            get => _move2;
-            set
-            {
-                if (_move2 == value || _isUpdatingMoves) return;
-                _move2 = value;
-                OnPropertyChanged();
-                UpdateMoveLists();
-            }
-        }
-
-        public string Move3
-        {
-            get => _move3;
-            set
-            {
-                if (_move3 == value || _isUpdatingMoves) return;
-                _move3 = value;
-                OnPropertyChanged();
-                UpdateMoveLists();
-            }
-        }
-
-        public string Move4
-        {
-            get => _move4;
-            set
-            {
-                if (_move4 == value || _isUpdatingMoves) return;
-                _move4 = value;
-                OnPropertyChanged();
-                UpdateMoveLists();
-            }
-        }
+        private Nature _selectedNature;
+        public Nature SelectedNature { get => _selectedNature; set { _selectedNature = value; OnPropertyChanged(); } }
 
         // ==========================================
-        // STATS BASE E IVS
+        // DADOS DO POKEMON
         // ==========================================
-        private int bHp, bAtk, bDef, bSpa, bSpd, bSpe;
+        private string _nickname; public string Nickname { get => _nickname; set { _nickname = value; OnPropertyChanged(); } }
+        private int _level = 1; public int Level { get => _level; set { _level = value; OnPropertyChanged(); } }
+        private bool _isShiny; public bool IsShiny { get => _isShiny; set { _isShiny = value; OnPropertyChanged(); } }
 
-        private int _ivHp = 31, _ivAtk = 31, _ivDef = 31, _ivSpa = 31, _ivSpd = 31, _ivSpe = 31;
-        public int IvHp { get => _ivHp; set { _ivHp = value; OnPropertyChanged(); RecalculateAll(); } }
-        public int IvAtk { get => _ivAtk; set { _ivAtk = value; OnPropertyChanged(); RecalculateAll(); } }
-        public int IvDef { get => _ivDef; set { _ivDef = value; OnPropertyChanged(); RecalculateAll(); } }
-        public int IvSpa { get => _ivSpa; set { _ivSpa = value; OnPropertyChanged(); RecalculateAll(); } }
-        public int IvSpd { get => _ivSpd; set { _ivSpd = value; OnPropertyChanged(); RecalculateAll(); } }
-        public int IvSpe { get => _ivSpe; set { _ivSpe = value; OnPropertyChanged(); RecalculateAll(); } }
+        public string Move1 { get; set; }
+        public string Move2 { get; set; }
+        public string Move3 { get; set; }
+        public string Move4 { get; set; }
 
         // ==========================================
-        // EVS COM BLOQUEIO INTELIGENTE
+        // IVs (0 a 31)
         // ==========================================
-        private int _evHp, _evAtk, _evDef, _evSpa, _evSpd, _evSpe;
+        private int _ivHp; public int IvHp { get => _ivHp; set { _ivHp = value; OnPropertyChanged(); } }
+        private int _ivAtk; public int IvAtk { get => _ivAtk; set { _ivAtk = value; OnPropertyChanged(); } }
+        private int _ivDef; public int IvDef { get => _ivDef; set { _ivDef = value; OnPropertyChanged(); } }
+        private int _ivSpa; public int IvSpa { get => _ivSpa; set { _ivSpa = value; OnPropertyChanged(); } }
+        private int _ivSpd; public int IvSpd { get => _ivSpd; set { _ivSpd = value; OnPropertyChanged(); } }
+        private int _ivSpe; public int IvSpe { get => _ivSpe; set { _ivSpe = value; OnPropertyChanged(); } }
 
-        public int EvHp { get => _evHp; set { SetEv(ref _evHp, value, nameof(EvHp)); } }
-        public int EvAtk { get => _evAtk; set { SetEv(ref _evAtk, value, nameof(EvAtk)); } }
-        public int EvDef { get => _evDef; set { SetEv(ref _evDef, value, nameof(EvDef)); } }
-        public int EvSpa { get => _evSpa; set { SetEv(ref _evSpa, value, nameof(EvSpa)); } }
-        public int EvSpd { get => _evSpd; set { SetEv(ref _evSpd, value, nameof(EvSpd)); } }
-        public int EvSpe { get => _evSpe; set { SetEv(ref _evSpe, value, nameof(EvSpe)); } }
+        // ==========================================
+        // LÓGICA DE EVs (MÁX 255 POR CAMPO, SOMA MÁX 510)
+        // ==========================================
+        private const int MAX_INDIVIDUAL_EV = 255;
+        private const int MAX_TOTAL_EV = 510;
 
-        public int MaxEvHp => Math.Min(255, 510 - (_evAtk + _evDef + _evSpa + _evSpd + _evSpe));
-        public int MaxEvAtk => Math.Min(255, 510 - (_evHp + _evDef + _evSpa + _evSpd + _evSpe));
-        public int MaxEvDef => Math.Min(255, 510 - (_evHp + _evAtk + _evSpa + _evSpd + _evSpe));
-        public int MaxEvSpa => Math.Min(255, 510 - (_evHp + _evAtk + _evDef + _evSpd + _evSpe));
-        public int MaxEvSpd => Math.Min(255, 510 - (_evHp + _evAtk + _evDef + _evSpa + _evSpe));
-        public int MaxEvSpe => Math.Min(255, 510 - (_evHp + _evAtk + _evDef + _evSpa + _evSpd));
+        private int _evHp; public int EvHp { get => _evHp; set { _evHp = EnforceEvLimits(value, _evHp); OnPropertyChanged(); RefreshMaxEvs(); } }
+        private int _evAtk; public int EvAtk { get => _evAtk; set { _evAtk = EnforceEvLimits(value, _evAtk); OnPropertyChanged(); RefreshMaxEvs(); } }
+        private int _evDef; public int EvDef { get => _evDef; set { _evDef = EnforceEvLimits(value, _evDef); OnPropertyChanged(); RefreshMaxEvs(); } }
+        private int _evSpa; public int EvSpa { get => _evSpa; set { _evSpa = EnforceEvLimits(value, _evSpa); OnPropertyChanged(); RefreshMaxEvs(); } }
+        private int _evSpd; public int EvSpd { get => _evSpd; set { _evSpd = EnforceEvLimits(value, _evSpd); OnPropertyChanged(); RefreshMaxEvs(); } }
+        private int _evSpe; public int EvSpe { get => _evSpe; set { _evSpe = EnforceEvLimits(value, _evSpe); OnPropertyChanged(); RefreshMaxEvs(); } }
 
-        private void SetEv(ref int field, int value, string propertyName)
+        // Propriedades dinâmicas para o MAXIMUM dos Sliders no XAML
+        public int MaxEvHp => GetDynamicMax(_evHp);
+        public int MaxEvAtk => GetDynamicMax(_evAtk);
+        public int MaxEvDef => GetDynamicMax(_evDef);
+        public int MaxEvSpa => GetDynamicMax(_evSpa);
+        public int MaxEvSpd => GetDynamicMax(_evSpd);
+        public int MaxEvSpe => GetDynamicMax(_evSpe);
+
+        private int EnforceEvLimits(int newValue, int oldValue)
         {
-            int currentTotalWithoutField = (_evHp + _evAtk + _evDef + _evSpa + _evSpd + _evSpe) - field;
-            int remainingPoints = 510 - currentTotalWithoutField;
+            int currentTotal = _evHp + _evAtk + _evDef + _evSpa + _evSpd + _evSpe;
+            int totalWithoutCurrent = currentTotal - oldValue;
+            int remainingBudget = MAX_TOTAL_EV - totalWithoutCurrent;
 
-            int cappedValue = Math.Max(0, Math.Min(value, remainingPoints));
-            cappedValue = Math.Min(cappedValue, 255);
+            // O novo valor não pode passar do orçamento restante E nem de 255
+            int allowedValue = Math.Min(newValue, remainingBudget);
+            return Math.Clamp(allowedValue, 0, MAX_INDIVIDUAL_EV);
+        }
 
-            if (field != cappedValue)
-            {
-                field = cappedValue;
-                OnPropertyChanged(propertyName);
+        private int GetDynamicMax(int currentValue)
+        {
+            int totalUsed = _evHp + _evAtk + _evDef + _evSpa + _evSpd + _evSpe;
+            int available = MAX_TOTAL_EV - totalUsed;
+            return Math.Min(MAX_INDIVIDUAL_EV, currentValue + available);
+        }
 
-                OnPropertyChanged(nameof(MaxEvHp));
-                OnPropertyChanged(nameof(MaxEvAtk));
-                OnPropertyChanged(nameof(MaxEvDef));
-                OnPropertyChanged(nameof(MaxEvSpa));
-                OnPropertyChanged(nameof(MaxEvSpd));
-                OnPropertyChanged(nameof(MaxEvSpe));
-
-                RecalculateAll();
-            }
+        private void RefreshMaxEvs()
+        {
+            OnPropertyChanged(nameof(MaxEvHp)); OnPropertyChanged(nameof(MaxEvAtk)); OnPropertyChanged(nameof(MaxEvDef));
+            OnPropertyChanged(nameof(MaxEvSpa)); OnPropertyChanged(nameof(MaxEvSpd)); OnPropertyChanged(nameof(MaxEvSpe));
         }
 
         // ==========================================
-        // STATS FINAIS (Para a UI)
+        // COMANDOS E CARREGAMENTO
         // ==========================================
-        private int _fHp, _fAtk, _fDef, _fSpa, _fSpd, _fSpe;
-        public int FinalHp { get => _fHp; set { _fHp = value; OnPropertyChanged(); } }
-        public int FinalAtk { get => _fAtk; set { _fAtk = value; OnPropertyChanged(); } }
-        public int FinalDef { get => _fDef; set { _fDef = value; OnPropertyChanged(); } }
-        public int FinalSpa { get => _fSpa; set { _fSpa = value; OnPropertyChanged(); } }
-        public int FinalSpd { get => _fSpd; set { _fSpd = value; OnPropertyChanged(); } }
-        public int FinalSpe { get => _fSpe; set { _fSpe = value; OnPropertyChanged(); } }
+        public services.RelayCommand SaveCommand { get; }
 
-        // ==========================================
-        // CONSTRUTOR
-        // ==========================================
         public PokemonRegisterViewModel()
         {
+            SaveCommand = new services.RelayCommand(() => SavePokemon());
+            LoadInitialData();
+        }
+
+        private void LoadInitialData()
+        {
             using (var db = new AppDbContext())
             {
-                Trainers = new ObservableCollection<Trainer>(db.Trainers.ToList());
-                Natures = new ObservableCollection<Nature>(db.Natures.ToList());
+                Trainers.Clear();
+                foreach (var t in db.Trainers.ToList()) Trainers.Add(t);
+                Natures.Clear();
+                foreach (var n in db.Natures.ToList()) Natures.Add(n);
+
+                var allPokes = db.Pokemons.AsNoTracking().ToList();
+                var baseSpecies = allPokes.GroupBy(p => p.NationalDex)
+                                          .Select(g => g.OrderBy(x => x.Id).First())
+                                          .OrderBy(p => p.NationalDex).ToList();
+
+                FilteredSpecies.Clear();
+                foreach (var s in baseSpecies) FilteredSpecies.Add(s);
             }
         }
 
-        // ==========================================
-        // REGRAS DE NEGÓCIO E FILTRAGEM
-        // ==========================================
+        private void UpdateForms()
+        {
+            AvailableForms.Clear();
+            if (SelectedBasePokemon == null) return;
+            using (var db = new AppDbContext())
+            {
+                var forms = db.Pokemons.AsNoTracking().Where(p => p.NationalDex == SelectedBasePokemon.NationalDex).ToList();
+                foreach (var f in forms) AvailableForms.Add(f);
+            }
+            if (AvailableForms.Count > 0) SelectedForm = AvailableForms[0];
+        }
+
+        private void UpdateAbilitiesAndMoves()
+        {
+            AvailableAbilities.Clear();
+            if (SelectedForm == null) return;
+            using (var db = new AppDbContext())
+            {
+                string pid = SelectedForm.Id;
+                var abs = db.PokemonAbilities.AsNoTracking().Where(a => a.PokemonId == pid).Select(a => a.AbilityName).Distinct().ToList();
+                foreach (var a in abs) AvailableAbilities.Add(a);
+                if (AvailableAbilities.Count > 0) Ability = AvailableAbilities[0];
+                ApplyTrainerRules();
+            }
+        }
+
         private void ApplyTrainerRules()
         {
-            if (SelectedTrainer == null) return;
-
+            if (SelectedTrainer == null || SelectedForm == null) return;
             int trainerGen = RomanToInt(SelectedTrainer.Generation);
-            string game = SelectedTrainer.Game;
-
             using (var db = new AppDbContext())
             {
-                _baseTrainerMoves = db.Moves.AsEnumerable()
-                                      .Where(m => RomanToInt(m.Gen) <= trainerGen)
-                                      .Select(m => m.Name).OrderBy(n => n).ToList();
-
-                int dexLimit = GetDexLimit(trainerGen, game);
-                var species = db.PokedexEntries.AsEnumerable()
-                                .Where(p => !p.Dex.Contains(".") && int.Parse(p.Dex) <= dexLimit)
-                                .OrderBy(p => int.Parse(p.Dex)).ToList();
-                FilteredSpecies = new ObservableCollection<PokedexEntry>(species);
-            }
-
-            SelectedBasePokemon = null;
-            SelectedForm = null;
-            Move1 = Move2 = Move3 = Move4 = null;
-
-            UpdateMoveLists();
-        }
-
-        private void FilterForms()
-        {
-            if (SelectedBasePokemon == null)
-            {
-                AvailableForms = new ObservableCollection<PokedexEntry>();
-                return;
-            }
-
-            using (var db = new AppDbContext())
-            {
-                string baseDex = SelectedBasePokemon.Dex;
-                var forms = db.PokedexEntries.AsEnumerable()
-                              .Where(p => p.Dex == baseDex || p.Dex.StartsWith(baseDex + "."))
-                              .ToList();
-                AvailableForms = new ObservableCollection<PokedexEntry>(forms);
-            }
-            SelectedForm = AvailableForms.FirstOrDefault();
-        }
-
-        private void LoadAbilities()
-        {
-            AvailableAbilities = new ObservableCollection<string>();
-            if (SelectedForm == null || SelectedForm.Abilities == null) return;
-
-            foreach (var ab in SelectedForm.Abilities)
-            {
-                if (!string.IsNullOrWhiteSpace(ab))
+                string bid = SelectedForm.Id;
+                if (bid.Contains("_Mega_") || bid.Contains("_Gigantamax_"))
                 {
-                    AvailableAbilities.Add(ab);
+                    var pts = bid.Split('_');
+                    if (pts.Length >= 2) bid = $"{pts[0]}_{pts[1]}";
+                }
+                var moves = db.PokemonMoves.AsNoTracking().Where(m => m.PokemonId == bid).ToList();
+                var filtered = moves.Where(m => {
+                    string c = m.Generation?.ToLower().Replace("gen", "").Replace("generation", "").Trim();
+                    return RomanToInt(c) <= trainerGen;
+                }).Select(m => m.MoveName).Distinct().OrderBy(n => n).ToList();
+
+                AvailableMoves1.Clear(); AvailableMoves2.Clear(); AvailableMoves3.Clear(); AvailableMoves4.Clear();
+                foreach (var moveName in filtered)
+                {
+                    var opt = new MoveOption { Name = moveName, IsLearned = true };
+                    AvailableMoves1.Add(opt); AvailableMoves2.Add(opt); AvailableMoves3.Add(opt); AvailableMoves4.Add(opt);
                 }
             }
-
-            Ability = AvailableAbilities.FirstOrDefault();
         }
 
-        // ==========================================
-        // LOGICA DE MOVES (Anti-Loop e Destaque)
-        // ==========================================
-        private bool _isUpdatingMoves = false;
-
-        private void UpdateMoveLists()
-        {
-            if (_baseTrainerMoves == null || !_baseTrainerMoves.Any()) return;
-
-            // 1. GUARDA TUDO ANTES DE MEXER
-            string backupM1 = _move1;
-            string backupM2 = _move2;
-            string backupM3 = _move3;
-            string backupM4 = _move4;
-
-            _isUpdatingMoves = true;
-
-            var learnedMoves = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            if (SelectedForm != null && SelectedForm.Moves != null)
-            {
-                foreach (var m in SelectedForm.Moves)
-                {
-                    if (!string.IsNullOrWhiteSpace(m.Name))
-                        learnedMoves.Add(m.Name);
-                }
-            }
-
-            IEnumerable<MoveOption> GenerateList(string currentMove, string[] otherMoves)
-            {
-                return _baseTrainerMoves
-                    .Where(m => m == currentMove || !otherMoves.Contains(m))
-                    .Select(m => new MoveOption { Name = m, IsLearned = learnedMoves.Contains(m) })
-                    .OrderByDescending(o => o.IsLearned)
-                    .ThenBy(o => o.Name);
-            }
-
-            // 2. Troca as listas
-            AvailableMoves1 = new ObservableCollection<MoveOption>(GenerateList(backupM1, new[] { backupM2, backupM3, backupM4 }));
-            AvailableMoves2 = new ObservableCollection<MoveOption>(GenerateList(backupM2, new[] { backupM1, backupM3, backupM4 }));
-            AvailableMoves3 = new ObservableCollection<MoveOption>(GenerateList(backupM3, new[] { backupM1, backupM2, backupM4 }));
-            AvailableMoves4 = new ObservableCollection<MoveOption>(GenerateList(backupM4, new[] { backupM1, backupM2, backupM3 }));
-
-            // 3. RESTAURA DA MEMÓRIA
-            _move1 = backupM1;
-            _move2 = backupM2;
-            _move3 = backupM3;
-            _move4 = backupM4;
-
-            _isUpdatingMoves = false;
-
-            // 4. FORÇA O ECRÃ A LER OS TEXTOS DE NOVO
-            Application.Current.Dispatcher.InvokeAsync(() =>
-            {
-                _isUpdatingMoves = true;
-                OnPropertyChanged(nameof(Move1));
-                OnPropertyChanged(nameof(Move2));
-                OnPropertyChanged(nameof(Move3));
-                OnPropertyChanged(nameof(Move4));
-                _isUpdatingMoves = false;
-            }, System.Windows.Threading.DispatcherPriority.Background);
-        }
-
-        private int GetDexLimit(int gen, string game)
-        {
-            return gen switch
-            {
-                1 => 151,
-                2 => 251,
-                3 => 386,
-                4 => 493,
-                5 => 649,
-                6 => 721,
-                7 => game.Contains("Ultra") ? 807 : (game.Contains("Let's Go") ? 809 : 802),
-                8 => game.Contains("Arceus") ? 905 : 898,
-                9 => 1025,
-                _ => 1025
-            };
-        }
-
-        private int RomanToInt(string roman)
-        {
-            return roman switch { "I" => 1, "II" => 2, "III" => 3, "IV" => 4, "V" => 5, "VI" => 6, "VII" => 7, "VIII" => 8, "IX" => 9, _ => 9 };
-        }
-
-        // ==========================================
-        // CÁLCULO DE STATUS
-        // ==========================================
-        private void LoadBaseStats()
-        {
-            if (SelectedForm == null) return;
-
-            bHp = SelectedForm.Hp; bAtk = SelectedForm.Atk; bDef = SelectedForm.Def;
-            bSpa = SelectedForm.Spa; bSpd = SelectedForm.Spd; bSpe = SelectedForm.Spe;
-
-            RecalculateAll();
-        }
-
-        private void RecalculateAll()
-        {
-            if (SelectedForm == null) return;
-
-            FinalHp = (int)(Math.Floor(((2 * bHp + IvHp + (EvHp / 4.0)) * Level) / 100.0) + Level + 10);
-            if (bHp == 1) FinalHp = 1;
-
-            FinalAtk = CalcStat(bAtk, IvAtk, EvAtk, "Attack");
-            FinalDef = CalcStat(bDef, IvDef, EvDef, "Defense");
-            FinalSpa = CalcStat(bSpa, IvSpa, EvSpa, "Special Attack");
-            FinalSpd = CalcStat(bSpd, IvSpd, EvSpd, "Special Defense");
-            FinalSpe = CalcStat(bSpe, IvSpe, EvSpe, "Speed");
-        }
-
-        private int CalcStat(int @base, int iv, int ev, string statName)
-        {
-            double core = Math.Floor(((2 * @base + iv + (ev / 4.0)) * Level) / 100.0) + 5;
-            double mult = 1.0;
-
-            if (SelectedNature != null)
-            {
-                if (SelectedNature.Increase == statName) mult = 1.1;
-                else if (SelectedNature.Decrease == statName) mult = 0.9;
-            }
-
-            return (int)Math.Floor(core * mult);
-        }
-
-        // ==========================================
-        // VALIDAÇÃO DE NÍVEL DE EVOLUÇÃO E GOLPES
-        // ==========================================
-        // ==========================================
-        // VALIDAÇÃO DE NÍVEL DE EVOLUÇÃO E GOLPES
-        // ==========================================
-        // ==========================================
-        // VALIDAÇÃO DE NÍVEL DE EVOLUÇÃO E GOLPES
-        // ==========================================
-        private bool ValidateEvolutionLevel()
-        {
-            if (SelectedForm == null) return true;
-
-            string currentSpecies = SelectedForm.Name;
-            string evolvesFrom = SelectedForm.Evolution?.EvolvesFrom;
-
-            using (var db = new AppDbContext())
-            {
-                // LOOP DE RAIO-X: Vai varrendo a árvore toda para trás (Pai, Avô, Bisavô...)
-                while (!string.IsNullOrWhiteSpace(evolvesFrom))
-                {
-                    // 1. Busca a pré-evolução no banco (Ex: Charmeleon)
-                    var preEvo = db.PokedexEntries.AsEnumerable()
-                                   .FirstOrDefault(p => string.Equals(p.Name, evolvesFrom, StringComparison.OrdinalIgnoreCase)
-                                                     || p.Name.StartsWith(evolvesFrom, StringComparison.OrdinalIgnoreCase));
-
-                    if (preEvo == null || preEvo.Evolution == null || preEvo.Evolution.EvolvesTo == null)
-                        break; // Se não achar mais de onde evoluir, a checagem acabou e está válido.
-
-                    // 2. Procura a regra exata que gerou o nosso currentSpecies
-                    // O "Contains" resolve o problema de nomes de Formas (ex: Charizard Mega)
-                    var evoDetail = preEvo.Evolution.EvolvesTo
-                                    .FirstOrDefault(e => currentSpecies.Contains(e.Species, StringComparison.OrdinalIgnoreCase))
-                                    ?? preEvo.Evolution.EvolvesTo.FirstOrDefault(); // Fallback de segurança
-
-                    // 3. A REGRA DE OURO: Ignoramos os textos (level-up, stone, etc). 
-                    // Se existe um MinLevel no banco e ele for maior que 1, a regra tem de ser respeitada!
-                    if (evoDetail != null && evoDetail.MinLevel.HasValue && evoDetail.MinLevel.Value > 1)
-                    {
-                        if (this.Level < evoDetail.MinLevel.Value)
-                        {
-                            MessageBox.Show(
-                                $"{currentSpecies} requires level {evoDetail.MinLevel.Value} because of its evolution from {preEvo.Name}.\nYour current level is {this.Level}, which is too low!",
-                                "Invalid Evolution Level",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Warning);
-                            return false; // Bloqueia o salvamento na hora!
-                        }
-                    }
-
-                    // 4. Retrocede um passo na árvore genealógica (Ex: Agora passa de Charmeleon para analisar o Charmander)
-                    currentSpecies = preEvo.Name;
-                    evolvesFrom = preEvo.Evolution.EvolvesFrom;
-                }
-            }
-
-            return true;
-        }
-
-        private bool ValidateMoveLevel(string moveName)
-        {
-            if (string.IsNullOrWhiteSpace(moveName) || SelectedForm == null || SelectedForm.Moves == null)
-                return true;
-
-            // Blindagem contra ataques com nome nulo no JSON
-            var moveInfo = SelectedForm.Moves.FirstOrDefault(m => string.Equals(m.Name, moveName, StringComparison.OrdinalIgnoreCase));
-
-            // Blindagem contra ataques com Method nulo
-            if (moveInfo != null && string.Equals(moveInfo.Method, "level-up", StringComparison.OrdinalIgnoreCase))
-            {
-                if (this.Level < moveInfo.Level)
-                {
-                    MessageBox.Show(
-                        $"{SelectedForm.Name} can only learn '{moveInfo.Name}' at level {moveInfo.Level}.\nYour current level is {this.Level}.",
-                        "Invalid Move Level",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Warning);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        // ==========================================
-        // GRAVAÇÃO NO BANCO
-        // ==========================================
         public bool SavePokemon()
         {
-            if (SelectedTrainer == null || SelectedForm == null) return false;
-
-            // 1. Barreira de Evolução: Bloqueia evoluções com nível impossível (Ex: Charizard nv 10)
-            if (!ValidateEvolutionLevel()) return false;
-
-            // 2. Barreira de Golpes: Bloqueia ataques aprendidos no futuro
-            if (!ValidateMoveLevel(Move1)) return false;
-            if (!ValidateMoveLevel(Move2)) return false;
-            if (!ValidateMoveLevel(Move3)) return false;
-            if (!ValidateMoveLevel(Move4)) return false;
-
+            if (SelectedTrainer == null || SelectedForm == null || string.IsNullOrEmpty(Ability))
+            {
+                MessageBox.Show("Preencha Treinador, Pokémon e Habilidade!");
+                return false;
+            }
             try
             {
                 using (var db = new AppDbContext())
                 {
                     db.RegisteredPokemons.Add(new RegisteredPokemon
                     {
-                        TrainerId = SelectedTrainer.Id,
-                        TrainerName = SelectedTrainer.Name ?? "",
-                        BasePokemon = SelectedBasePokemon.Name ?? "",
-                        Form = SelectedForm.Name ?? "",
-                        Nickname = Nickname ?? "",
+                        TrainerId = SelectedTrainer.TrainerId,
+                        PokemonId = SelectedForm.Id,
+                        Nickname = Nickname,
                         Level = Level,
-                        Ability = Ability ?? "",
-                        Nature = SelectedNature?.Name ?? "",
+                        Ability = Ability,
+                        Nature = SelectedNature?.Name,
                         IsShiny = IsShiny,
-
                         IvHp = IvHp,
                         IvAtk = IvAtk,
                         IvDef = IvDef,
@@ -549,25 +232,25 @@ namespace Pokedex.viewmodels
                         EvSpa = EvSpa,
                         EvSpd = EvSpd,
                         EvSpe = EvSpe,
-
-                        Move1 = Move1 ?? "",
-                        Move2 = Move2 ?? "",
-                        Move3 = Move3 ?? "",
-                        Move4 = Move4 ?? ""
+                        Move1 = Move1,
+                        Move2 = Move2,
+                        Move3 = Move3,
+                        Move4 = Move4
                     });
-
                     db.SaveChanges();
                 }
+                MessageBox.Show("Registado com sucesso!");
                 return true;
             }
-            catch (Exception ex)
-            {
-                string erroReal = ex.Message;
-                if (ex.InnerException != null) erroReal += "\n\nDetalhes:\n" + ex.InnerException.Message;
+            catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
+        }
 
-                MessageBox.Show(erroReal, "Erro ao Salvar", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+        private int RomanToInt(string r)
+        {
+            if (string.IsNullOrEmpty(r)) return 9;
+            string v = r.ToUpper().Replace("GENERATION", "").Replace("GEN", "").Trim();
+            if (int.TryParse(v, out int res)) return res;
+            return v switch { "I" => 1, "II" => 2, "III" => 3, "IV" => 4, "V" => 5, "VI" => 6, "VII" => 7, "VIII" => 8, "IX" => 9, _ => 9 };
         }
     }
 }

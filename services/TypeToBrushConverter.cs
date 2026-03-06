@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Media;
+using Pokedex.models;
 
 namespace Pokedex.services
 {
@@ -11,62 +12,59 @@ namespace Pokedex.services
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // 1. Obtém a lista e filtra strings vazias ou nulas (ex: ["Stellar", ""])
-            var types = (value as List<string>)?
-                .Where(t => !string.IsNullOrWhiteSpace(t))
-                .ToList();
+            // 1. Tenta obter a lista de tipos do Pokémon
+            var types = value as ICollection<PokemonType>;
 
+            // Se a lista estiver vazia ou nula, retorna uma cor padrão (Cinza)
             if (types == null || !types.Any())
-                return new SolidColorBrush(Color.FromRgb(168, 168, 120)); // Cor Normal default
+                return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A8A878"));
 
-            // 2. Pega a cor do primeiro tipo
-            Color color1 = GetColorFromType(types[0]);
+            // 2. Pega as cores dos tipos (Máximo 2 tipos por Pokémon)
+            var typeList = types.OrderBy(t => t.Slot).ToList();
+            var color1 = GetColorFromType(typeList[0].TypeName);
 
-            // 3. Se houver apenas um tipo válido, retorna cor sólida
-            if (types.Count == 1)
+            // Se tiver apenas 1 tipo, retorna uma cor sólida
+            if (typeList.Count == 1)
             {
                 return new SolidColorBrush(color1);
             }
 
-            // 4. Se houver dois ou mais, cria um gradiente linear elegante
-            Color color2 = GetColorFromType(types[1]);
-            return new LinearGradientBrush(color1, color2, 45.0);
+            // 3. Se tiver 2 tipos, cria o DEGRADÊ (LinearGradientBrush) como no antigo
+            var color2 = GetColorFromType(typeList[1].TypeName);
+
+            return new LinearGradientBrush(color1, color2, new System.Windows.Point(0, 0), new System.Windows.Point(1, 1));
         }
 
-        private Color GetColorFromType(string type)
+        private Color GetColorFromType(string typeName)
         {
-            if (string.IsNullOrWhiteSpace(type))
-                return Color.FromRgb(168, 168, 120);
+            if (string.IsNullOrEmpty(typeName)) return (Color)ColorConverter.ConvertFromString("#A8A878");
 
-            // Switch expression com todas as cores oficiais da franquia
-            return type.Trim().ToUpper() switch
+            string hex = typeName.ToLower() switch
             {
-                "NORMAL" => (Color)ColorConverter.ConvertFromString("#9fa19f"),
-                "FIRE" => (Color)ColorConverter.ConvertFromString("#e62829"), // Laranja vibrante
-                "WATER" => (Color)ColorConverter.ConvertFromString("#2980ef"), // Azul vivo
-                "GRASS" => (Color)ColorConverter.ConvertFromString("#3fa129"), // Verde folha limpo
-                "ELECTRIC" => (Color)ColorConverter.ConvertFromString("#fac000"), // Amarelo elétrico
-                "ICE" => (Color)ColorConverter.ConvertFromString("#3fd8ff"), // Ciano gelado
-                "FIGHTING" => (Color)ColorConverter.ConvertFromString("#ff8000"), // Vermelho marcial moderno
-                "POISON" => (Color)ColorConverter.ConvertFromString("#9141cb"), // Roxo tóxico
-                "GROUND" => (Color)ColorConverter.ConvertFromString("#915121"), // Terra quente
-                "FLYING" => (Color)ColorConverter.ConvertFromString("#81b9ef"), // Azul céu pastel
-                "PSYCHIC" => (Color)ColorConverter.ConvertFromString("#ef4179"), // Rosa psíquico
-                "BUG" => (Color)ColorConverter.ConvertFromString("#91a119"), // Verde inseto neon
-                "ROCK" => (Color)ColorConverter.ConvertFromString("#afa981"), // Areia escuro
-                "GHOST" => (Color)ColorConverter.ConvertFromString("#704170"), // Índigo sombrio
-                "DRAGON" => (Color)ColorConverter.ConvertFromString("#5060e1"), // Azul dragão profundo
-                "STEEL" => (Color)ColorConverter.ConvertFromString("#60a1b8"), // Prata/Azul metálico
-                "FAIRY" => (Color)ColorConverter.ConvertFromString("#ef70ef"), // Rosa fada brilhante
-                "DARK" => (Color)ColorConverter.ConvertFromString("#50413f"), // Cinza chumbo escuro
-                "STELLAR" => (Color)ColorConverter.ConvertFromString("#83cfc5"), // Ciano cristal brilhante
-                _ => (Color)ColorConverter.ConvertFromString("#9fa19f")  // Default
+                "fire" => "#F08030",
+                "water" => "#6890F0",
+                "grass" => "#78C850",
+                "electric" => "#F8D030",
+                "ice" => "#98D8D8",
+                "fighting" => "#C03028",
+                "poison" => "#A040A0",
+                "ground" => "#E0C068",
+                "flying" => "#A890F0",
+                "psychic" => "#F85888",
+                "bug" => "#A8B820",
+                "rock" => "#B8A038",
+                "ghost" => "#705898",
+                "dragon" => "#7038F8",
+                "dark" => "#705848",
+                "steel" => "#B8B8D0",
+                "fairy" => "#EE99AC",
+                "normal" => "#A8A878",
+                _ => "#A8A878"
             };
+
+            return (Color)ColorConverter.ConvertFromString(hex);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
     }
 }

@@ -12,21 +12,36 @@ namespace Pokedex.services
             string relativePath = value as string;
             if (string.IsNullOrWhiteSpace(relativePath)) return null;
 
-            // 1. Corrige as barras (o JSON usa '/' mas o Windows prefere '\')
-            string cleanPath = relativePath.Replace("/", "\\").TrimStart('\\');
+            // 1. Limpa as barras do caminho para o padrão Windows
+            string cleanPath = relativePath.Replace("\\", "/").TrimStart('/');
 
-            // 2. Monta o caminho completo baseado em onde o seu .exe está rodando
-            // Isso aponta para Pokedex\bin\Debug\net8.0-windows\assets\...
-            string fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cleanPath);
-
-            // 3. Verificação de segurança: se o arquivo não existir, não quebra o app
-            if (File.Exists(fullPath))
+            // 2. MAGIA AQUI: Verifica se falta o '#' no nome do ficheiro e adiciona-o!
+            string fileName = Path.GetFileName(cleanPath);
+            if (!fileName.StartsWith("#"))
             {
-                return fullPath;
+                string dir = Path.GetDirectoryName(cleanPath).Replace("\\", "/");
+                cleanPath = $"{dir}/#{fileName}";
+                // Exemplo: "assets/.../normal/0001.png" vira "assets/.../normal/#0001.png"
             }
 
-            // Opcional: Se não achar, você pode retornar um caminho para uma imagem de "erro"
-            return null;
+            // 3. Tenta encontrar a imagem fisicamente no disco (Pasta bin/Debug)
+            string diskPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, cleanPath.Replace("/", "\\"));
+            if (File.Exists(diskPath))
+            {
+                return diskPath;
+            }
+
+            // 4. Se não estiver no disco, tenta carregar como Recurso Embutido
+            // ATENÇÃO: O '#' estraga os URIs do WPF, por isso temos de o transformar em "%23"
+            try
+            {
+                string escapedPath = cleanPath.Replace("#", "%23");
+                return new Uri($"pack://application:,,,/{escapedPath}", UriKind.Absolute);
+            }
+            catch
+            {
+                return null; // Se falhar tudo, devolve null e não crasha a app
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;

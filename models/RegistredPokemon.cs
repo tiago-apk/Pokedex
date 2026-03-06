@@ -1,48 +1,66 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pokedex.models
 {
+    [Table("caught_pokemon")]
     public class RegisteredPokemon
     {
         [Key]
+        [Column("id")]
         public int Id { get; set; }
 
-        // A ligação ao Treinador (Foreign Key lógica)
-        public int TrainerId { get; set; }
-        public string? TrainerName { get; set; }
+        [Column("trainer_id")]
+        public string TrainerId { get; set; }
 
-        // Dados Base
-        public string? BasePokemon { get; set; }
-        public string Form { get; set; }
+        [Column("pokemon_id")]
+        public string PokemonId { get; set; }
+
+        [Column("nickname")]
         public string? Nickname { get; set; }
-        public bool IsShiny { get; set; }
+
+        [Column("level")]
         public int Level { get; set; }
-        public string? Nature { get; set; }
-        public string? Ability { get; set; }
 
-        // Golpes
-        public string? Move1 { get; set; }
-        public string? Move2 { get; set; }
-        public string? Move3 { get; set; }
-        public string? Move4 { get; set; }
+        [Column("nature")]
+        public string Nature { get; set; }
 
-        // IVs
-        public int IvHp { get; set; }
-        public int IvAtk { get; set; }
-        public int IvDef { get; set; }
-        public int IvSpa { get; set; }
-        public int IvSpd { get; set; }
-        public int IvSpe { get; set; }
+        [Column("ability")]
+        public string Ability { get; set; }
 
-        // EVs
-        public int EvHp { get; set; }
-        public int EvAtk { get; set; }
-        public int EvDef { get; set; }
-        public int EvSpa { get; set; }
-        public int EvSpd { get; set; }
-        public int EvSpe { get; set; }
+        [Column("move_1")] public string? Move1 { get; set; }
+        [Column("move_2")] public string? Move2 { get; set; }
+        [Column("move_3")] public string? Move3 { get; set; }
+        [Column("move_4")] public string? Move4 { get; set; }
 
-        public DateTime RegisteredAt { get; set; } = DateTime.Now;
+        [Column("iv_hp")] public int IvHp { get; set; }
+        [Column("iv_atk")] public int IvAtk { get; set; }
+        [Column("iv_def")] public int IvDef { get; set; }
+        [Column("iv_spa")] public int IvSpa { get; set; }
+        [Column("iv_spd")] public int IvSpd { get; set; }
+        [Column("iv_spe")] public int IvSpe { get; set; }
+
+        [Column("ev_hp")] public int EvHp { get; set; }
+        [Column("ev_atk")] public int EvAtk { get; set; }
+        [Column("ev_def")] public int EvDef { get; set; }
+        [Column("ev_spa")] public int EvSpa { get; set; }
+        [Column("ev_spd")] public int EvSpd { get; set; }
+        [Column("ev_spe")] public int EvSpe { get; set; }
+
+        [Column("date_caught")]
+        public DateTime DateCaught { get; set; }
+        [Column("is_shiny")]
+        public bool IsShiny { get; set; }
+
+        // Propriedades auxiliares que o C# usa mas o banco não tem
+        [NotMapped]
+        public string BasePokemon { get; set; }
+
+        [NotMapped]
+        public string Form { get; set; }
+
+        [NotMapped]
+        public string TrainerName { get; set; }
     }
 }

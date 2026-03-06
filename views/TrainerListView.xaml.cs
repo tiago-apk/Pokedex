@@ -23,7 +23,7 @@ namespace Pokedex.views
                 // Pegamos o ID do treinador diretamente da ViewModel refatorada
                 if (_viewModel.SelectedTrainer != null)
                 {
-                    var detailWindow = new RegisteredPokemonDetailView(clickedPoke.Id, _viewModel.SelectedTrainer.Id);
+                    var detailWindow = new RegisteredPokemonDetailView(clickedPoke.Id, _viewModel.SelectedTrainer.TrainerId);
                     detailWindow.ShowDialog();
                 }
             }

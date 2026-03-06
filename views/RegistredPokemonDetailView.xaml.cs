@@ -24,7 +24,7 @@ namespace Pokedex.views
         // 🧠 Referência à nossa nova ViewModel
         private RegisteredPokemonDetailViewModel _viewModel;
 
-        public RegisteredPokemonDetailView(int pokemonId, int trainerId)
+        public RegisteredPokemonDetailView(int pokemonId, string trainerId)
         {
             InitializeComponent();
 

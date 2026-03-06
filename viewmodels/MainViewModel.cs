@@ -28,9 +28,11 @@ namespace Pokedex.viewmodels
 
         public MainViewModel()
         {
-            // Atribuição usando a versão não-genérica do RelayCommand
             ShowHomeCommand = new RelayCommand(() => CurrentView = new HomeViewModel());
+
+            // Fica simples assim:
             ShowPokedexCommand = new RelayCommand(() => CurrentView = new PokedexViewModel());
+
             ShowRegisterPokemonCommand = new RelayCommand(() => CurrentView = new PokemonRegisterViewModel());
             ShowRegisterTrainerCommand = new RelayCommand(() => CurrentView = new TrainerRegisterViewModel());
             ShowTrainerListCommand = new RelayCommand(() => CurrentView = new TrainerListViewModel());

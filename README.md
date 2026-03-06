@@ -238,4 +238,48 @@ A janela `RegisteredPokemonDetailView` foi o nosso maior desafio e sucesso do di
 * **Navegação Regional Blindada:** Clicar num Pokémon da árvore evolutiva agora direciona exatamente para a sua variante/forma (ex: Alolan Raichu) e não apenas para a base genética da Pokédex (Raichu Normal).
 * **Badges de Mega Evolução e Gigantamax:** Adição de ícones exclusivos nos cantos superiores da imagem principal, que acendem *apenas* se o utilizador estiver ativamente a visualizar a forma Mega ou G-Max do Pokémon.
 
+---
+
+## 🚀 Sessão 06/03
+
+### 1. Migração Definitiva para SQLite e Remoção de JSON
+* **Depreciação do JSON:** Remoção completa da dependência de ficheiros JSON (como `moves.json` e dados da Pokédex) para o carregamento em tempo real. O banco de dados agora é a única fonte de verdade.
+* **Adoção do SQLite:** Integração do ficheiro `pokedex.db` contendo tabelas altamente relacionais (`pokemon`, `pokemon_abilities`, `pokemon_moves`, `caught_pokemon`, `trainers`, etc.).
+* **Atualização de Esquema:** Adição cirúrgica de colunas em falta na base de dados de produção (ex: adição do campo `is_shiny BOOLEAN DEFAULT 0` na tabela `caught_pokemon`) para garantir o funcionamento do UI.
+
+### 2. Reestruturação da Camada de Acesso a Dados (Entity Framework)
+* **Buscas de Alta Precisão:** Refatoração de todo o código de busca para respeitar o formato rigoroso de IDs em `string` do novo banco de dados (ex: transição de buscas por inteiros genéricos para strings compostas com zeros à esquerda, como `0006_Charizard`).
+* **Relacionamentos e *Eager Loading*:** Implementação da diretiva `.Include()` (ex: `.Include(p => p.Trainer)`) nas queries do Entity Framework para resolver problemas críticos de `NullReferenceException` ao carregar objetos aninhados.
+* **Tratamento de Dados Nulos:** Refatoração de modelos de dados (ex: `RegisteredPokemon.cs`) implementando *Nullable Reference Types* (`string?`) para campos que o SQLite guarda nativamente como `NULL` (como `Nickname`, `Nature` ou `Moves` vazios).
+
+### 3. Refatoração Core dos ViewModels
+* **`PokemonRegisterViewModel`:**
+  * Lógica de *fallback* inteligente implementada: como as formas especiais (Megas, Gigantamax) não possuem *moves* mapeados diretamente na base de dados, o sistema agora recua dinamicamente para o ID da forma base para resgatar a *movepool* correta.
+  * Implementação de "Orçamento de EVs" (Effort Values): Propriedades reativas que calculam em tempo real o teto máximo de EVs (510 total, 255 por atributo), bloqueando os `Sliders` do UI de ultrapassarem as regras oficiais do jogo.
+* **`TrainerListViewModel`:**
+  * Nova lógica para cruzamento de dados: a aplicação agora lê os Pokémon registados e procura o ID genético correspondente na tabela principal para injetar dinamicamente as miniaturas normais ou *Shiny* nos *cards* da interface.
+* **`RegistredPokemonDetailViewModel`:**
+  * Sincronização matemática entre o C# e o XAML para geração de Gráficos de Radar (Hexágonos). Cálculos de seno e cosseno ajustados para as coordenadas exatas do Canvas (`140, 140`), garantindo o desenho perfeito do gráfico de `Base Stats`, `IVs` e `EVs`.
+
+---
+
+## 🚀 Sessão 04/02
+
+### 1. Arquitetura de Navegação (MVVM)
+* **MainViewModel**: Centralização da lógica de troca de contexto utilizando a propriedade `CurrentView`.
+* **ContentControl Dinâmico**: Configuração do `MainWindow.xaml` para renderizar Views automaticamente com base no tipo do ViewModel presente no `CurrentView` via `DataTemplates`.
+* **Refatoração de Comandos**: Implementação da versão não-genérica da classe `RelayCommand`. Isso permitiu o acionamento de comandos de navegação simples, eliminando erros de tipagem genérica (`requires 1 type arguments`) para cliques de botão sem parâmetros.
+
+### 2. Engenharia de Dados e Sincronização
+* **DatabaseSeeder Resiliente**:
+    * **UniversalEnumConverter**: Criado para mapear strings complexas e algarismos romanos (comuns no `moves.json`) diretamente para tipos `Enum`.
+    * **Flexible Converters**: Adição de conversores para `int` e `string` que tratam automaticamente valores nulos ou vazios (`""`) vindos do JSON, prevenindo quebras na carga do banco SQLite.
+* **Lógica de Mapeamento de Imagens**:
+    * Implementação de uma lógica de extração via `Path.Get...`
+* **Refatoração UI:** Ajustes nas caixas de seleção, cores dinâmicas para ataques e aprimoramento da estabilidade visual do formulário.
+
+### 3. Pokédex Details (Interface de Visualização)
+* **Reestruturação da Linha Evolutiva:**
+  * Implementação de um `ScrollViewer` horizontal para comportar linhas evolutivas massivas (como a do Obstagoon)
+
 *Development by: [Tiago Guerino de Oliveira Bassani] - Projeto C# WPF & SQLite*

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Pokedex.models
 {
@@ -8,31 +7,15 @@ namespace Pokedex.models
     public class Move
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
-        [JsonPropertyName("Name")]
+        [Column("name")]
         public string Name { get; set; }
-
-        [JsonPropertyName("Type")]
-        public string Type { get; set; }
-
-        [JsonPropertyName("Category")]
+        [Column("type_name")]
+        public string TypeName { get; set; }
+        [Column("category")]
         public string Category { get; set; }
-
-        [JsonPropertyName("PP Min")]
-        public string PpMin { get; set; }
-
-        [JsonPropertyName("PP Max")]
-        public string PpMax { get; set; }
-
-        [JsonPropertyName("Power")]
+        [Column("power")]
         public string Power { get; set; }
-
-        [JsonPropertyName("Accuracy")]
+        [Column("accuracy")]
         public string Accuracy { get; set; }
-
-        [JsonPropertyName("Gen")]
-        public string Gen { get; set; }
     }
 }

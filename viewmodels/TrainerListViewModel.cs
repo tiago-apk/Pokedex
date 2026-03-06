@@ -2,16 +2,13 @@
 using System.Linq;
 using Pokedex.data;
 using Pokedex.models;
-using Pokedex.viewmodels; // Certifica-te que o namespace está correto
 
 namespace Pokedex.viewmodels
 {
     public class TrainerListViewModel : BaseViewModel
     {
-        // Lista de treinadores (Coluna Esquerda)
         public ObservableCollection<Trainer> Trainers { get; set; } = new ObservableCollection<Trainer>();
 
-        // Lista de Pokémons do time (Coluna Direita)
         private ObservableCollection<DisplayPokemon> _pokemons;
         public ObservableCollection<DisplayPokemon> Pokemons
         {
@@ -27,8 +24,7 @@ namespace Pokedex.viewmodels
             {
                 _selectedTrainer = value;
                 OnPropertyChanged();
-                // Sempre que mudar o treinador, carregamos o time dele
-                LoadPokemonsForTrainer(value?.Id ?? 0);
+                LoadPokemonsForTrainer(value?.TrainerId);
             }
         }
 
@@ -47,9 +43,9 @@ namespace Pokedex.viewmodels
             }
         }
 
-        private void LoadPokemonsForTrainer(int trainerId)
+        private void LoadPokemonsForTrainer(string trainerId)
         {
-            if (trainerId == 0) { Pokemons = new ObservableCollection<DisplayPokemon>(); return; }
+            if (string.IsNullOrEmpty(trainerId)) return;
 
             using (var db = new AppDbContext())
             {
@@ -61,20 +57,32 @@ namespace Pokedex.viewmodels
 
                 foreach (var p in registered)
                 {
-                    var baseDex = db.PokedexEntries.FirstOrDefault(dex => dex.Name == p.Form);
-                    string img = (p.IsShiny && !string.IsNullOrEmpty(baseDex?.Shiny)) ? baseDex.Shiny : baseDex?.Image;
+                    var baseDex = db.Pokemons.FirstOrDefault(dex => dex.Id == p.PokemonId);
+
+                    // 1. Assumimos a imagem normal por defeito
+                    string img = baseDex?.ImageNormal;
+
+                    // 2. Trocamos para shiny SE estiver marcado como shiny no BD e existir o caminho
+                    if (p.IsShiny && baseDex != null && !string.IsNullOrWhiteSpace(baseDex.ImageShiny))
+                    {
+                        img = baseDex.ImageShiny;
+                    }
+
+                    // 3. O DETETIVE: Lê a tua janela "Output" (Saída) no Visual Studio após correr isto!
+                    System.Diagnostics.Debug.WriteLine($"[SHINY-DEBUG] Pkm: {p.PokemonId} | Shiny no Banco? {p.IsShiny} | Imagem Escolhida: {img}");
 
                     newList.Add(new DisplayPokemon
                     {
                         Id = p.Id,
-                        Dex = baseDex?.Dex ?? "???",
-                        Species = p.BasePokemon,
-                        DisplayName = !string.IsNullOrEmpty(p.Nickname) ? p.Nickname : p.Form,
+                        Dex = (baseDex != null && baseDex.NationalDex.HasValue) ? baseDex.NationalDex.Value.ToString("D4") : "???",
+                        Species = baseDex?.Name ?? p.BasePokemon,
+                        DisplayName = !string.IsNullOrWhiteSpace(p.Nickname) ? p.Nickname : (baseDex?.Name ?? p.BasePokemon),
                         Level = p.Level,
                         ImagePath = img,
                         IsShiny = p.IsShiny
                     });
                 }
+
                 Pokemons = newList;
             }
         }

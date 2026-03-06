@@ -1,22 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+
 namespace Pokedex.models
 {
     [Table("natures")]
     public class Nature
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
         public int Id { get; set; }
-
-        [JsonPropertyName("Name")]
+        [Column("name")]
         public string Name { get; set; }
-
-        [JsonPropertyName("Increase")] // Conforme o JSON
+        [Column("increase_stat")]
         public string Increase { get; set; }
-
-        [JsonPropertyName("Decrease")] // Conforme o JSON
+        [Column("decrease_stat")]
         public string Decrease { get; set; }
     }
 }
