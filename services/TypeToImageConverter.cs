@@ -12,11 +12,8 @@ namespace Pokedex.services
         {
             string typeName = value as string;
             if (string.IsNullOrWhiteSpace(typeName)) return null;
-
-            // Transforma "Fire" em "FIRE" para bater exatamente com o nome do seu arquivo
             string fileName = $"{typeName.ToUpper()}.png";
 
-            // Aponta para a pasta 'names' em vez de 'icon'
             string imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "type_images", "names", fileName);
 
             if (File.Exists(imagePath))
@@ -24,9 +21,9 @@ namespace Pokedex.services
                 var bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad; // Evita travar o arquivo
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
                 bitmap.EndInit();
-                bitmap.Freeze(); // Melhora a performance
+                bitmap.Freeze();
                 return bitmap;
             }
 

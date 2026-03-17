@@ -53,7 +53,6 @@ namespace Pokedex.models
         [Column("is_shiny")]
         public bool IsShiny { get; set; }
 
-        // Propriedades auxiliares que o C# usa mas o banco não tem
         [NotMapped]
         public string BasePokemon { get; set; }
 

@@ -9,9 +9,6 @@ namespace Pokedex.views
 {
     public partial class RegisteredPokemonDetailView : Window
     {
-        // =========================================================
-        // MÁGICA DO WINDOWS API PARA ESCONDER BOTÕES NATIVOS
-        // =========================================================
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
 
@@ -21,34 +18,21 @@ namespace Pokedex.views
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-        // 🧠 Referência à nossa nova ViewModel
         private RegisteredPokemonDetailViewModel _viewModel;
 
         public RegisteredPokemonDetailView(int pokemonId, string trainerId)
         {
             InitializeComponent();
-
-            // Instanciamos o "Cérebro" e passamos os IDs
             _viewModel = new RegisteredPokemonDetailViewModel(pokemonId, trainerId);
-
-            // O DataContext liga o teu XAML à ViewModel (Isto é o coração do MVVM)
             this.DataContext = _viewModel;
-
-            // Verifica logo no início se devemos mostrar as setinhas
             UpdateNavButtons();
         }
-
-        // Continua a esconder a barra do Windows
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
-
-        // =========================================================
-        // EVENTOS DE CLIQUE (A View só repassa a ordem)
-        // =========================================================
         private void btnPrev_Click(object sender, RoutedEventArgs e)
         {
             _viewModel.PreviousPokemon();
@@ -70,8 +54,6 @@ namespace Pokedex.views
         {
             this.Close();
         }
-
-        // Lógica puramente visual (Ocultar/Mostrar botões se houver ou não Pokémon na fila)
         private void UpdateNavButtons()
         {
             btnPrev.Visibility = _viewModel.HasPrevious ? Visibility.Visible : Visibility.Hidden;

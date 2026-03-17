@@ -25,7 +25,6 @@ namespace Pokedex.models
         [Column("image_female")] public string? ImageFemale { get; set; }
         [Column("image_female_shiny")] public string? ImageFemaleShiny { get; set; }
 
-        // Status Base
         [Column("hp")] public int? Hp { get; set; }
         [Column("attack")] public int? Attack { get; set; }
         [Column("defense")] public int? Defense { get; set; }
@@ -34,7 +33,6 @@ namespace Pokedex.models
         [Column("speed")] public int? Speed { get; set; }
         [Column("total_stats")] public int? TotalStats { get; set; }
 
-        // EVs
         [Column("ev_hp")] public int? EvHp { get; set; }
         [Column("ev_attack")] public int? EvAttack { get; set; }
         [Column("ev_defense")] public int? EvDefense { get; set; }
@@ -42,7 +40,6 @@ namespace Pokedex.models
         [Column("ev_sp_def")] public int? EvSpDef { get; set; }
         [Column("ev_speed")] public int? EvSpeed { get; set; }
 
-        // Dados Biológicos
         [Column("catch_rate")] public string? CatchRate { get; set; }
         [Column("base_friendship")] public int? BaseFriendship { get; set; }
         [Column("base_exp")] public int? BaseExp { get; set; }
@@ -50,9 +47,6 @@ namespace Pokedex.models
         [Column("gender_ratio")] public string? GenderRatio { get; set; }
         [Column("egg_cycles")] public string? EggCycles { get; set; }
 
-        // ==========================================
-        // AS RELAÇÕES COM AS OUTRAS TABELAS
-        // ==========================================
         public virtual ICollection<PokemonType> Types { get; set; } = new List<PokemonType>();
         public virtual ICollection<PokemonAbility> Abilities { get; set; } = new List<PokemonAbility>();
         public virtual ICollection<PokedexDescription> Descriptions { get; set; } = new List<PokedexDescription>();
@@ -61,17 +55,12 @@ namespace Pokedex.models
         public virtual ICollection<CosmeticForm> CosmeticForms { get; set; } = new List<CosmeticForm>();
         public virtual ICollection<LocalDex> LocalDexes { get; set; } = new List<LocalDex>();
 
-        // EVOLUÇÕES
-        // Evoluções para a frente (Ex: Bulbasaur -> Ivysaur)
         [InverseProperty("FromPokemon")]
         public virtual ICollection<Evolution> EvolvesTo { get; set; } = new List<Evolution>();
 
-        // Evoluções para trás (Ex: Ivysaur <- Bulbasaur)
         [InverseProperty("ToPokemon")]
         public virtual ICollection<Evolution> EvolvesFrom { get; set; } = new List<Evolution>();
     }
-
-    // --- TABELAS RELACIONAIS ---
 
     [Table("pokemon_types")]
     public class PokemonType

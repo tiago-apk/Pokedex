@@ -2,7 +2,6 @@
 {
     public static class CustomIcons
     {
-        // Códigos baseados no padrão de geração do Fontello/FlutterIcon
         public const string Kanto = "\ue806";
         public const string Johto = "\ue804";
         public const string Hoenn = "\ue803";

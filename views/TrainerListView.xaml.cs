@@ -20,7 +20,6 @@ namespace Pokedex.views
         {
             if (sender is Border border && border.DataContext is DisplayPokemon clickedPoke)
             {
-                // Pegamos o ID do treinador diretamente da ViewModel refatorada
                 if (_viewModel.SelectedTrainer != null)
                 {
                     var detailWindow = new RegisteredPokemonDetailView(clickedPoke.Id, _viewModel.SelectedTrainer.TrainerId);

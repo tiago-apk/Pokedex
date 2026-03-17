@@ -42,9 +42,6 @@ namespace Pokedex.viewmodels
             }
         }
 
-        // ==========================================
-        // PROPRIEDADES VISUAIS (IMAGENS E TEXTOS)
-        // ==========================================
         public DexInfoWrapper BaseDex => new DexInfoWrapper { Dex = _basePokemon?.NationalDex?.ToString("D4") ?? "???" };
 
         public string ImagePath
@@ -65,9 +62,6 @@ namespace Pokedex.viewmodels
         public string DisplayMove3 => Pokemon?.Move3 ?? "---";
         public string DisplayMove4 => Pokemon?.Move4 ?? "---";
 
-        // ==========================================
-        // PROPRIEDADES DO GRÁFICO (CHART BINDINGS)
-        // ==========================================
         public ObservableCollection<StatItemViewModel> AllStats { get; set; } = new ObservableCollection<StatItemViewModel>();
 
         public string ChartTitle => _currentMode switch
@@ -98,30 +92,18 @@ namespace Pokedex.viewmodels
                 var points = new PointCollection();
                 if (AllStats == null || AllStats.Count < 6) return points;
 
-                // ==========================================================
-                // AS COORDENADAS EXATAS DO TEU XAML!
-                // O teu Grid tem 280x280 e a teia de fundo cruza-se em 140,140
-                // ==========================================================
+
                 double centerX = 140;
                 double centerY = 140;
-                double maxRadius = 100; // A ponta mais extrema da tua teia no XAML
-                double minRadius = 0;   // Fica colado ao centro se o EV for 0
+                double maxRadius = 100;
+                double minRadius = 0;
 
-                // Mantém o gráfico dentro dos limites lógicos
                 double maxVal = _currentMode switch
                 {
                     StatDisplayMode.IV => 31,
                     StatDisplayMode.EV => 252,
                     _ => Math.Max(150, AllStats.Max(s => s.NumericValue))
                 };
-
-                // Ordem EXATA dos pontos no teu XAML para alinhar com os teus TextBlocks:
-                // 0: HP (Cima -> -90º ou 270º)
-                // 1: Attack (Dir. Cima -> -30º ou 330º)
-                // 2: Defense (Dir. Baixo -> 30º)
-                // 5: Speed (Baixo -> 90º)
-                // 4: Sp. Def (Esq. Baixo -> 150º)
-                // 3: Sp. Atk (Esq. Cima -> 210º)
                 int[] drawOrder = { 0, 1, 2, 5, 4, 3 };
                 double[] angles = { 270, 330, 30, 90, 150, 210 };
 
@@ -144,10 +126,6 @@ namespace Pokedex.viewmodels
                 return points;
             }
         }
-
-        // ==========================================
-        // CONSTRUTOR E CARREGAMENTO
-        // ==========================================
         public RegisteredPokemonDetailViewModel(int id, string trainerId)
         {
             _currentPokemonId = id;
@@ -159,7 +137,6 @@ namespace Pokedex.viewmodels
         {
             using (var db = new AppDbContext())
             {
-                // REMOVIDO O INCLUDE QUE DAVA ERRO AQUI!
                 Pokemon = db.RegisteredPokemons
                             .FirstOrDefault(p => p.Id == id);
 

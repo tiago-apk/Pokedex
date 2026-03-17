@@ -17,17 +17,12 @@ namespace Pokedex
         public MainWindow()
         {
             InitializeComponent();
-            // VINCULA O VIEWMODEL À JANELA
             this.DataContext = new MainViewModel();
         }
-
-        // Fecha a aplicação completamente
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
-
-        // Permite arrastar a janela clicando no fundo (já que removemos a barra do topo)
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ButtonState == MouseButtonState.Pressed)
@@ -38,7 +33,6 @@ namespace Pokedex
 
         private void btnTheme_Click(object sender, RoutedEventArgs e)
         {
-            // Pede ao App.xaml para inverter as cores globais
             ((App)Application.Current).ToggleTheme();
         }
     }

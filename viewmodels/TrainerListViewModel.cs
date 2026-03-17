@@ -59,16 +59,11 @@ namespace Pokedex.viewmodels
                 {
                     var baseDex = db.Pokemons.FirstOrDefault(dex => dex.Id == p.PokemonId);
 
-                    // 1. Assumimos a imagem normal por defeito
                     string img = baseDex?.ImageNormal;
-
-                    // 2. Trocamos para shiny SE estiver marcado como shiny no BD e existir o caminho
                     if (p.IsShiny && baseDex != null && !string.IsNullOrWhiteSpace(baseDex.ImageShiny))
                     {
                         img = baseDex.ImageShiny;
                     }
-
-                    // 3. O DETETIVE: Lê a tua janela "Output" (Saída) no Visual Studio após correr isto!
                     System.Diagnostics.Debug.WriteLine($"[SHINY-DEBUG] Pkm: {p.PokemonId} | Shiny no Banco? {p.IsShiny} | Imagem Escolhida: {img}");
 
                     newList.Add(new DisplayPokemon

@@ -12,24 +12,17 @@ namespace Pokedex.services
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            // 1. Tenta obter a lista de tipos do Pokémon
             var types = value as ICollection<PokemonType>;
-
-            // Se a lista estiver vazia ou nula, retorna uma cor padrão (Cinza)
             if (types == null || !types.Any())
                 return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#A8A878"));
 
-            // 2. Pega as cores dos tipos (Máximo 2 tipos por Pokémon)
             var typeList = types.OrderBy(t => t.Slot).ToList();
             var color1 = GetColorFromType(typeList[0].TypeName);
 
-            // Se tiver apenas 1 tipo, retorna uma cor sólida
             if (typeList.Count == 1)
             {
                 return new SolidColorBrush(color1);
             }
-
-            // 3. Se tiver 2 tipos, cria o DEGRADÊ (LinearGradientBrush) como no antigo
             var color2 = GetColorFromType(typeList[1].TypeName);
 
             return new LinearGradientBrush(color1, color2, new System.Windows.Point(0, 0), new System.Windows.Point(1, 1));

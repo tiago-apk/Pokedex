@@ -5,7 +5,6 @@ namespace Pokedex.data
 {
     public class AppDbContext : DbContext
     {
-        // Tabelas Principais do Pokémon
         public DbSet<Pokemon> Pokemons { get; set; }
         public DbSet<PokemonType> PokemonTypes { get; set; }
         public DbSet<PokemonAbility> PokemonAbilities { get; set; }
@@ -16,7 +15,6 @@ namespace Pokedex.data
         public DbSet<LocalDex> LocalDexes { get; set; }
         public DbSet<PokedexDescription> PokedexDescriptions { get; set; }
 
-        // Tabelas Adicionais (Que já tinhas no teu projeto)
         public DbSet<Move> Moves { get; set; }
         public DbSet<Nature> Natures { get; set; }
         public DbSet<Trainer> Trainers { get; set; }
@@ -24,20 +22,15 @@ namespace Pokedex.data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Pega o caminho base de onde o programa está a correr (a pasta bin/Debug...)
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-
-            // Junta o caminho com a tua pasta "data_raw"
             string dbPath = System.IO.Path.Combine(baseDir, "data_raw", "pokedex.db");
 
-            // Diz ao SQLite para usar esse caminho exato
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
             optionsBuilder.UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // --- Configuração das Chaves Primárias Compostas ---
             modelBuilder.Entity<PokemonType>()
                 .HasKey(pt => new { pt.PokemonId, pt.TypeName });
 
@@ -47,7 +40,6 @@ namespace Pokedex.data
             modelBuilder.Entity<PokemonEggGroup>()
                 .HasKey(pe => new { pe.PokemonId, pe.EggGroupName });
 
-            // --- Configuração das Relações (Foreign Keys) ---
             modelBuilder.Entity<Pokemon>()
                 .HasMany(p => p.Types).WithOne(pt => pt.Pokemon).HasForeignKey(pt => pt.PokemonId);
 
@@ -69,7 +61,6 @@ namespace Pokedex.data
             modelBuilder.Entity<Pokemon>()
                 .HasMany(p => p.LocalDexes).WithOne(ld => ld.Pokemon).HasForeignKey(ld => ld.PokemonId);
 
-            // A tabela de evoluções tem DUAS chaves estrangeiras para a mesma tabela (Pokemon)
             modelBuilder.Entity<Evolution>()
                 .HasOne(e => e.FromPokemon)
                 .WithMany(p => p.EvolvesTo)

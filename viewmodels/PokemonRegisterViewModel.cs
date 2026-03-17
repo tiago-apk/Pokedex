@@ -18,9 +18,7 @@ namespace Pokedex.viewmodels
 
     public class PokemonRegisterViewModel : BaseViewModel
     {
-        // ==========================================
-        // LISTAS (ITEMS SOURCE)
-        // ==========================================
+
         public ObservableCollection<Trainer> Trainers { get; set; } = new ObservableCollection<Trainer>();
         public ObservableCollection<Nature> Natures { get; set; } = new ObservableCollection<Nature>();
         public ObservableCollection<Pokemon> FilteredSpecies { get; set; } = new ObservableCollection<Pokemon>();
@@ -32,9 +30,6 @@ namespace Pokedex.viewmodels
         public ObservableCollection<MoveOption> AvailableMoves3 { get; set; } = new ObservableCollection<MoveOption>();
         public ObservableCollection<MoveOption> AvailableMoves4 { get; set; } = new ObservableCollection<MoveOption>();
 
-        // ==========================================
-        // PROPRIEDADES SELECIONADAS (BINDINGS)
-        // ==========================================
         private Trainer _selectedTrainer;
         public Trainer SelectedTrainer { get => _selectedTrainer; set { _selectedTrainer = value; OnPropertyChanged(); ApplyTrainerRules(); } }
 
@@ -50,9 +45,6 @@ namespace Pokedex.viewmodels
         private Nature _selectedNature;
         public Nature SelectedNature { get => _selectedNature; set { _selectedNature = value; OnPropertyChanged(); } }
 
-        // ==========================================
-        // DADOS DO POKEMON
-        // ==========================================
         private string _nickname; public string Nickname { get => _nickname; set { _nickname = value; OnPropertyChanged(); } }
         private int _level = 1; public int Level { get => _level; set { _level = value; OnPropertyChanged(); } }
         private bool _isShiny; public bool IsShiny { get => _isShiny; set { _isShiny = value; OnPropertyChanged(); } }
@@ -62,9 +54,6 @@ namespace Pokedex.viewmodels
         public string Move3 { get; set; }
         public string Move4 { get; set; }
 
-        // ==========================================
-        // IVs (0 a 31)
-        // ==========================================
         private int _ivHp; public int IvHp { get => _ivHp; set { _ivHp = value; OnPropertyChanged(); } }
         private int _ivAtk; public int IvAtk { get => _ivAtk; set { _ivAtk = value; OnPropertyChanged(); } }
         private int _ivDef; public int IvDef { get => _ivDef; set { _ivDef = value; OnPropertyChanged(); } }
@@ -72,9 +61,6 @@ namespace Pokedex.viewmodels
         private int _ivSpd; public int IvSpd { get => _ivSpd; set { _ivSpd = value; OnPropertyChanged(); } }
         private int _ivSpe; public int IvSpe { get => _ivSpe; set { _ivSpe = value; OnPropertyChanged(); } }
 
-        // ==========================================
-        // LÓGICA DE EVs (MÁX 255 POR CAMPO, SOMA MÁX 510)
-        // ==========================================
         private const int MAX_INDIVIDUAL_EV = 255;
         private const int MAX_TOTAL_EV = 510;
 
@@ -85,7 +71,6 @@ namespace Pokedex.viewmodels
         private int _evSpd; public int EvSpd { get => _evSpd; set { _evSpd = EnforceEvLimits(value, _evSpd); OnPropertyChanged(); RefreshMaxEvs(); } }
         private int _evSpe; public int EvSpe { get => _evSpe; set { _evSpe = EnforceEvLimits(value, _evSpe); OnPropertyChanged(); RefreshMaxEvs(); } }
 
-        // Propriedades dinâmicas para o MAXIMUM dos Sliders no XAML
         public int MaxEvHp => GetDynamicMax(_evHp);
         public int MaxEvAtk => GetDynamicMax(_evAtk);
         public int MaxEvDef => GetDynamicMax(_evDef);
@@ -99,7 +84,6 @@ namespace Pokedex.viewmodels
             int totalWithoutCurrent = currentTotal - oldValue;
             int remainingBudget = MAX_TOTAL_EV - totalWithoutCurrent;
 
-            // O novo valor não pode passar do orçamento restante E nem de 255
             int allowedValue = Math.Min(newValue, remainingBudget);
             return Math.Clamp(allowedValue, 0, MAX_INDIVIDUAL_EV);
         }
@@ -116,10 +100,6 @@ namespace Pokedex.viewmodels
             OnPropertyChanged(nameof(MaxEvHp)); OnPropertyChanged(nameof(MaxEvAtk)); OnPropertyChanged(nameof(MaxEvDef));
             OnPropertyChanged(nameof(MaxEvSpa)); OnPropertyChanged(nameof(MaxEvSpd)); OnPropertyChanged(nameof(MaxEvSpe));
         }
-
-        // ==========================================
-        // COMANDOS E CARREGAMENTO
-        // ==========================================
         public services.RelayCommand SaveCommand { get; }
 
         public PokemonRegisterViewModel()
@@ -186,7 +166,8 @@ namespace Pokedex.viewmodels
                     if (pts.Length >= 2) bid = $"{pts[0]}_{pts[1]}";
                 }
                 var moves = db.PokemonMoves.AsNoTracking().Where(m => m.PokemonId == bid).ToList();
-                var filtered = moves.Where(m => {
+                var filtered = moves.Where(m =>
+                {
                     string c = m.Generation?.ToLower().Replace("gen", "").Replace("generation", "").Trim();
                     return RomanToInt(c) <= trainerGen;
                 }).Select(m => m.MoveName).Distinct().OrderBy(n => n).ToList();

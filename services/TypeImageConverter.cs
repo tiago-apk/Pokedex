@@ -10,9 +10,6 @@ namespace Pokedex.services
         {
             string typeName = value as string;
             if (string.IsNullOrEmpty(typeName)) return null;
-
-            // Retorna o caminho formatado: assets/type_images/FIRE.png
-            // O ToUpper garante que combine com o nome do arquivo se estiver em maiúsculo
             return $"/assets/type_images/names/{typeName.ToUpper()}.png";
         }
 

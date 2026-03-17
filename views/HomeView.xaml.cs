@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace Pokedex.views
 {
-    /// <summary>
-    /// Interaction logic for UserControl1.xaml
-    /// </summary>
     public partial class HomeView : UserControl
     {
         public HomeView()

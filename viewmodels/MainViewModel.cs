@@ -18,8 +18,6 @@ namespace Pokedex.viewmodels
             }
         }
 
-        // Comandos de navegação (ICommand aceita RelayCommand)
-
         public ICommand ShowHomeCommand { get; }
         public ICommand ShowPokedexCommand { get; }
         public ICommand ShowRegisterPokemonCommand { get; }
@@ -29,15 +27,12 @@ namespace Pokedex.viewmodels
         public MainViewModel()
         {
             ShowHomeCommand = new RelayCommand(() => CurrentView = new HomeViewModel());
-
-            // Fica simples assim:
             ShowPokedexCommand = new RelayCommand(() => CurrentView = new PokedexViewModel());
 
             ShowRegisterPokemonCommand = new RelayCommand(() => CurrentView = new PokemonRegisterViewModel());
             ShowRegisterTrainerCommand = new RelayCommand(() => CurrentView = new TrainerRegisterViewModel());
             ShowTrainerListCommand = new RelayCommand(() => CurrentView = new TrainerListViewModel());
 
-            // Tela inicial
             CurrentView = new HomeViewModel();
         }
     }

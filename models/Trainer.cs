@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Pokedex.models
 {
-    [Table("trainers")] // Diz que o nome da tabela em minúsculo
+    [Table("trainers")]
     public class Trainer
     {
         [Key]
@@ -14,7 +14,7 @@ namespace Pokedex.models
         [Column("name")]
         public string Name { get; set; }
 
-        [Column("trainer_id")] // <-- ISTO RESOLVE O ERRO DO TRAINER ID!
+        [Column("trainer_id")]
         public string TrainerId { get; set; }
 
         [Column("region")]
@@ -26,7 +26,7 @@ namespace Pokedex.models
         [Column("game")]
         public string Game { get; set; }
 
-        [NotMapped] // <-- ISTO RESOLVE O ERRO DO REGISTERED AT!
+        [NotMapped]
         public DateTime RegisteredAt { get; set; }
     }
 }

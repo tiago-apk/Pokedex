@@ -56,7 +56,6 @@ namespace Pokedex.viewmodels
             .OrderBy(a => a.Slot)
             .Select(a => (a.IsHidden ?? false) ? $"{a.AbilityName} (Hidden)" : a.AbilityName);
 
-        // DESCRIÇÕES
         private List<UIDexEntry> _currentEntries = new List<UIDexEntry>();
         private int _descriptionIndex = 0;
         public UIDexEntry CurrentEntry => _currentEntries.ElementAtOrDefault(_descriptionIndex);
@@ -68,7 +67,6 @@ namespace Pokedex.viewmodels
         private string _currentImageFemale;
         private string _currentImageFemaleShiny;
 
-        // EVOLUÇÕES
         private List<List<Pokemon>> _allPossiblePaths = new List<List<Pokemon>>();
         private int _currentPathIndex = 0;
         private ObservableCollection<EvolutionNode> _currentEvolutionLine;
@@ -111,7 +109,7 @@ namespace Pokedex.viewmodels
                     .Include(x => x.Abilities)
                     .Include(x => x.Descriptions)
                     .Include(x => x.EggGroups)
-                    .Include(x => x.LocalDexes) // Mantemos isto para alimentar a nova tabela no XAML!
+                    .Include(x => x.LocalDexes)
                     .Include(x => x.CosmeticForms).ThenInclude(cf => cf.Descriptions)
                     .Include(x => x.EvolvesFrom)
                     .Include(x => x.EvolvesTo)

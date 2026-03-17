@@ -9,18 +9,11 @@ namespace Pokedex.viewmodels
 {
     public class TrainerRegisterViewModel : BaseViewModel
     {
-        // ==========================================
-        // CAMPOS PRIVADOS
-        // ==========================================
         private string _name;
         private string _trainerId;
         private string _selectedRegion;
         private string _selectedGeneration;
         private string _selectedGame;
-
-        // ==========================================
-        // PROPRIEDADES (BINDINGS)
-        // ==========================================
         public string Name
         {
             get => _name;
@@ -40,7 +33,7 @@ namespace Pokedex.viewmodels
             {
                 _selectedRegion = value;
                 OnPropertyChanged();
-                UpdateGenerations(); // Atualiza a lista dependente
+                UpdateGenerations();
             }
         }
 
@@ -51,7 +44,7 @@ namespace Pokedex.viewmodels
             {
                 _selectedGeneration = value;
                 OnPropertyChanged();
-                UpdateGames(); // Faltava isto para os jogos aparecerem!
+                UpdateGames();
             }
         }
 
@@ -66,9 +59,6 @@ namespace Pokedex.viewmodels
             }
         }
 
-        // ==========================================
-        // COLEÇÕES PARA OS COMBOBOXES
-        // ==========================================
         public ObservableCollection<string> Regions { get; } = new ObservableCollection<string>
         {
             "Kanto", "Johto", "Hoenn", "Sinnoh", "Unova",
@@ -78,29 +68,17 @@ namespace Pokedex.viewmodels
         public ObservableCollection<string> Generations { get; } = new ObservableCollection<string>();
         public ObservableCollection<string> Games { get; } = new ObservableCollection<string>();
 
-        // ==========================================
-        // COMANDOS (BOTÕES)
-        // ==========================================
         private services.RelayCommand _saveCommand;
         public services.RelayCommand SaveCommand => _saveCommand ??= new services.RelayCommand(() => Save());
 
         private services.RelayCommand _clearCommand;
         public services.RelayCommand ClearCommand => _clearCommand ??= new services.RelayCommand(() => Clear());
 
-        // ==========================================
-        // CONSTRUTOR
-        // ==========================================
         public TrainerRegisterViewModel()
-        {
-            // Inicializações se necessárias
-        }
+        { }
 
-        // ==========================================
-        // MÉTODOS
-        // ==========================================
         public void Save()
         {
-            // 1. VALIDAÇÃO BLINDADA: Garante que nada vai nulo para o banco de dados
             if (string.IsNullOrWhiteSpace(Name) ||
                 string.IsNullOrWhiteSpace(TrainerId) ||
                 string.IsNullOrWhiteSpace(SelectedRegion) ||
@@ -114,23 +92,20 @@ namespace Pokedex.viewmodels
 
             try
             {
-                // 2. SALVAR NO BANCO
                 using (var db = new AppDbContext())
                 {
                     var novoTreinador = new Trainer
                     {
                         Name = Name.Trim(),
-                        TrainerId = TrainerId.Trim(), // Usa a string, que é o que o banco de dados quer!
+                        TrainerId = TrainerId.Trim(),
                         Region = SelectedRegion,
                         Generation = SelectedGeneration,
                         Game = SelectedGame
                     };
 
                     db.Trainers.Add(novoTreinador);
-                    db.SaveChanges(); // Agora o SQLite vai aceitar perfeitamente
+                    db.SaveChanges();
                 }
-
-                // 3. SUCESSO E LIMPEZA
                 MessageBox.Show("Treinador salvo com sucesso no banco de dados!", "Sucesso", MessageBoxButton.OK, MessageBoxImage.Information);
                 Clear();
             }

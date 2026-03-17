@@ -18,18 +18,14 @@ namespace Pokedex.views
         {
             try
             {
-                // Task.Run para aquecer o banco sem travar a animação da interface
                 await Task.Run(() =>
                 {
                     using (var db = new AppDbContext())
                     {
-                        // "Aquece" o Entity Framework fazendo a primeira consulta (MUITO mais rápido que o Seeder antigo)
                         bool isDbAlive = db.Pokemons.Any();
                     }
                 });
 
-                // Baixei a pausa de 5000 (5 segundos) para 1500 (1.5 segundos)
-                // Isto é apenas para o utilizador ver a tua animação bonita da Pokébola antes de abrir a app!
                 await Task.Delay(1500);
 
                 MainWindow main = new MainWindow();

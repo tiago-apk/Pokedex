@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Pokedex.services // <--- ADICIONA ESTA LINHA
+namespace Pokedex.services
 {
     public class IntToVisConverter : IValueConverter
     {
@@ -17,4 +17,4 @@ namespace Pokedex.services // <--- ADICIONA ESTA LINHA
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
     }
-} // <--- FECHA A CHAVE AQUI
+}

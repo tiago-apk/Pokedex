@@ -8,7 +8,6 @@ namespace Pokedex.views
         public PokemonDetailView(string pokemonId)
         {
             InitializeComponent();
-            // O DataContext já é injetado com o ID correto no PokedexViewModel
             this.DataContext = new PokemonDetailViewModel(pokemonId);
         }
 

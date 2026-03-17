@@ -65,26 +65,25 @@ namespace Pokedex.viewmodels
         }
 
         private void LoadPokemons()
-{
-    using (var db = new AppDbContext())
-    {
-        // ➔ Usamos o Include(p => p.Types) para garantir que traz a lista de tipos antes do db fechar!
-        _allPokemons = db.Pokemons
-            .Include(p => p.Types) 
-            .Where(p => p.Form == "Base" || string.IsNullOrEmpty(p.Form))
-            .OrderBy(p => p.NationalDex)
-            .ToList();
-            
-        ApplyFilter(Regions[0]);
-    }
-}
+        {
+            using (var db = new AppDbContext())
+            {
+                _allPokemons = db.Pokemons
+                    .Include(p => p.Types)
+                    .Where(p => p.Form == "Base" || string.IsNullOrEmpty(p.Form))
+                    .OrderBy(p => p.NationalDex)
+                    .ToList();
+
+                ApplyFilter(Regions[0]);
+            }
+        }
 
         private void ApplyFilter(RegionFilter region)
         {
             if (region == null) return;
             CurrentRegionName = region.Name == "All" ? "Pokedex" : region.Name;
 
-            // Olha como o filtro ficou limpo! NationalDex agora é um int verdadeiro.
+
             var filtered = _allPokemons
                 .Where(p => p.NationalDex >= region.Start && p.NationalDex <= region.End)
                 .ToList();
@@ -92,16 +91,10 @@ namespace Pokedex.viewmodels
             Pokemons = new ObservableCollection<Pokemon>(filtered);
         }
 
-        // Podes apagar o "public event System.Action<string> OnPokemonSelected;" que tínhamos posto lá em cima.
-
         private void OpenDetail(Pokemon pokemon)
         {
             if (pokemon == null) return;
-
-            // Como a tua Janela já pede o ID no construtor, passamos diretamente para ela!
             var detailWindow = new Pokedex.views.PokemonDetailView(pokemon.Id);
-
-            // Abre a janela por cima de tudo
             detailWindow.ShowDialog();
         }
     }
